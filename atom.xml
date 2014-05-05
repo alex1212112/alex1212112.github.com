@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/atom.xml" rel="self"/>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/"/>
-  <updated>2014-05-05T19:01:46+08:00</updated>
+  <updated>2014-05-05T19:13:28+08:00</updated>
   <id>https://github.com/alex1212112/alex1212112.github.com.git/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -18,11 +18,9 @@
     <link href="https://github.com/alex1212112/alex1212112.github.com.git/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang/"/>
     <updated>2014-05-05T18:57:40+08:00</updated>
     <id>https://github.com/alex1212112/alex1212112.github.com.git/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang</id>
-    <content type="html"><![CDATA[<h3>iOS7中的UIViewController的转场</h3>
+    <content type="html"><![CDATA[<p>iOS7提供了一套供开发者方便自定义Viewcontroller间切换动画的API，我们可以利用这些API来自定义自己的转场效果，替代系统提供的默认push、present等动画效果。</p>
 
-<p>iOS7提供了一套供开发者方便自定义Viewcontroller间切换动画的API，我们可以利用这些API来自定义自己的转场效果，替代系统提供的默认push、present等动画效果。</p>
-
-<h4>实现流程</h4>
+<h3>实现流程</h3>
 
 <p>首先介绍presentViewController转场动画的实现，主要流程如下：</p>
 
@@ -70,7 +68,7 @@
 </ol>
 
 
-<h4>自定义动画和相关API介绍</h4>
+<h3>自定义动画和相关API介绍</h3>
 
 <p>上面流程里第一步转场动画效果该如何实现呢？</p>
 
@@ -180,7 +178,7 @@ NSTimeInterval duration = [self transitionDuration:transitionContext];
 </ol>
 
 
-<p>参考资料：</p>
+<h3>参考资料</h3>
 
 <ol>
 <li><p><a href="http://onevcat.com/2013/10/vc-transition-in-ios7/">WWDC 2013 Session笔记 &ndash; iOS7中的ViewController切换</a>;</p></li>
