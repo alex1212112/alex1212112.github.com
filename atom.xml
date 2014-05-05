@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/atom.xml" rel="self"/>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/"/>
-  <updated>2014-05-05T19:25:57+08:00</updated>
+  <updated>2014-05-05T19:34:06+08:00</updated>
   <id>https://github.com/alex1212112/alex1212112.github.com.git/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -25,8 +25,8 @@
 <p>首先介绍presentViewController转场动画的实现，主要流程如下：</p>
 
 <ol>
-<li><p>自定义一个转场动画效果。</p></li>
-<li><p>在 presentingViewConttroller 里实现 UIViewControllerTransitioningDelegate 代理方法，主要有两个，分别是present时候的动画和disMiss时候的动画，</p>
+<li><p>. 自定义一个转场动画效果。</p></li>
+<li><p>. 在 presentingViewConttroller 里实现 UIViewControllerTransitioningDelegate 代理方法，主要有两个，分别是present时候的动画和disMiss时候的动画，</p>
 
 <p>present时候要实现的方法：</p>
 
@@ -39,7 +39,7 @@
 </code></pre>
 
 <p>这两个方法都返回刚才第一步自定义的转场动画。</p></li>
-<li><p>在present的时候设置presentedViewController 的 transitioningDelegate如下：</p>
+<li><p>.   在present的时候设置presentedViewController 的 transitioningDelegate如下：</p>
 
 <pre><code>UIViewController *presentedVC = [[UIViewController alloc] init];
 presentedVC.transitioningDelegate = self;
@@ -51,8 +51,8 @@ presentedVC.transitioningDelegate = self;
 <p>关于navigationController的push、pop的动画流程如下：</p>
 
 <ol>
-<li><p>自定义一个转场动画效果。</p></li>
-<li><p>实现UINavigationControllerDelegate的代理方法，这里就一个</p>
+<li><p>.   自定义一个转场动画效果。</p></li>
+<li><p>.   实现UINavigationControllerDelegate的代理方法，这里就一个</p>
 
 <pre><code>- (id &lt;UIViewControllerAnimatedTransitioning&gt;)navigationController:(UINavigationController *)navigationController
                            animationControllerForOperation:(UINavigationControllerOperation)operation
@@ -61,9 +61,9 @@ presentedVC.transitioningDelegate = self;
 </code></pre>
 
 <p>这个方法也返回第一步里自定义的转场动画。为什么viewController有present 和disMiss两个方法，为什么这里没有push 和pop 两个方法呢，那是因为在这个代理方法里可以通过(UINavigationControllerOperation)operation 参数来确认当前操作究竟是push 还是pop， 当<code>operation == UINavigationControllerOperationPush</code>时候 就是push操作，当<code>operation == UINavigationControllerOperationPop</code> 时候就是pop操作。</p></li>
-<li><p>在初始化时候设置NavigationController的delgate如下:</p>
+<li><p>. 在初始化时候设置NavigationController的delgate如下:</p>
 
-<pre><code> self.navigationController.delegate = self;
+<pre><code>self.navigationController.delegate = self;
 </code></pre></li>
 </ol>
 
@@ -93,19 +93,19 @@ presentedVC.transitioningDelegate = self;
 <p>其中  transitionContext可以理解为动画切换的上下文，它是一个实现了 <code>UIViewControllerContextTransitioning</code>协议的NSObject，它提供了VC切换的一切必需内容，如从哪个VC到哪个VC，动画切换的容器等，这个NSObject里的几个比较重要的方法如下：</p>
 
 <ul>
-<li><p><code>-(UIView *)containerView;</code></p>
+<li><p> <code>-(UIView *)containerView;</code></p>
 
 <p>VC切换所发生的view容器，开发者应该将切出的view移除，将切入的view加入到该view容器中。</p></li>
-<li><p><code>-(UIViewController )viewControllerForKey:(NSString )key;</code></p>
+<li><p> <code>-(UIViewController )viewControllerForKey:(NSString )key;</code></p>
 
 <p>提供一个key，返回对应的VC。现在的SDK中key的选择只有UITransitionContextFromViewControllerKey和UITransitionContextToViewControllerKey两种，分别表示将要切出和切入的VC。</p></li>
-<li><p><code>-(CGRect)initialFrameForViewController:(UIViewController *)vc;</code></p>
+<li><p> <code>-(CGRect)initialFrameForViewController:(UIViewController *)vc;</code></p>
 
 <p>某个VC的初始位置，可以用来做动画的计算。</p></li>
-<li><p><code>-(CGRect)finalFrameForViewController:(UIViewController *)vc;</code></p>
+<li><p> <code>-(CGRect)finalFrameForViewController:(UIViewController *)vc;</code></p>
 
 <p>与上面的方法对应，得到切换结束时某个VC应在的frame。</p></li>
-<li><p><code>-(void)completeTransition:(BOOL)didComplete;</code></p>
+<li><p> <code>-(void)completeTransition:(BOOL)didComplete;</code></p>
 
 <p>向这个context报告切换已经完成。</p></li>
 </ul>
@@ -169,24 +169,24 @@ NSTimeInterval duration = [self transitionDuration:transitionContext];
 <p>解释：</p>
 
 <ol>
-<li><p>从上下文中获取toVC(根据需要，这里也可以获取到fromVC).</p></li>
-<li><p>获取toVC的view的快照和初始的frame.</p></li>
-<li><p>获取动画发生的的容器View——containerView,并将toView的快照加入到该容器View中.</p></li>
-<li><p>通过视图动画来执行自定义动画，此代码中的实现了一个iOS7中新增加的弹性动画效果，该动画使视图滑动时，像弹簧一样，稍微拉伸一些，再弹回正确位置.</p></li>
-<li><p>移除toView的快照，并将真正的toView加入到容器View中.</p></li>
-<li><p>向context报告动画切换已经完成.</p></li>
+<li><p>.   从上下文中获取toVC(根据需要，这里也可以获取到fromVC).</p></li>
+<li><p>.   获取toVC的view的快照和初始的frame.</p></li>
+<li><p>.   获取动画发生的的容器View——containerView,并将toView的快照加入到该容器View中.</p></li>
+<li><p>.   通过视图动画来执行自定义动画，此代码中的实现了一个iOS7中新增加的弹性动画效果，该动画使视图滑动时，像弹簧一样，稍微拉伸一些，再弹回正确位置.</p></li>
+<li><p>.   移除toView的快照，并将真正的toView加入到容器View中.</p></li>
+<li><p>.   向context报告动画切换已经完成.</p></li>
 </ol>
 
 
 <h3>参考资料</h3>
 
 <ol>
-<li><p><a href="http://onevcat.com/2013/10/vc-transition-in-ios7/">WWDC 2013 Session笔记 &ndash; iOS7中的ViewController切换</a>;</p></li>
-<li><p><a href="http://objccn.io/issue-5-3/">View Controller 转场</a>;</p></li>
-<li><p><a href="http://www.cocoachina.com/gamedev/misc/2013/1224/7597.html">iOS7教程系列：自定义导航转场动画以及更多</a>;</p></li>
-<li><p><a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewControllerContextTransitioning_protocol/Reference/Reference.html">UIViewControllerContextTransitioning</a>;</p></li>
-<li><p><a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewControllerAnimatedTransitioning_Protocol/Reference/Reference.html">UIViewControllerAnimatedTransitioning</a>;</p></li>
-<li><p><a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIViewControllerTransitioningDelegate_protocol/Reference/Reference.html">UIViewControllerTransitioningDelegate</a>;</p></li>
+<li><p>. <a href="http://onevcat.com/2013/10/vc-transition-in-ios7/">WWDC 2013 Session笔记 &ndash; iOS7中的ViewController切换</a>;</p></li>
+<li><p>. <a href="http://objccn.io/issue-5-3/">View Controller 转场</a>;</p></li>
+<li><p>. <a href="http://www.cocoachina.com/gamedev/misc/2013/1224/7597.html">iOS7教程系列：自定义导航转场动画以及更多</a>;</p></li>
+<li><p>. <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewControllerContextTransitioning_protocol/Reference/Reference.html">UIViewControllerContextTransitioning</a>;</p></li>
+<li><p>. <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewControllerAnimatedTransitioning_Protocol/Reference/Reference.html">UIViewControllerAnimatedTransitioning</a>;</p></li>
+<li><p>. <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIViewControllerTransitioningDelegate_protocol/Reference/Reference.html">UIViewControllerTransitioningDelegate</a>;</p></li>
 </ol>
 
 ]]></content>
