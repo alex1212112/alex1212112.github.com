@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/atom.xml" rel="self"/>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/"/>
-  <updated>2014-05-06T19:14:18+08:00</updated>
+  <updated>2014-05-06T19:17:39+08:00</updated>
   <id>https://github.com/alex1212112/alex1212112.github.com.git/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -40,10 +40,11 @@
 </code></pre>
 
 <p>  这两个方法都返回刚才第一步自定义的转场动画。</p></li>
-<li><p> 在present的时候设置presentedViewController 的 transitioningDelegate如下：</p>
-
-<pre><code>  UIViewController *presentedVC = [[UIViewController alloc]           init];presentedVC.transitioningDelegate = self;[self            presentViewController:presentedVC animated:YES completion:nil]; 
-</code></pre></li>
+<li><p> 在present的时候设置presentedViewController 的 transitioningDelegate如下：
+<code>
+  UIViewController *presentedVC = [[UIViewController alloc]           init];
+      presentedVC.transitioningDelegate = self;
+      [self presentViewController:presentedVC animated:YES completion:nil];  </code></p></li>
 </ol>
 </li>
 <li><p>关于navigationController的push、pop的动画流程如下：</p>

@@ -113,10 +113,11 @@
 </code></pre>
 
 <p>  这两个方法都返回刚才第一步自定义的转场动画。</p></li>
-<li><p> 在present的时候设置presentedViewController 的 transitioningDelegate如下：</p>
-
-<pre><code>  UIViewController *presentedVC = [[UIViewController alloc]           init];presentedVC.transitioningDelegate = self;[self            presentViewController:presentedVC animated:YES completion:nil]; 
-</code></pre></li>
+<li><p> 在present的时候设置presentedViewController 的 transitioningDelegate如下：
+<code>
+  UIViewController *presentedVC = [[UIViewController alloc]           init];
+      presentedVC.transitioningDelegate = self;
+      [self presentViewController:presentedVC animated:YES completion:nil];  </code></p></li>
 </ol>
 </li>
 <li><p>关于navigationController的push、pop的动画流程如下：</p>
