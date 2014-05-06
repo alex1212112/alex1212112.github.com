@@ -107,38 +107,59 @@
 
 <p>  present时候要实现的方法：</p>
 
-<pre><code>  - (id &lt;UIViewControllerAnimatedTransitioning&gt;)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source;
-</code></pre>
+<p>  &#8220;` objc</p>
+
+<ul>
+<li>(id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController <em>)presented presentingController:(UIViewController </em>)presenting sourceController:(UIViewController *)source;
+&#8220;`</li>
+</ul>
+
 
 <p>  disMiss时候要实现的方法：</p>
 
-<pre><code>  - (id &lt;UIViewControllerAnimatedTransitioning&gt;)animationControllerForDismissedController:(UIViewController *)dismissed;
-</code></pre>
+<p>  &#8220;` objc</p>
+
+<ul>
+<li>(id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed;
+&#8220;`</li>
+</ul>
+
 
 <p>  这两个方法都返回刚才第一步自定义的转场动画。</p></li>
-<li><p> 在present的时候设置presentedViewController 的 transitioningDelegate如下：</p>
-
-<pre><code>  UIViewController *presentedVC = [[UIViewController alloc] init];presentedVC.transitioningDelegate = self;[self presentViewController:presentedVC animated:YES completion:nil];
-</code></pre></li>
+<li><p> 在present的时候设置presentedViewController 的 transitioningDelegate如下：</p></li>
 </ol>
-</li>
+
+
+<p>  <code>objc
+     UIViewController *presentedVC = [[UIViewController alloc] init];presentedVC.transitioningDelegate = self;[self presentViewController:presentedVC animated:YES completion:nil];
+ </code></p></li>
 <li><p>关于navigationController的push、pop的动画流程如下：</p>
 
 <ol>
 <li><p>  自定义一个转场动画效果。</p></li>
-<li><p>  实现UINavigationControllerDelegate的代理方法，这里就一个</p>
+<li><p>  实现UINavigationControllerDelegate的代理方法，这里就一个</p></li>
+</ol>
+
+
+<p>  &#8220;` objc</p>
 
 <pre><code>  - (id &lt;UIViewControllerAnimatedTransitioning&gt;)navigationController:(UINavigationController *)navigationController
-                         animationControllerForOperation:(UINavigationControllerOperation)operation
-                                      fromViewController:(UIViewController *)fromVC
-                                        toViewController:(UIViewController *)toVC ;                                                 
+                             animationControllerForOperation:(UINavigationControllerOperation)operation
+                                          fromViewController:(UIViewController *)fromVC
+                                            toViewController:(UIViewController *)toVC ;                                                                                                   
 </code></pre>
 
-<p>  这个方法也返回第一步里自定义的转场动画。为什么viewController有present 和disMiss两个方法， 为什么这里没有push 和pop 两个方法呢，那是因为在这个代理方法里可以通过(UINavigationControllerOperation)operation 参数来确认当前操作究竟是push 还是pop， 当<code>operation == UINavigationControllerOperationPush</code>时候 就是push操作，当<code>operation == UINavigationControllerOperationPop</code> 时候就是pop操作。</p></li>
+<p>   &#8220;`</p>
+
+<pre><code>  这个方法也返回第一步里自定义的转场动画。为什么viewController有present 和disMiss两个方法， 为什么这里没有push 和pop 两个方法呢，那是因为在这个代理方法里可以通过(UINavigationControllerOperation)operation 参数来确认当前操作究竟是push 还是pop， 当`operation == UINavigationControllerOperationPush`时候 就是push操作，当`operation == UINavigationControllerOperationPop` 时候就是pop操作。
+</code></pre>
+
+<ol>
 <li><p> 在初始化时候设置NavigationController的delgate如下:</p>
 
-<pre><code>  self.navigationController.delegate = self;
-</code></pre></li>
+<p>  <code>objc
+  self.navigationController.delegate = self;
+ </code></p></li>
 </ol>
 </li>
 </ul>
@@ -157,16 +178,23 @@
 
 <p>假如我们动画时间为1秒，我们就可以在这样实现此方法</p>
 
-<pre><code>- (NSTimeInterval)transitionDuration:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext
-    {
-        return 1.0f;
-    }
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSTimeInterval</span><span class="p">)</span><span class="nf">transitionDuration:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="mf">1.0f</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>另一个就是具体动画实现的方法，如下：</p>
 
-<pre><code>- (void)animateTransition:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext;
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">animateTransition:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>其中  transitionContext可以理解为动画切换的上下文，它是一个实现了 <code>UIViewControllerContextTransitioning</code>协议的NSObject，它提供了VC切换的一切必需内容，如从哪个VC到哪个VC，动画切换的容器等，这个NSObject里的几个比较重要的方法如下：</p>
 
