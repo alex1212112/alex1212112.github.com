@@ -133,23 +133,27 @@
 
 <ol>
 <li><p>  自定义一个转场动画效果。</p></li>
-<li><p>  实现UINavigationControllerDelegate的代理方法，这里就一个,</p>
-
-<p>  &#8220;`</p>
-
-<ul>
-<li>(id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController <em>)navigationController
-                         animationControllerForOperation:(UINavigationControllerOperation)operation
-                                      fromViewController:(UIViewController </em>)fromVC
-                                        toViewController:(UIViewController *)toVC   <br/>
-&#8220;`</li>
-</ul>
-</li>
-<li><p> 在初始化时候设置NavigationController的delgate如下:</p></li>
+<li><p>  实现UINavigationControllerDelegate的代理方法，这里就一个,</p></li>
 </ol>
 </li>
 </ul>
 
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'>     <span class="o">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nl">navigationController:</span><span class="p">(</span><span class="n">UINavigationController</span> <span class="o">*</span><span class="p">)</span><span class="n">navigationController</span>
+</span><span class='line'>                               <span class="nl">animationControllerForOperation:</span><span class="p">(</span><span class="n">UINavigationControllerOperation</span><span class="p">)</span><span class="n">operation</span>
+</span><span class='line'>                                            <span class="nl">fromViewController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="n">fromVC</span>
+</span><span class='line'>                                              <span class="nl">toViewController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="n">toVC</span>    
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<pre><code>3. 在初始化时候设置NavigationController的delgate如下:
+</code></pre>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
