@@ -116,13 +116,22 @@
 </code></pre>
 
 <p>  这两个方法都返回刚才第一步自定义的转场动画。</p></li>
-<li><p> 在present的时候设置presentedViewController 的 transitioningDelegate如下：
-<code>
-  UIViewController *presentedVC = [[UIViewController alloc]           init];
-      presentedVC.transitioningDelegate = self;
-      [self presentViewController:presentedVC animated:YES completion:nil];  </code></p></li>
+<li><p> 在present的时候设置presentedViewController 的 transitioningDelegate如下：</p></li>
 </ol>
 </li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="n">UIViewController</span> <span class="o">*</span><span class="n">presentedVC</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIViewController</span> <span class="n">alloc</span><span class="p">]</span>           <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>      <span class="n">presentedVC</span><span class="p">.</span><span class="n">transitioningDelegate</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">[</span><span class="n">self</span> <span class="nl">presentViewController:</span><span class="n">presentedVC</span> <span class="nl">animated:</span><span class="n">YES</span> <span class="nl">completion:</span><span class="nb">nil</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
 <li><p>关于navigationController的push、pop的动画流程如下：</p>
 
 <ol>
