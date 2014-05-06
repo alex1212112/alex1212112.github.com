@@ -134,9 +134,8 @@
 <p>  这个方法也返回第一步里自定义的转场动画。为什么viewController有present 和disMiss两个方法， 为什么这里没有push 和pop 两个方法呢，那是因为在这个代理方法里可以通过(UINavigationControllerOperation)operation 参数来确认当前操作究竟是push 还是pop， 当<code>operation == UINavigationControllerOperationPush</code>时候 就是push操作，当<code>operation == UINavigationControllerOperationPop</code> 时候就是pop操作。</p></li>
 <li><p> 在初始化时候设置NavigationController的delgate如下:</p>
 
-<p>  <code>ruby
-      self.navigationController.delegate = self;
- </code></p></li>
+<pre><code>  self.navigationController.delegate = self;
+</code></pre></li>
 </ol>
 </li>
 </ul>
