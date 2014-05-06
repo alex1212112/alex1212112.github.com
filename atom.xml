@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/atom.xml" rel="self"/>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/"/>
-  <updated>2014-05-06T14:56:15+08:00</updated>
+  <updated>2014-05-06T15:40:34+08:00</updated>
   <id>https://github.com/alex1212112/alex1212112.github.com.git/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -54,7 +54,7 @@
 <li><p>  自定义一个转场动画效果。</p></li>
 <li><p>  实现UINavigationControllerDelegate的代理方法，这里就一个</p>
 
-<p>  &#8220;`objective-c</p>
+<p>  &#8220;`</p>
 
 <ul>
 <li>(id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController <em>)navigationController
