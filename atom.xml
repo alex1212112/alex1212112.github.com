@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/atom.xml" rel="self"/>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/"/>
-  <updated>2014-05-06T17:37:35+08:00</updated>
+  <updated>2014-05-06T18:21:41+08:00</updated>
   <id>https://github.com/alex1212112/alex1212112.github.com.git/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -70,12 +70,14 @@
 
 <h3>自定义动画和相关API介绍</h3>
 
-<p>上面流程里第一步转场动画效果该如何实现呢？</p>
+<p>上面流程里第一步转场的动画效果该如何实现呢？</p>
 
 <p>我们要自定义一个继承于NSObject的类，此类要实现UIViewControllerAnimatedTransitioning协议，并实现其代理方法，代理方法主要有两个，其中一个返回整个动画花费的时间，如下：</p>
 
-<pre><code>- (NSTimeInterval)transitionDuration:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">-</span> <span class="p">(</span><span class="no">NSTimeInterval</span><span class="p">)</span><span class="ss">transitionDuration</span><span class="p">:(</span><span class="nb">id</span> <span class="o">&lt;</span><span class="no">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="n">transitionContext</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>假如我们动画时间为1秒，我们就可以在这样实现此方法</p>
 
