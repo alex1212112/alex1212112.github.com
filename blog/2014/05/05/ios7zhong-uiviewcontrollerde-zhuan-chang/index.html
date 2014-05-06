@@ -110,10 +110,8 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p></p>
-
-<pre><code>disMiss时候要实现的方法：
-</code></pre>
+<p>
+disMiss时候要实现的方法：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">animationControllerForDismissedController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">dismissed</span><span class="p">;</span>
@@ -157,7 +155,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p></p>
+<p>这个方法也返回第一步里自定义的转场动画。为什么viewController有present 和disMiss两个方法，这里却没有push 和pop 两个方法呢，那是因为在这个代理方法里可以通过(UINavigationControllerOperation)operation 参数来确认当前操作究竟是push 还是pop， 当<code>operation == UINavigationControllerOperationPush</code>时候 就是push操作，当<code>operation == UINavigationControllerOperationPop</code> 时候就是pop操作。</p>
 
 <ul>
 <li>在初始化时候设置NavigationController的delgate如下:</li>
