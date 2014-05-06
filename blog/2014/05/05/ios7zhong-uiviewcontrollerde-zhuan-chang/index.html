@@ -95,25 +95,38 @@
 
 <h2>实现流程</h2>
 
-<p>首先介绍presentViewController转场动画的实现，主要流程如下：</p>
+<h4>首先介绍presentViewController转场动画的实现，主要流程如下：</h4>
 
-<ol>
+<ul>
 <li><p>自定义一个转场动画效果。</p></li>
-<li><p>在 presentingViewConttroller 里实现 UIViewControllerTransitioningDelegate 代理 方法，主要有两个，分别是present时候的动画和disMiss时候的动画，</p>
+<li><p>在 presentingViewConttroller 里实现 UIViewControllerTransitioningDelegate 代理  方法，主要有两个，分别是present时候的动画和disMiss时候的动画，</p>
 
-<p> present时候要实现的方法：</p>
+<p>  present时候要实现的方法：</p></li>
+</ul>
 
-<pre><code>     - (id &lt;UIViewControllerAnimatedTransitioning&gt;)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source;
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">animationControllerForPresentedController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">presented</span> <span class="nf">presentingController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">presenting</span> <span class="nf">sourceController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">source</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<pre><code>disMiss时候要实现的方法：
 </code></pre>
 
-<p> disMiss时候要实现的方法：</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">animationControllerForDismissedController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">dismissed</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<pre><code>     - (id &lt;UIViewControllerAnimatedTransitioning&gt;)animationControllerForDismissedController:(UIViewController *)dismissed;
-</code></pre>
 
-<p> 这两个方法都返回刚才第一步自定义的转场动画。</p></li>
-<li><p>在present的时候设置presentedViewController 的 transitioningDelegate如下：</p></li>
-</ol>
+<p></p>
+
+<p>这两个方法都返回刚才第一步自定义的转场动画。</p>
+
+<ul>
+<li>在present的时候设置presentedViewController 的 transitioningDelegate如下：</li>
+</ul>
 
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -125,82 +138,92 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p> 关于navigationController的push、pop的动画流程如下：</p>
-
-<ol>
-<li><p>自定义一个转场动画效果。</p></li>
-<li><p>实现UINavigationControllerDelegate的代理方法，这里就一个,</p>
-
-<p>&#8220;`</p>
+<h4>关于navigationController的push、pop的动画流程如下：</h4>
 
 <ul>
-<li>(id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController <em>)navigationController
-                             animationControllerForOperation:(UINavigationControllerOperation)operation
-                                          fromViewController:(UIViewController </em>)fromVC
-                                            toViewController:(UIViewController *)toVC</li>
+<li><p>自定义一个转场动画效果。</p></li>
+<li><p>实现UINavigationControllerDelegate的代理方法，这里就一个,</p></li>
 </ul>
-</li>
-</ol>
 
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="mf">3.</span> <span class="err">在初始化时候设置</span><span class="n">NavigationController</span><span class="err">的</span><span class="n">delgate</span><span class="err">如下</span><span class="o">:</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> objc</p>
-
-<pre><code>    self.navigationController.delegate = self;
-</code></pre>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> 
-</span><span class='line'><span class="cp">### 自定义动画和相关API介绍</span>
-</span><span class='line'>
-</span><span class='line'><span class="err">上面流程里第一步转场的动画效果该如何实现呢？</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="err">我们要自定义一个继承于</span><span class="n">NSObject</span><span class="err">的类，此类要实现</span><span class="n">UIViewControllerAnimatedTransitioning</span><span class="err">协议，并实现其代理方法，代理方法主要有两个，其中一个返回整个动画花费的时间，如下：</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">navigationController:</span><span class="p">(</span><span class="n">UINavigationController</span> <span class="o">*</span><span class="p">)</span><span class="nv">navigationController</span>
+</span><span class='line'>                               <span class="nf">animationControllerForOperation:</span><span class="p">(</span><span class="n">UINavigationControllerOperation</span><span class="p">)</span><span class="nv">operation</span>
+</span><span class='line'>                                            <span class="nf">fromViewController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">fromVC</span>
+</span><span class='line'>                                              <span class="nf">toViewController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">toVC</span>   
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p> objc</p>
+<p></p>
 
-<pre><code>- (NSTimeInterval)transitionDuration:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext
-</code></pre>
+<ul>
+<li>在初始化时候设置NavigationController的delgate如下:</li>
+</ul>
+
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="err">假如我们动画时间为</span><span class="mi">1</span><span class="err">秒，我们就可以在这样实现此方法</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p> objc</p>
+<p></p>
 
-<pre><code>- (NSTimeInterval)transitionDuration:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext
-    {
-        return 1.0f;
-    }
-</code></pre>
+<h3>自定义动画和相关API介绍</h3>
+
+<p>上面流程里第一步转场的动画效果该如何实现呢？</p>
+
+<p>我们要自定义一个继承于NSObject的类，此类要实现UIViewControllerAnimatedTransitioning协议，并实现其代理方法，代理方法主要有两个，其中一个返回整个动画花费的时间，如下：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="err">另一个就是具体动画实现的方法，如下：</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSTimeInterval</span><span class="p">)</span><span class="nf">transitionDuration:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p> objc</p>
+<p>假如我们动画时间为1秒，我们就可以在这样实现此方法</p>
 
-<pre><code>- (void)animateTransition:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext;
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSTimeInterval</span><span class="p">)</span><span class="nf">transitionDuration:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="mf">1.0f</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>另一个就是具体动画实现的方法，如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">animateTransition:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中  transitionContext可以理解为动画切换的上下文，它是一个实现了 <code>UIViewControllerContextTransitioning</code>协议的NSObject，它提供了VC切换的一切必需内容，如从哪个VC到哪个VC，动画切换的容器等，这个NSObject里的几个比较重要的方法如下：</p>
+
+<ul>
+<li><p> <code>-(UIView *)containerView;</code></p>
+
+<p>VC切换所发生的view容器，开发者应该将切出的view移除，将切入的view加入到该view容器中。</p></li>
+<li><p> <code>-(UIViewController )viewControllerForKey:(NSString )key;</code></p>
+
+<p>提供一个key，返回对应的VC。现在的SDK中key的选择只有UITransitionContextFromViewControllerKey和UITransitionContextToViewControllerKey两种，分别表示将要切出和切入的VC。</p></li>
+<li><p> <code>-(CGRect)initialFrameForViewController:(UIViewController *)vc;</code></p>
+
+<p>某个VC的初始位置，可以用来做动画的计算。</p></li>
+<li><p> <code>-(CGRect)finalFrameForViewController:(UIViewController *)vc;</code></p>
+
+<p>与上面的方法对应，得到切换结束时某个VC应在的frame。</p></li>
+<li><p> <code>-(void)completeTransition:(BOOL)didComplete;</code></p>
+
+<p>向这个context报告切换已经完成。</p></li>
+</ul>
+
+
+<p>下面是一个该方法的简单实现</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -226,87 +249,78 @@
 <span class='line-number'>22</span>
 <span class='line-number'>23</span>
 <span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="err">其中</span>  <span class="n">transitionContext</span><span class="err">可以理解为动画切换的上下文，它是一个实现了</span> <span class="err">`</span><span class="n">UIViewControllerContextTransitioning</span><span class="err">`协议的</span><span class="n">NSObject</span><span class="err">，它提供了</span><span class="n">VC</span><span class="err">切换的一切必需内容，如从哪个</span><span class="n">VC</span><span class="err">到哪个</span><span class="n">VC</span><span class="err">，动画切换的容器等，这个</span><span class="n">NSObject</span><span class="err">里的几个比较重要的方法如下：</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">animateTransition:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="c1">// 1. Get controllers from transition context</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="n">UIViewController</span> <span class="o">*</span><span class="n">toVC</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">viewControllerForKey:</span><span class="n">UITransitionContextToViewControllerKey</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="c1">// 2. Set init frame for toVC</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="n">CGRect</span> <span class="n">screenBounds</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIScreen</span> <span class="n">mainScreen</span><span class="p">]</span> <span class="n">bounds</span><span class="p">];</span>
+</span><span class='line'>   <span class="n">CGRect</span> <span class="n">finalFrame</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">finalFrameForViewController:</span><span class="n">toVC</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="n">UIView</span> <span class="o">*</span><span class="n">toViewSnapshot</span> <span class="o">=</span> <span class="p">[</span><span class="n">toVC</span><span class="p">.</span><span class="n">view</span> <span class="nl">resizableSnapshotViewFromRect:</span><span class="n">toVC</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">frame</span> <span class="nl">afterScreenUpdates:</span><span class="n">YES</span> <span class="nl">withCapInsets:</span><span class="n">UIEdgeInsetsZero</span><span class="p">];</span>
 </span><span class='line'>  
-</span><span class='line'>   <span class="o">*</span> <span class="err">`</span><span class="o">-</span><span class="p">(</span><span class="n">UIView</span> <span class="o">*</span><span class="p">)</span><span class="n">containerView</span><span class="p">;</span> <span class="err">`</span>
+</span><span class='line'>  <span class="n">toViewSnapshot</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectOffset</span><span class="p">(</span><span class="n">finalFrame</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">screenBounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="n">VC</span><span class="err">切换所发生的</span><span class="n">view</span><span class="err">容器，开发者应该将切出的</span><span class="n">view</span><span class="err">移除，将切入的</span><span class="n">view</span><span class="err">加入到该</span><span class="n">view</span><span class="err">容器中。</span>
-</span><span class='line'>  
-</span><span class='line'>   <span class="o">*</span> <span class="err">`</span><span class="o">-</span><span class="p">(</span><span class="n">UIViewController</span> <span class="p">)</span><span class="nl">viewControllerForKey:</span><span class="p">(</span><span class="n">NSString</span> <span class="p">)</span><span class="n">key</span><span class="p">;</span> <span class="err">`</span>
+</span><span class='line'>  <span class="n">UIView</span> <span class="o">*</span><span class="n">toView</span> <span class="o">=</span> <span class="n">toVC</span><span class="p">.</span><span class="n">view</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="err">提供一个</span><span class="n">key</span><span class="err">，返回对应的</span><span class="n">VC</span><span class="err">。现在的</span><span class="n">SDK</span><span class="err">中</span><span class="n">key</span><span class="err">的选择只有</span><span class="n">UITransitionContextFromViewControllerKey</span><span class="err">和</span><span class="n">UITransitionContextToViewControllerKey</span><span class="err">两种，分别表示将要切出和切入的</span><span class="n">VC</span><span class="err">。</span>
+</span><span class='line'>  <span class="c1">// 3. Add toVC&#39;s view to containerView</span>
+</span><span class='line'>   <span class="n">UIView</span> <span class="o">*</span><span class="n">containerView</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="n">containerView</span><span class="p">];</span>
+</span><span class='line'>   <span class="p">[</span><span class="n">containerView</span> <span class="nl">addSubview:</span><span class="n">toViewSnapshot</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>   <span class="o">*</span> <span class="err">`</span><span class="o">-</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nl">initialFrameForViewController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="n">vc</span><span class="p">;</span> <span class="err">`</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="err">某个</span><span class="n">VC</span><span class="err">的初始位置，可以用来做动画的计算。</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="o">*</span> <span class="err">`</span><span class="o">-</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nl">finalFrameForViewController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="n">vc</span><span class="p">;</span><span class="err">`</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="err">与上面的方法对应，得到切换结束时某个</span><span class="n">VC</span><span class="err">应在的</span><span class="n">frame</span><span class="err">。</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="o">*</span> <span class="err">`</span><span class="o">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">completeTransition:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="n">didComplete</span><span class="p">;</span> <span class="err">`</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="err">向这个</span><span class="n">context</span><span class="err">报告切换已经完成。</span>
-</span><span class='line'>  
-</span><span class='line'>  
-</span><span class='line'><span class="err">下面是一个该方法的简单实现</span>
+</span><span class='line'>   <span class="c1">// 4. Do animate now</span>
+</span><span class='line'><span class="n">NSTimeInterval</span> <span class="n">duration</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nl">transitionDuration:</span><span class="n">transitionContext</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">UIView</span> <span class="nl">animateWithDuration:</span><span class="n">duration</span>
+</span><span class='line'>                      <span class="nl">delay:</span><span class="mf">0.0</span>
+</span><span class='line'>     <span class="nl">usingSpringWithDamping:</span><span class="mf">0.4</span>
+</span><span class='line'>      <span class="nl">initialSpringVelocity:</span><span class="mf">10.0</span>
+</span><span class='line'>                    <span class="nl">options:</span><span class="n">UIViewAnimationOptionCurveEaseInOut</span>
+</span><span class='line'>                 <span class="nl">animations:</span><span class="o">^</span><span class="p">{</span>
+</span><span class='line'>                     <span class="n">toViewSnapshot</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">finalFrame</span><span class="p">;</span>
+</span><span class='line'>                 <span class="p">}</span> <span class="nl">completion:</span><span class="o">^</span><span class="p">(</span><span class="kt">BOOL</span> <span class="n">finished</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="k">if</span> <span class="p">([</span><span class="n">transitionContext</span> <span class="n">transitionWasCancelled</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>                     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>                      <span class="c1">//5. add the real toView and remove the snapshot</span>
+</span><span class='line'>                         <span class="p">[</span><span class="n">containerView</span> <span class="nl">addSubview:</span><span class="n">toView</span><span class="p">];</span>
+</span><span class='line'>                         <span class="k">for</span> <span class="p">(</span><span class="n">UIView</span> <span class="o">*</span><span class="n">view</span> <span class="k">in</span> <span class="n">containerView</span><span class="p">.</span><span class="n">subviews</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                           <span class="k">if</span> <span class="p">(</span><span class="n">view</span> <span class="o">!=</span> <span class="n">toView</span><span class="p">)</span>
+</span><span class='line'>                               <span class="p">{</span>
+</span><span class='line'>                                   <span class="p">[</span><span class="n">view</span> <span class="n">removeFromSuperview</span><span class="p">];</span>
+</span><span class='line'>                               <span class="p">}</span>       
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>                     <span class="p">}</span>
+</span><span class='line'>                     <span class="c1">//6. transition is finished</span>
+</span><span class='line'>                     <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">completeTransition:</span><span class="o">!</span><span class="p">[</span><span class="n">transitionContext</span> <span class="n">transitionWasCancelled</span><span class="p">]];</span>
+</span><span class='line'>                 <span class="p">}];</span>
+</span><span class='line'><span class="p">}</span>  
 </span></code></pre></td></tr></table></div></figure>
 
-
-<p></p>
-
-<pre><code>- (void)animateTransition:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext
-{
-</code></pre>
-
-<p>   // 1. Get controllers from transition context</p>
-
-<p>   UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];</p>
-
-<p>   // 2. Set init frame for toVC</p>
-
-<p>   CGRect screenBounds = [[UIScreen mainScreen] bounds];
-   CGRect finalFrame = [transitionContext finalFrameForViewController:toVC];</p>
-
-<p>   UIView *toViewSnapshot = [toVC.view resizableSnapshotViewFromRect:toVC.view.frame afterScreenUpdates:YES withCapInsets:UIEdgeInsetsZero];</p>
-
-<p>  toViewSnapshot.frame = CGRectOffset(finalFrame, 0, screenBounds.size.height);</p>
-
-<p>  UIView *toView = toVC.view;</p>
-
-<p>  // 3. Add toVC&rsquo;s view to containerView
-   UIView *containerView = [transitionContext containerView];
-   [containerView addSubview:toViewSnapshot];</p>
-
-<p>   // 4. Do animate now</p>
-
-<pre><code>NSTimeInterval duration = [self transitionDuration:transitionContext];
-[UIView animateWithDuration:duration
-                      delay:0.0
-     usingSpringWithDamping:0.4
-      initialSpringVelocity:10.0
-                    options:UIViewAnimationOptionCurveEaseInOut
-                 animations:^{
-                     toViewSnapshot.frame = finalFrame;
-                 } completion:^(BOOL finished) {
-                if ([transitionContext transitionWasCancelled]) {
-                     } else {                         
-                        //5. add the real toView and remove the snapshot
-                         [containerView addSubview:toView];
-                         for (UIView *view in containerView.subviews) {
-                         if (view != toView)
-                             {
-                                 [view removeFromSuperview];
-                             }      
-}
-                     }
-                     //6. transition is finished
-                     [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
-                 }];
-}   
-</code></pre>
-
-<p>&#8220;`</p>
 
 <p>解释：</p>
 
