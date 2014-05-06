@@ -104,58 +104,40 @@
 
 <p>  present时候要实现的方法：</p>
 
-<p>  &#8220;` objc</p>
-
-<ul>
-<li>(id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController <em>)presented presentingController:(UIViewController </em>)presenting sourceController:(UIViewController *)source;
-&#8220;`</li>
-</ul>
-
+<pre><code>  - (id &lt;UIViewControllerAnimatedTransitioning&gt;)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source;
+</code></pre>
 
 <p>  disMiss时候要实现的方法：</p>
 
-<p>  &#8220;` objc</p>
-
-<ul>
-<li>(id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed;
-&#8220;`</li>
-</ul>
-
+<pre><code>  - (id &lt;UIViewControllerAnimatedTransitioning&gt;)animationControllerForDismissedController:(UIViewController *)dismissed;
+</code></pre>
 
 <p>  这两个方法都返回刚才第一步自定义的转场动画。</p></li>
-<li><p> 在present的时候设置presentedViewController 的 transitioningDelegate如下：</p></li>
+<li><p> 在present的时候设置presentedViewController 的 transitioningDelegate如下：</p>
+
+<pre><code>  UIViewController *presentedVC = [[UIViewController alloc]           init];presentedVC.transitioningDelegate = self;[self            presentViewController:presentedVC animated:YES completion:nil]; 
+</code></pre></li>
 </ol>
-
-
-<p>  <code>objc
-     UIViewController *presentedVC = [[UIViewController alloc] init];presentedVC.transitioningDelegate = self;[self presentViewController:presentedVC animated:YES completion:nil];
- </code></p></li>
+</li>
 <li><p>关于navigationController的push、pop的动画流程如下：</p>
 
 <ol>
 <li><p>  自定义一个转场动画效果。</p></li>
-<li><p>  实现UINavigationControllerDelegate的代理方法，这里就一个</p></li>
-</ol>
+<li><p>  实现UINavigationControllerDelegate的代理方法，这里就一个</p>
+
+<ul>
+<li>(id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController <em>)navigationController
+                         animationControllerForOperation:(UINavigationControllerOperation)operation
+                                      fromViewController:(UIViewController </em>)fromVC
+                                        toViewController:(UIViewController *)toVC ;</li>
+</ul>
 
 
-<p>  &#8220;` objc</p>
-
-<pre><code>  - (id &lt;UIViewControllerAnimatedTransitioning&gt;)navigationController:(UINavigationController *)navigationController
-                             animationControllerForOperation:(UINavigationControllerOperation)operation
-                                          fromViewController:(UIViewController *)fromVC
-                                            toViewController:(UIViewController *)toVC ;                                                                                                   
-</code></pre>
-
-<p>   &#8220;`</p>
-
-<pre><code>  这个方法也返回第一步里自定义的转场动画。为什么viewController有present 和disMiss两个方法， 为什么这里没有push 和pop 两个方法呢，那是因为在这个代理方法里可以通过(UINavigationControllerOperation)operation 参数来确认当前操作究竟是push 还是pop， 当`operation == UINavigationControllerOperationPush`时候 就是push操作，当`operation == UINavigationControllerOperationPop` 时候就是pop操作。
-</code></pre>
-
-<ol>
+<p>  这个方法也返回第一步里自定义的转场动画。为什么viewController有present 和disMiss两个方法， 为什么这里没有push 和pop 两个方法呢，那是因为在这个代理方法里可以通过(UINavigationControllerOperation)operation 参数来确认当前操作究竟是push 还是pop， 当<code>operation == UINavigationControllerOperationPush</code>时候 就是push操作，当<code>operation == UINavigationControllerOperationPop</code> 时候就是pop操作。</p></li>
 <li><p> 在初始化时候设置NavigationController的delgate如下:</p>
 
 <p>  <code>objc
-  self.navigationController.delegate = self;
+      self.navigationController.delegate = self;
  </code></p></li>
 </ol>
 </li>
@@ -216,7 +198,7 @@
 
 <p>下面是一个该方法的简单实现</p>
 
-<pre><code>- (void)animateTransition:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext
+<pre><code>-(void)animateTransition:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext
 {
 
 // 1. Get controllers from transition context
@@ -228,7 +210,7 @@ UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionCon
 CGRect screenBounds = [[UIScreen mainScreen] bounds];
 CGRect finalFrame = [transitionContext finalFrameForViewController:toVC];
 
-UIView *toViewSnapshot = [toVC.view resizableSnapshotViewFromRect:toVC.view.frame afterScreenUpdates:YES withCapInsets:UIEdgeInsetsZero];
+ UIView *toViewSnapshot = [toVC.view resizableSnapshotViewFromRect:toVC.view.frame afterScreenUpdates:YES withCapInsets:UIEdgeInsetsZero];
 
 toViewSnapshot.frame = CGRectOffset(finalFrame, 0, screenBounds.size.height);
 
@@ -265,8 +247,7 @@ NSTimeInterval duration = [self transitionDuration:transitionContext];
                      [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
                  }];
 
-
-}
+}   
 </code></pre>
 
 <p>解释：</p>
