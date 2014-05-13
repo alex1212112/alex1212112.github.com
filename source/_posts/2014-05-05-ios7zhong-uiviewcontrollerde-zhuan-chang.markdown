@@ -41,7 +41,7 @@ presentedVC.transitioningDelegate = self;
 [self presentViewController:presentedVC animated:YES completion:nil];
 ```
 
-#### 关于navigationController的push、pop的动画流程如下：
+#### 关于navigationController的push、pop的动画流程如下所示：
 
 * 自定义一个转场动画效果。
 
