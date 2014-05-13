@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/atom.xml" rel="self"/>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/"/>
-  <updated>2014-05-13T21:20:25+08:00</updated>
+  <updated>2014-05-13T21:32:58+08:00</updated>
   <id>https://github.com/alex1212112/alex1212112.github.com.git/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -64,7 +64,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h4>关于navigationController的push、pop的动画流程如下：</h4>
+<h4>关于navigationController的push、pop的动画流程如下所示：</h4>
 
 <ul>
 <li><p>自定义一个转场动画效果。</p></li>
