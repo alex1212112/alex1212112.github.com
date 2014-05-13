@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: https://github.com/alex1212112/alex1212112.github.com.git/sitemap.xml 
