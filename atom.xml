@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/atom.xml" rel="self"/>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/"/>
-  <updated>2014-06-13T14:19:28+08:00</updated>
+  <updated>2014-06-30T19:10:10+08:00</updated>
   <id>https://github.com/alex1212112/alex1212112.github.com.git/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -12,6 +12,191 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[KVC简介]]></title>
+    <link href="https://github.com/alex1212112/alex1212112.github.com.git/blog/2014/06/30/kvcjian-jie/"/>
+    <updated>2014-06-30T18:50:23+08:00</updated>
+    <id>https://github.com/alex1212112/alex1212112.github.com.git/blog/2014/06/30/kvcjian-jie</id>
+    <content type="html"><![CDATA[<p><img src="https://github.com/alex1212112/alex1212112.github.com.git/images/2d7462592d67a98dbffc700f70ae01d4423b1c1256049.png" alt="" /></p>
+
+<h3>目录</h3>
+
+<p>什么是KVC？</p>
+
+<p>为什么要用KVC？</p>
+
+<p>KVC用法介绍.</p>
+
+<h3>什么是KVC？</h3>
+
+<p>KVC是cocoa的一部分，可以使我们在访问对象属性的时候不需要再调用 setter 和 getter存取器，比如我们可以用 [object valueForKey:property]来访问object对象中的property属性，也能用 [object setValue:value forKey:property]来给object对象中的property属性赋值。为了达到这种目的，对象需要用特定的方式来命名方法，这种命名约定就成为KVC.</p>
+
+<h3>为什么要用KVC</h3>
+
+<p>使用KVC能让我们在运行时而非编译时决定访问哪个属性，从而得到更灵活和更易于重用的对象，同时也能帮助我们减少代码量。</p>
+
+<h3>KVC用法介绍</h3>
+
+<p>我们定义一个对象如下</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="nc">People</span> : <span class="nc">NSObject</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">Car</span> <span class="o">*</span><span class="n">car</span><span class="p">;</span>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>访问对象属性</h4>
+
+<p>我们在获取people对象的name属性的值的时候，就可以通过KVC来获取：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="n">NSString</span> <span class="o">*</span><span class="n">name</span> <span class="o">=</span> <span class="p">[</span><span class="n">people</span> <span class="nl">valueForKey:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>此代码基本等同于下面代码</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">name</span> <span class="o">=</span> <span class="n">people</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>用KVC赋值</h4>
+
+<p>KVC可以用setValue:forKey:修改可写属性：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">people</span> <span class="nl">setValue:</span><span class="s">@&quot;Alex&quot;</span> <span class="nl">forKey:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>此代码基本等同与下面代码</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">people</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">@&quot;Alex&quot;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>keyPath</h4>
+
+<p>KVC 方法有 key 和keyPath 两个版本，比如 valueForkey: 和 valueForKeyPath:版本，这两者的区别在于，后者可以包含嵌套关系，用点分开，valueForKeyPath方法可以遍历所有的关系，如下所示：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">carName</span> <span class="o">=</span> <span class="p">[</span><span class="n">people</span> <span class="nl">valueForKayPath:</span><span class="s">@&quot;car.name&quot;</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>此方法用来获取people对象的车的名称，可以基本等价于下面代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">carName</span> <span class="o">=</span> <span class="p">[[</span><span class="n">people</span> <span class="n">car</span><span class="p">]</span> <span class="n">name</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>而 key方法不会遍历关系，假如你使用</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">carName</span> <span class="o">=</span> <span class="p">[</span><span class="n">people</span> <span class="nl">valueForKay:</span><span class="s">@&quot;car.name&quot;</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>程序会去获取 people对象 的 car.name 属性，很明显，people 没有这样的属性，所以系统会抛出异常。</p>
+
+<h4>KVC和非对象</h4>
+
+<p>KVC 的 valueForKey:方法总是返回一个id对象，但不是每一个方法都会返回对象，那么对于标量，该方法返回值会自动用NSValue 或 NSNumber 来进行封装。因此我们在通过 KVC 赋值的对象为标量的时候，也应该先用 NSValue 或 NSNumber 进行封装，然后再使用 setValue:forKey:方法。</p>
+
+<h4>高阶消息传递</h4>
+
+<p>valueForKey:有很多有用的特例，比如对于 NSArray 或 NSSet 等容器类，使用 valueForKey:方法，实际上该方法会被传递给容器中的每一个对象，而不是对容器本身进行操作，它会对容器中的每个对象来查找这个键值，然后将查询结果打包到另一个容器中并返回给你。这样，我们就很容易用一个容器对象创建另一个容器对象。</p>
+
+<p>比如：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">People</span> <span class="o">*</span><span class="n">developer</span> <span class="o">=</span> <span class="p">[[</span><span class="n">People</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">developer</span> <span class="nl">setValue:</span><span class="s">@&quot;Alex&quot;</span> <span class="nl">forKey:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">People</span> <span class="o">*</span><span class="n">teacher</span> <span class="o">=</span> <span class="p">[[</span><span class="n">People</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">teacher</span> <span class="nl">setValue:</span><span class="s">@&quot;Lucy&quot;</span> <span class="nl">forKey:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
+</span><span class='line'>  
+</span><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="err">@</span><span class="p">[</span><span class="n">developer</span><span class="p">,</span><span class="n">teacher</span><span class="p">];</span>
+</span><span class='line'>  
+</span><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">nameArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKey:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
+</span><span class='line'>  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>name 被传递给array中的每一个元素，并返回一个新的数组，新的数组中的元素是一个姓名的字符串。
+对于 keyPath 使用方法也类似：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">nameLengthArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath:</span><span class="s">@&quot;name.length&quot;</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>新的数组中的元素是用 NSNumber 封装的姓名字符串的长度。</p>
+
+<h4>通过KVC创建Model</h4>
+
+<p>我们经常会遇到需要将一个字典转化成一个对象情况，这时用 KVC 能很好的解决问题， KVC 中有一个setValuesForKeysWithDictionary: 方法，此方法能很好的把字典转换成我们需要的对象。比如我们可以给刚才的 People 类增加一个初始化方法:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithDictionary:</span><span class="p">(</span><span class="n">NSMutableDictionary</span><span class="o">*</span><span class="p">)</span> <span class="n">jsonObject</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>实现如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithDictionary:</span><span class="p">(</span><span class="n">NSMutableDictionary</span><span class="o">*</span><span class="p">)</span> <span class="n">jsonObject</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span><span class="p">((</span><span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">init</span><span class="p">]))</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">self</span> <span class="nl">setValuesForKeysWithDictionary:</span><span class="n">jsonObject</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>一些特殊的用法</h4>
+
+<p>KVC还提供一些特殊的方法，例如获取一组值的平均值或返回这组值的最小值和最大值。例如：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="err">@</span><span class="p">[</span><span class="n">developer</span><span class="p">,</span><span class="n">teacher</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSNumber</span> <span class="o">*</span><span class="n">totalLength</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath:</span><span class="s">@&quot;name.@sum.length&quot;</span><span class="p">];</span>    
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>@sum是一个操作符，对指定的属性（name.length）求和。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[UITableView 相关]]></title>
@@ -80,7 +265,7 @@
     <link href="https://github.com/alex1212112/alex1212112.github.com.git/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi/"/>
     <updated>2014-06-11T11:17:46+08:00</updated>
     <id>https://github.com/alex1212112/alex1212112.github.com.git/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi</id>
-    <content type="html"><![CDATA[<p><img src="https://github.com/alex1212112/alex1212112.github.com.git/images/kehuan_xingxi.png" alt="" /></p>
+    <content type="html"><![CDATA[<p><img src="https://github.com/alex1212112/alex1212112.github.com.git/images/4908ab0eae4b946b9066eafd11f8030580c2c4f79dfd.png" alt="" /></p>
 
 <h4>简介</h4>
 
