@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/atom.xml" rel="self"/>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/"/>
-  <updated>2014-07-01T21:22:02+08:00</updated>
+  <updated>2014-07-01T21:24:45+08:00</updated>
   <id>https://github.com/alex1212112/alex1212112.github.com.git/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -306,7 +306,7 @@
 
 <h3>为什么要用KVC</h3>
 
-<p>使用KVC能让我们在运行时而非编译时决定访问哪个属性，从而得到更灵活和更易于重用的对象，同时也能帮助我们减少代码量。</p>
+<p>使用KVC能让我们在运行时而非编译时决定访问哪个属性，从而得到更灵活和更易于重用的对象，同时也能帮助我们减少代码量,通过KVC,还能实现cocoa中更为强大的KVO功能。</p>
 
 <h3>KVC用法介绍</h3>
 
