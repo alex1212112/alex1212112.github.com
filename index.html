@@ -169,12 +169,12 @@ CGRect &hellip;">
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMinX</span><span class="err">（</span><span class="n">CGRect</span> <span class="n">rect</span><span class="err">）</span> <span class="c1">//获取矩形x坐标的最小值</span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMinY</span><span class="err">（</span><span class="n">CGRect</span> <span class="n">rect</span><span class="err">）</span> <span class="c1">//获取矩形y坐标的最小值 </span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMidX</span><span class="err">（</span><span class="n">CGRect</span> <span class="n">rect</span><span class="err">）</span> <span class="c1">//获取矩形x坐标的中间值 </span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMidY</span><span class="err">（</span><span class="n">CGRect</span> <span class="n">rect</span><span class="err">）</span> <span class="c1">//获取矩形y坐标的中间值 </span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMaxX</span><span class="err">（</span><span class="n">CGRect</span> <span class="n">rect</span><span class="err">）</span> <span class="c1">// 获取矩形x坐标的最大值 </span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMaxY</span><span class="err">（</span><span class="n">CGRect</span> <span class="n">rect</span><span class="err">）</span> <span class="c1">// 获取矩形y坐标的最大值 </span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMinX</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形x坐标的最小值</span>
+</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMinY</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形y坐标的最小值 </span>
+</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMidX</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span><span class="c1">//获取矩形x坐标的中间值 </span>
+</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMidY</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形y坐标的中间值 </span>
+</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMaxX</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">// 获取矩形x坐标的最大值 </span>
+</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMaxY</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span><span class="err">）</span> <span class="c1">// 获取矩形y坐标的最大值 </span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -186,8 +186,8 @@ CGRect &hellip;">
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetHeight</span><span class="err">（</span><span class="n">CGRect</span> <span class="n">rect</span><span class="err">）</span> <span class="c1">//获取矩形的高</span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetWidth</span> <span class="err">（</span><span class="n">CGRect</span> <span class="n">rect</span><span class="err">）</span>  <span class="c1">//获取矩形的宽</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetHeight</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形的高</span>
+</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetWidth</span>  <span class="p">(</span><span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span>  <span class="c1">//获取矩形的宽</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -275,7 +275,7 @@ CGRect &hellip;">
 <p>判断两个点是否相等</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGPointEqualToPoint</span><span class="err">（</span><span class="n">CGPoint</span> <span class="n">A</span><span class="p">,</span><span class="n">CGPoint</span> <span class="n">B</span><span class="err">）</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGPointEqualToPoint</span> <span class="p">(</span><span class="n">CGPoint</span> <span class="n">A</span><span class="p">,</span><span class="n">CGPoint</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -284,14 +284,14 @@ CGRect &hellip;">
 <p> CGSizeAB是否相等</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGSizeEqualToSize</span><span class="err">（</span><span class="n">CGSize</span> <span class="n">A</span><span class="err">，</span><span class="n">CGSize</span> <span class="n">B</span><span class="err">）</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGSizeEqualToSize</span> <span class="p">(</span><span class="n">CGSize</span> <span class="n">A</span><span class="err">，</span><span class="n">CGSize</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>矩形AB的位置大小是否相等</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectEqualToRect</span><span class="err">（</span><span class="n">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="n">CGRect</span> <span class="n">B</span><span class="err">）</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectEqualToRect</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="n">CGRect</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -299,7 +299,7 @@ CGRect &hellip;">
 矩形AB是否相交</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectIntersectsRect</span><span class="err">（</span><span class="n">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="n">CGRect</span> <span class="n">B</span><span class="err">）</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectIntersectsRect</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="n">CGRect</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -308,7 +308,7 @@ CGRect &hellip;">
 <p>检测矩形A是否包含指定的点B</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectContainsPoint</span><span class="err">（</span><span class="n">CGRect</span> <span class="n">A</span><span class="p">,</span> <span class="n">CGPoint</span> <span class="n">B</span><span class="err">）</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectContainsPoint</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">A</span><span class="p">,</span> <span class="n">CGPoint</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -317,7 +317,7 @@ CGRect &hellip;">
 <p>检测矩形A是否包含矩形B</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectContainsRect</span><span class="err">（</span><span class="n">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="n">CGRect</span> <span class="n">B</span><span class="err">）</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectContainsRect</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="n">CGRect</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -326,21 +326,21 @@ CGRect &hellip;">
 <p>矩形A是否长和宽都是0，或者是个NULL</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectIsEmpty</span><span class="err">（</span><span class="n">CGRect</span> <span class="n">A</span><span class="err">）</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectIsEmpty</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">A</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>矩形A是否为NULL</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectIsNull</span><span class="err">（</span><span class="n">CGRect</span> <span class="n">A</span><span class="err">）</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectIsNull</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">A</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>矩形A是否无穷大，没有边界</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectIsInfinite</span><span class="err">（</span><span class="n">CGRect</span> <span class="n">A</span><span class="err">）</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectIsInfinite</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">A</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
