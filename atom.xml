@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/atom.xml" rel="self"/>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/"/>
-  <updated>2014-07-16T17:34:08+08:00</updated>
+  <updated>2014-07-16T17:36:46+08:00</updated>
   <id>https://github.com/alex1212112/alex1212112.github.com.git/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -40,9 +40,9 @@
 
 <h4>基本思想</h4>
 
-<p>1、获取已下载文件的大小</p>
+<p>1、获取已下载文件的大小;</p>
 
-<p>2、设置http request请求头文件，要包含range属性</p>
+<p>2、设置http request请求头文件，要包含range属性;</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -55,13 +55,13 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>3、 发起http下载请求</p>
+<p>3、 发起http下载请求;</p>
 
 <h4>具体实现</h4>
 
 <p>可以用iOS自带的NSURLConnection，也可以使用第三方如AFNetWorking实现。</p>
 
-<p><a href="http://nshipster.cn/cggeometry/">NSURl实现方法</a>；</p>
+<p><a href="http://nshipster.cn/cggeometry/">NSURLConnection实现方法</a>；</p>
 
 <p><a href="http://blog.csdn.net/zhaoxy_thu/article/details/21383515">AFNetworking实现方法</a>;</p>
 
