@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/atom.xml" rel="self"/>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/"/>
-  <updated>2014-07-16T17:50:58+08:00</updated>
+  <updated>2014-07-16T17:53:26+08:00</updated>
   <id>https://github.com/alex1212112/alex1212112.github.com.git/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -50,8 +50,8 @@
 <span class='line-number'>4</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSMutableURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableURLRequest</span> <span class="nl">requestWithURL:</span><span class="n">url</span> <span class="nl">cachePolicy:</span><span class="n">NSURLRequestUseProtocolCachePolicy</span> <span class="nl">timeoutInterval:</span><span class="mf">5.0f</span><span class="p">];</span>
 </span><span class='line'>   <span class="c1">// 设置请求头文件</span>
-</span><span class='line'> <span class="n">NSString</span> <span class="o">*</span><span class="n">rangeValue</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;bytes=%llu-&quot;</span><span class="p">,</span> <span class="n">from</span><span class="p">];</span>
-</span><span class='line'> <span class="p">[</span><span class="n">request</span> <span class="nl">addValue:</span><span class="n">rangeValue</span> <span class="nl">forHTTPHeaderField:</span><span class="s">@&quot;Range&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">rangeValue</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;bytes=%llu-&quot;</span><span class="p">,</span> <span class="n">from</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">request</span> <span class="nl">addValue:</span><span class="n">rangeValue</span> <span class="nl">forHTTPHeaderField:</span><span class="s">@&quot;Range&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
