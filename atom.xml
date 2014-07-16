@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/atom.xml" rel="self"/>
   <link href="https://github.com/alex1212112/alex1212112.github.com.git/"/>
-  <updated>2014-07-16T17:36:46+08:00</updated>
+  <updated>2014-07-16T17:44:56+08:00</updated>
   <id>https://github.com/alex1212112/alex1212112.github.com.git/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -40,7 +40,7 @@
 
 <h4>基本思想</h4>
 
-<p>1、获取已下载文件的大小;</p>
+<p>1、获取已下载文件的大小，用来确定下载的文件从什么地方开始续传(即获取range属性的范围);</p>
 
 <p>2、设置http request请求头文件，要包含range属性;</p>
 
