@@ -7,12 +7,7 @@
 	<meta name="author" content="ghren">
 
 	
-	<meta name="description" content="CGGeometry 是一个 Quartz 2D 框架中非常有用且好用的处理几何问题的基本组件，这里列出一些它的方法并简单说明如何使用。 变换 CGRectOffset CGRectOffset: 返回一个原点在源矩形基础上进行了偏移的矩形。 1
-2
-3
-4
-5
-CGRect &hellip;">
+	<meta name="description" content="关键点 实现断点续传的关键是自定义http request的头部的range域属性 Range头域可以请求实体的一个或者多个子范围。例如， 表示头500个字节：bytes=0-499 表示第二个500字节：bytes=500-999 表示最后500个字节：bytes=-500 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -79,6 +74,100 @@ CGRect &hellip;">
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan/">
+		
+			iOS中的断点续传</a>
+	</h2>
+	<div class="entry-content">
+		<p><img src="/images/201407161730.png" alt="" /></p>
+
+<h4>关键点</h4>
+
+<p>实现断点续传的关键是自定义http request的头部的range域属性</p>
+
+<p>Range头域可以请求实体的一个或者多个子范围。例如，</p>
+
+<p>表示头500个字节：bytes=0-499</p>
+
+<p>表示第二个500字节：bytes=500-999</p>
+
+<p>表示最后500个字节：bytes=-500</p>
+
+<p>表示500字节以后的范围：bytes=500-</p>
+
+<p>第一个和最后一个字节：bytes=0-0,-1</p>
+
+<p>同时指定几个范围：bytes=500-600,601-999</p>
+
+<h4>基本思想</h4>
+
+<p>1、获取已下载文件的大小</p>
+
+<p>2、设置http request请求头文件，要包含range属性</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSMutableURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableURLRequest</span> <span class="nl">requestWithURL:</span><span class="n">url</span> <span class="nl">cachePolicy:</span><span class="n">NSURLRequestUseProtocolCachePolicy</span> <span class="nl">timeoutInterval:</span><span class="mf">5.0f</span><span class="p">];</span>
+</span><span class='line'>   <span class="c1">// 设置请求头文件</span>
+</span><span class='line'> <span class="n">NSString</span> <span class="o">*</span><span class="n">rangeValue</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;bytes=%llu-&quot;</span><span class="p">,</span> <span class="n">from</span><span class="p">];</span>
+</span><span class='line'> <span class="p">[</span><span class="n">request</span> <span class="nl">addValue:</span><span class="n">rangeValue</span> <span class="nl">forHTTPHeaderField:</span><span class="s">@&quot;Range&quot;</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3、 发起http下载请求</p>
+
+<h4>具体实现</h4>
+
+<p>可以用iOS自带的NSURLConnection，也可以使用第三方如AFNetWorking实现。</p>
+
+<p><a href="http://nshipster.cn/cggeometry/">NSURl实现方法</a>；</p>
+
+<p><a href="http://blog.csdn.net/zhaoxy_thu/article/details/21383515">AFNetworking实现方法</a>;</p>
+
+<p><a href="https://github.com/thibaultCha/TCBlobDownload">TCBlobDownload</a>;</p>
+
+<h4>参考资料</h4>
+
+<p>1.<a href="http://blog.csdn.net/sirchenhua/article/details/7286312">ios 实现断点续传 一 nsurlconnection</a>;</p>
+
+<p>2.<a href="http://longminxiang.blog.163.com/blog/static/5933298520137933235997/">IOS Http断点续传浅析</a>;</p>
+
+<p>3.<a href="http://www.cnblogs.com/liufeng24/p/3555303.html">iOS开发网络编程之断点续传-NSURLConnection</a>;</p>
+
+<p>4.<a href="http://blog.csdn.net/zhaoxy_thu/article/details/21383515">AFNetworking实现程序重新启动时的断点续传</a>；</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-16T17:25:31+08:00" pubdate data-updated="true">Jul 16<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -610,7 +699,7 @@ CGRect &hellip;">
 
 <h4>解决办法:</h4>
 
-<p>假如你直接使用[tableView reloadData]，那么就看不到  tableView的动画效果了，所以不能用[tableView reloadData];代   替的方法是使用 reloadSections:withRowAnimation:方法。</p>
+<p>假如你直接使用[tableView reloadData]，那么就看不到  tableView的动画效果了，所以不能用[tableView reloadData];代替的方法是使用 reloadSections:withRowAnimation:方法。</p>
 
 <hr />
 
@@ -625,7 +714,7 @@ CGRect &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>注意：类型为UITableViewCellAccessoryDisclosureIndicator 的不能通过这种刚发更改，其颜色只能灰色。</p>
+<p>注意：类型为UITableViewCellAccessoryDisclosureIndicator 的不能通过这种方法更改，其颜色只能灰色。</p>
 
 <hr />
 
