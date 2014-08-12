@@ -1,0 +1,211 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>iOS中的字节序 - Summerrose’s Blog</title>
+	<meta name="author" content="ghren">
+
+	
+	<meta name="description" content="起因 最近在做 iOS 蓝牙开发的时候，将多字节数据从APP端发到蓝牙设备端的时候，发现字节顺序都是反的，比如发送一个 0x0500 的数据给蓝牙设备端，设备端收到以后就变成了0x0005,研究发现这就是字节序不对导致的问题。 什么是字节序 采用维基百科的解释如下： 在几乎所有的机器上， &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script async="true" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">Summerrose’s Blog</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:github.com/alex1212112/alex1212112.github.com.git">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:github.com/alex1212112/alex1212112.github.com.git">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">iOS中的字节序</h2>
+	<div class="entry-content"><p><img src="/images/b8c60f715c7d7ad3736a3efde8f56eae65d9d45810251-ck6IkC_fw658.png" alt="" /></p>
+
+<h4>起因</h4>
+
+<p>最近在做 iOS 蓝牙开发的时候，将多字节数据从APP端发到蓝牙设备端的时候，发现字节顺序都是反的，比如发送一个 0x0500 的数据给蓝牙设备端，设备端收到以后就变成了0x0005,研究发现这就是字节序不对导致的问题。</p>
+
+<h4>什么是字节序</h4>
+
+<p>采用维基百科的解释如下：</p>
+
+<blockquote><p>在几乎所有的机器上，多字节对象都被存储为连续的字节序列。例如在C语言中，一个类型为int的变量x地址为0x100，那么其对应地址表达式&amp;x的值为0x100。且x的四个字节将被存储在存储器的0x100, 0x101, 0x102, 0x103位置。</p>
+
+<p>而存储地址内的排列则有两个通用规则。一个多位的整数将按照其存储地址的最低或最高字节排列。如果最低有效字节在最高有效字节的前面，则称小端序；反之则称大端序。在网络应用中，字节序是一个必须被考虑的因素，因为不同机器类型可能采用不同标准的字节序，所以均按照网络标准转化。</p>
+
+<p>例如假设上述变量x类型为int，位于地址0x100处，它的十六进制为0x01234567，地址范围为0x100~0x103字节，其内部排列顺序依赖于机器的类型。大端法从首位开始将是：0x100: 01, 0x101: 23,..。而小端法将是：0x100: 67, 0x101: 45,..</p></blockquote>
+
+<p><img src="/images/280px-Big-Endian.svg.png" alt="" /></p>
+
+<p><img src="/images/280px-Little-Endian.svg.png" alt="" /></p>
+
+<h4>相关体系</h4>
+
+<ul>
+<li><p>x86，MOS Technology 6502，Z80，VAX，PDP-11等处理器为Little endian。</p></li>
+<li><p>Motorola 6800，Motorola 68000，PowerPC 970，System/370，SPARC（除V9外）等处理器为Big endian</p></li>
+<li><p>ARM, PowerPC (除PowerPC 970外), DEC Alpha, SPARC V9, MIPS, PA-RISC and IA64的字节序是可配置的。</p></li>
+<li><p>网络传输一般采用大端序，也被称之为网络字节序，或网络序。IP协议中定义大端序为网络字节序。伯克利socket API定义了一组转换函数，用于16和32bit整数在网络序和本机字节序之间的转换。htonl，htons用于本机序转换到网络序；ntohl，ntohs用于网络序转换到本机序。</p></li>
+</ul>
+
+
+<h4>iOS中的字节序</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">NSHostByteOrder</span><span class="p">()</span> <span class="o">==</span> <span class="n">NS_LittleEndian</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;LittleEndian&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">NSHostByteOrder</span><span class="p">()</span> <span class="o">==</span> <span class="n">NS_BigEndian</span><span class="p">){</span>
+</span><span class='line'>         <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;BigEndian&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>         <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Unknow&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>通过上述代码打印出来的log，可以知道iOS系统目前采用的是小端序。因此在进行socket网络传输之类的工作时，要记得先把字节序进行转换，然后再传输。iOS自身提供了相应的转换方法，如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">UInt16</span>  <span class="n">Byte</span> <span class="o">=</span> <span class="mh">0x1234</span><span class="p">;</span>
+</span><span class='line'><span class="n">HTONS</span><span class="p">(</span><span class="n">Byte</span><span class="p">);</span><span class="c1">//转换</span>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Byte == %x&quot;</span><span class="p">,</span><span class="n">Byte</span><span class="p">);</span><span class="c1">//打印出来发现顺序变了</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上述代码中 HTONS(x) 是对2字节进行转换，如果要对4字节进行转换，就要用 HTONL(x)进行转换了，要对更高字节，比如8字节（64位）进行转换，就要自己写转换的方法了。</p>
+
+<h4>参考资料</h4>
+
+<ol>
+<li><p><a href="http://ixhan.com/2009/10/little-about-byte-order/">关于字节序</a>;</p></li>
+<li><p><a href="http://geeklu.com/2012/01/macios-socket/">Mac&amp;iOS Socket</a>;</p></li>
+<li><p><a href="http://blog.csdn.net/ernest201210/article/details/8690686"> 网络字节序与主机字节序 高低位</a>;</p></li>
+<li><p><a href="http://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82%E5%BA%8F">字节序</a>;</p></li>
+<li><p><a href="https://developer.apple.com/library/mac/documentation/corefoundation/Conceptual/CFMemoryMgmt/Concepts/ByteOrdering.html">Byte Ordering</a>;</p></li>
+</ol>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-12T12:07:08+08:00" pubdate data-updated="true">Aug 12<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+</div>
+
+
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2014
+
+    ghren
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>
