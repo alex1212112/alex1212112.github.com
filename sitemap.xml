@@ -1,55 +1,59 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>alex1212112.github.io/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang/</loc>
+        <loc>
+            http://alex1212112.github.io/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang/
+        </loc>
         <lastmod>2014-06-09T17:02:29+08:00</lastmod>
     </url>
     <url>
-        <loc>alex1212112.github.io/blog/2014/06/09/uiviewxiang-guan/</loc>
+        <loc>http://alex1212112.github.io/blog/2014/06/09/uiviewxiang-guan/</loc>
         <lastmod>2014-06-09T22:41:41+08:00</lastmod>
     </url>
     <url>
-        <loc>alex1212112.github.io/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi/</loc>
+        <loc>
+            http://alex1212112.github.io/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi/
+        </loc>
         <lastmod>2014-06-30T19:09:53+08:00</lastmod>
     </url>
     <url>
-        <loc>alex1212112.github.io/blog/2014/06/13/uitableview-xiang-guan/</loc>
+        <loc>http://alex1212112.github.io/blog/2014/06/13/uitableview-xiang-guan/</loc>
         <lastmod>2014-07-16T17:33:57+08:00</lastmod>
     </url>
     <url>
-        <loc>alex1212112.github.io/blog/2014/06/30/kvcjian-jie/</loc>
+        <loc>http://alex1212112.github.io/blog/2014/06/30/kvcjian-jie/</loc>
         <lastmod>2014-07-01T21:24:34+08:00</lastmod>
     </url>
     <url>
-        <loc>alex1212112.github.io/blog/2014/07/01/cggeometry/</loc>
+        <loc>http://alex1212112.github.io/blog/2014/07/01/cggeometry/</loc>
         <lastmod>2014-07-01T21:21:17+08:00</lastmod>
     </url>
     <url>
-        <loc>alex1212112.github.io/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan/</loc>
+        <loc>http://alex1212112.github.io/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan/</loc>
         <lastmod>2014-07-16T17:53:18+08:00</lastmod>
     </url>
     <url>
-        <loc>alex1212112.github.io/blog/2014/08/12/ioszhong-de-zi-jie-xu/</loc>
+        <loc>http://alex1212112.github.io/blog/2014/08/12/ioszhong-de-zi-jie-xu/</loc>
         <lastmod>2014-08-12T12:19:15+08:00</lastmod>
     </url>
     <url>
-        <loc>alex1212112.github.io/blog/2014/09/02/kvojian-jie/</loc>
+        <loc>http://alex1212112.github.io/blog/2014/09/02/kvojian-jie/</loc>
         <lastmod>2014-10-17T12:01:50+08:00</lastmod>
     </url>
     <url>
-        <loc>alex1212112.github.io/blog/archives/</loc>
+        <loc>http://alex1212112.github.io/blog/archives/</loc>
         <lastmod>2014-10-17T12:01:50+08:00</lastmod>
     </url>
     <url>
-        <loc>alex1212112.github.io/blog/categories/</loc>
+        <loc>http://alex1212112.github.io/blog/categories/</loc>
         <lastmod>2014-06-09T15:32:03+08:00</lastmod>
     </url>
     <url>
-        <loc>alex1212112.github.io/</loc>
+        <loc>http://alex1212112.github.io/</loc>
         <lastmod>2014-10-17T12:01:50+08:00</lastmod>
     </url>
     <url>
-        <loc>alex1212112.github.io/robots.txt</loc>
+        <loc>http://alex1212112.github.io/robots.txt</loc>
         <lastmod>2014-01-20T12:48:31+08:00</lastmod>
     </url>
 </urlset>

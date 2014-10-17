@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Summerrose’s Blog]]></title>
-  <link href="alex1212112.github.io/atom.xml" rel="self"/>
-  <link href="alex1212112.github.io/"/>
-  <updated>2014-10-17T14:32:07+08:00</updated>
-  <id>alex1212112.github.io/</id>
+  <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
+  <link href="http://alex1212112.github.io/"/>
+  <updated>2014-10-17T14:53:04+08:00</updated>
+  <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
     
@@ -15,10 +15,10 @@
   
   <entry>
     <title type="html"><![CDATA[KVO简介]]></title>
-    <link href="alex1212112.github.io/blog/2014/09/02/kvojian-jie/"/>
+    <link href="http://alex1212112.github.io/blog/2014/09/02/kvojian-jie/"/>
     <updated>2014-09-02T16:24:18+08:00</updated>
-    <id>alex1212112.github.io/blog/2014/09/02/kvojian-jie</id>
-    <content type="html"><![CDATA[<p><img src="alex1212112.github.io/images/201409021638.png" alt="" /></p>
+    <id>http://alex1212112.github.io/blog/2014/09/02/kvojian-jie</id>
+    <content type="html"><![CDATA[<p><img src="http://alex1212112.github.io/images/201409021638.png" alt="" /></p>
 
 <h3>目录</h3>
 
@@ -193,10 +193,10 @@
   
   <entry>
     <title type="html"><![CDATA[iOS中的字节序]]></title>
-    <link href="alex1212112.github.io/blog/2014/08/12/ioszhong-de-zi-jie-xu/"/>
+    <link href="http://alex1212112.github.io/blog/2014/08/12/ioszhong-de-zi-jie-xu/"/>
     <updated>2014-08-12T12:07:08+08:00</updated>
-    <id>alex1212112.github.io/blog/2014/08/12/ioszhong-de-zi-jie-xu</id>
-    <content type="html"><![CDATA[<p><img src="alex1212112.github.io/images/b8c60f715c7d7ad3736a3efde8f56eae65d9d45810251-ck6IkC_fw658.png" alt="" /></p>
+    <id>http://alex1212112.github.io/blog/2014/08/12/ioszhong-de-zi-jie-xu</id>
+    <content type="html"><![CDATA[<p><img src="http://alex1212112.github.io/images/b8c60f715c7d7ad3736a3efde8f56eae65d9d45810251-ck6IkC_fw658.png" alt="" /></p>
 
 <h4>起因</h4>
 
@@ -212,9 +212,9 @@
 
 <p>例如假设上述变量x类型为int，位于地址0x100处，它的十六进制为0x01234567，地址范围为0x100~0x103字节，其内部排列顺序依赖于机器的类型。大端法从首位开始将是：0x100: 01, 0x101: 23,..。而小端法将是：0x100: 67, 0x101: 45,..</p></blockquote>
 
-<p><img src="alex1212112.github.io/images/280px-Big-Endian.svg.png" alt="" /></p>
+<p><img src="http://alex1212112.github.io/images/280px-Big-Endian.svg.png" alt="" /></p>
 
-<p><img src="alex1212112.github.io/images/280px-Little-Endian.svg.png" alt="" /></p>
+<p><img src="http://alex1212112.github.io/images/280px-Little-Endian.svg.png" alt="" /></p>
 
 <h4>相关体系</h4>
 
@@ -277,10 +277,10 @@
   
   <entry>
     <title type="html"><![CDATA[iOS中的断点续传]]></title>
-    <link href="alex1212112.github.io/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan/"/>
+    <link href="http://alex1212112.github.io/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan/"/>
     <updated>2014-07-16T17:25:31+08:00</updated>
-    <id>alex1212112.github.io/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan</id>
-    <content type="html"><![CDATA[<p><img src="alex1212112.github.io/images/201407161730.png" alt="" /></p>
+    <id>http://alex1212112.github.io/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan</id>
+    <content type="html"><![CDATA[<p><img src="http://alex1212112.github.io/images/201407161730.png" alt="" /></p>
 
 <h4>关键点</h4>
 
@@ -343,10 +343,10 @@
   
   <entry>
     <title type="html"><![CDATA[CGGeometry]]></title>
-    <link href="alex1212112.github.io/blog/2014/07/01/cggeometry/"/>
+    <link href="http://alex1212112.github.io/blog/2014/07/01/cggeometry/"/>
     <updated>2014-07-01T12:35:54+08:00</updated>
-    <id>alex1212112.github.io/blog/2014/07/01/cggeometry</id>
-    <content type="html"><![CDATA[<p><img src="alex1212112.github.io/images/201407011244.png" alt="" /></p>
+    <id>http://alex1212112.github.io/blog/2014/07/01/cggeometry</id>
+    <content type="html"><![CDATA[<p><img src="http://alex1212112.github.io/images/201407011244.png" alt="" /></p>
 
 <p>CGGeometry 是一个 Quartz 2D 框架中非常有用且好用的处理几何问题的基本组件，这里列出一些它的方法并简单说明如何使用。</p>
 
@@ -615,10 +615,10 @@
   
   <entry>
     <title type="html"><![CDATA[KVC简介]]></title>
-    <link href="alex1212112.github.io/blog/2014/06/30/kvcjian-jie/"/>
+    <link href="http://alex1212112.github.io/blog/2014/06/30/kvcjian-jie/"/>
     <updated>2014-06-30T18:50:23+08:00</updated>
-    <id>alex1212112.github.io/blog/2014/06/30/kvcjian-jie</id>
-    <content type="html"><![CDATA[<p><img src="alex1212112.github.io/images/2d7462592d67a98dbffc700f70ae01d4423b1c1256049.png" alt="" /></p>
+    <id>http://alex1212112.github.io/blog/2014/06/30/kvcjian-jie</id>
+    <content type="html"><![CDATA[<p><img src="http://alex1212112.github.io/images/2d7462592d67a98dbffc700f70ae01d4423b1c1256049.png" alt="" /></p>
 
 <h3>目录</h3>
 
@@ -800,10 +800,10 @@
   
   <entry>
     <title type="html"><![CDATA[UITableView 相关]]></title>
-    <link href="alex1212112.github.io/blog/2014/06/13/uitableview-xiang-guan/"/>
+    <link href="http://alex1212112.github.io/blog/2014/06/13/uitableview-xiang-guan/"/>
     <updated>2014-06-13T13:48:02+08:00</updated>
-    <id>alex1212112.github.io/blog/2014/06/13/uitableview-xiang-guan</id>
-    <content type="html"><![CDATA[<p><img src="alex1212112.github.io/images/4902731144446386506.jpg" alt="" /></p>
+    <id>http://alex1212112.github.io/blog/2014/06/13/uitableview-xiang-guan</id>
+    <content type="html"><![CDATA[<p><img src="http://alex1212112.github.io/images/4902731144446386506.jpg" alt="" /></p>
 
 <h4>问题描述：</h4>
 
@@ -862,10 +862,10 @@
   
   <entry>
     <title type="html"><![CDATA[UIKit动力学(UIKit Dynamics)学习]]></title>
-    <link href="alex1212112.github.io/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi/"/>
+    <link href="http://alex1212112.github.io/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi/"/>
     <updated>2014-06-11T11:17:46+08:00</updated>
-    <id>alex1212112.github.io/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi</id>
-    <content type="html"><![CDATA[<p><img src="alex1212112.github.io/images/4908ab0eae4b946b9066eafd11f8030580c2c4f79dfd.png" alt="" /></p>
+    <id>http://alex1212112.github.io/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi</id>
+    <content type="html"><![CDATA[<p><img src="http://alex1212112.github.io/images/4908ab0eae4b946b9066eafd11f8030580c2c4f79dfd.png" alt="" /></p>
 
 <h4>简介</h4>
 
@@ -1007,7 +1007,7 @@
 
 <p>表现出来的效果如下图：</p>
 
-<p><img src="alex1212112.github.io/images/201406111150gravity.gif" alt="" /></p>
+<p><img src="http://alex1212112.github.io/images/201406111150gravity.gif" alt="" /></p>
 
 <h4>代码示例（带碰撞的重力行为）</h4>
 
@@ -1090,7 +1090,7 @@
 
 <p>表现出来的效果如下图：</p>
 
-<p><img src="alex1212112.github.io/images/201406111150gravityCollision.gif" alt="" /></p>
+<p><img src="http://alex1212112.github.io/images/201406111150gravityCollision.gif" alt="" /></p>
 
 <p>注：碰撞行为有自己的delegate回调，可以帮助我们了解碰撞的具体情况，包括哪个item和哪个item开始发生碰撞，碰撞接触点是什么，是否和边界碰撞，和哪个边界碰撞了等信息。参见:<a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollisionBehaviorDelegate_Protocol/Reference/Reference.html">UICollisionBehavior</a>.</p>
 
@@ -1159,7 +1159,7 @@
 
 <p>表现出来的效果如下图：</p>
 
-<p><img src="alex1212112.github.io/images/201406111151snap.gif" alt="" /></p>
+<p><img src="http://alex1212112.github.io/images/201406111151snap.gif" alt="" /></p>
 
 <h4>下载</h4>
 
@@ -1177,9 +1177,9 @@
   
   <entry>
     <title type="html"><![CDATA[UIView相关]]></title>
-    <link href="alex1212112.github.io/blog/2014/06/09/uiviewxiang-guan/"/>
+    <link href="http://alex1212112.github.io/blog/2014/06/09/uiviewxiang-guan/"/>
     <updated>2014-06-09T10:21:49+08:00</updated>
-    <id>alex1212112.github.io/blog/2014/06/09/uiviewxiang-guan</id>
+    <id>http://alex1212112.github.io/blog/2014/06/09/uiviewxiang-guan</id>
     <content type="html"><![CDATA[<p><img src="http://ww3.sinaimg.cn/large/8bcaa2dfjw1ec8pxpionej20dw07sdgj.jpg" alt="" /></p>
 
 <h4>问题描述:</h4>
@@ -1245,9 +1245,9 @@
   
   <entry>
     <title type="html"><![CDATA[iOS7中UIViewController的转场]]></title>
-    <link href="alex1212112.github.io/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang/"/>
+    <link href="http://alex1212112.github.io/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang/"/>
     <updated>2014-05-05T18:57:40+08:00</updated>
-    <id>alex1212112.github.io/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang</id>
+    <id>http://alex1212112.github.io/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang</id>
     <content type="html"><![CDATA[<p><img src="http://ww3.sinaimg.cn/large/8bcaa2dfjw1ec8pxqd4plj20dw07sdgr.jpg" alt="" /></p>
 
 <p>iOS7提供了一套供开发者方便自定义Viewcontroller间切换动画的API，我们可以利用这些API来自定义自己的转场效果，替代系统提供的默认push、present等动画效果。</p>
