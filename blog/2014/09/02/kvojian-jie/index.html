@@ -222,13 +222,14 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>这样，一个实现KVO的简单例子就完成了.  <a href="">Demo</a>.</p>
+<p>这样，一个实现KVO的简单例子就完成了.  <a href="https://github.com/alex1212112/KVODemo">Demo</a>.</p>
 
 <h3>相关技巧与说明</h3>
 
 <ol>
-<li><p>有时候需要在第一次运行代码的时候更新一次 UI。我们可以设置KVO的选项   NSKeyValueObservingOptionInitial 的选项。这将会让 KVO 通知在调用 -addObserver:forKeyPath:&hellip; 到时候也被触发。</p></li>
+<li><p>有时候需要在第一次运行代码的时候更新一次 UI。我们可以设置KVO的选项   NSKeyValueObservingOptionInitial 的选项。这将会让 KVO 通知在调用 -addObserver:forKeyPath:&hellip; 的时候也被触发。</p></li>
 <li><p>KVO 能降低代码的藕合度，是因为Model对象在改变的时候，所有观察者能自动的去处理相关逻辑，这样我们就不用在模型对象里去编写专门的代码去通知观察者了，从而保持了模型类的简洁性。</p></li>
+<li><p>有时候你可能想在第一次更新UI的时候去检查Model的属性是否为空，如果为空，就通过一些方法（比如方法A）去获取这个属性的值，再重新触发KVO，来更新获取到的新值，不过这里要注意方法A里假如也全是在主线程运行的话，第二次KVO就不会触发，因为KVO是同步运行在主线程上的，这样做可能是为了防止出现死循环吧，这时候就要在方法A里通过后台线程去获取属性的值，然后在主线程里把值赋给Model的属性，这样就能触发KVO了。</p></li>
 </ol>
 
 
