@@ -283,6 +283,17 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p>还要注意假如数组里面存储的是我们自己的对象多话，这个对象还要实现等通性判断的方法：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span><span class="p">;</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nf">hash</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>假如不实现等同性判断的话，系统默认的会把两个对象的指针相同才认为是同一个对象，有时候这显然不是我们想要的.</p>
+
 <h3>参考资料</h3>
 
 <ol>
