@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
   <link href="http://alex1212112.github.io/"/>
-  <updated>2014-10-20T12:24:12+08:00</updated>
+  <updated>2014-10-20T17:52:59+08:00</updated>
   <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -12,6 +12,124 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Objective-C 中的方法混写(Method Swizzling)]]></title>
+    <link href="http://alex1212112.github.io/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/"/>
+    <updated>2014-10-20T17:47:07+08:00</updated>
+    <id>http://alex1212112.github.io/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling</id>
+    <content type="html"><![CDATA[<p><img src="http://alex1212112.github.io/images/201410201751.png" alt="" /></p>
+
+<h3>目录</h3>
+
+<ol>
+<li>什么是方法混写（Method Swizzling）</li>
+<li>如何使用方法混写</li>
+<li>注意事项</li>
+<li>参考资料</li>
+</ol>
+
+
+<h3>什么是方法混写(Method Swizzling)</h3>
+
+<p>Objective-C 中对象调用方法，或者叫“消息传递”,是通过一种动态绑定机制实现的，即对象收到消息后，究竟调用哪个方法，完全于运行期决定，而且方法名和其对应的实现也是可以在运行期改变的，这样，我们不需要源代码，也不用通过继承子类的来覆写方法，就能改变这个类中的方法。这种在运行期改变类的方法实现的手段被称之为方法混写（Method Swizzling）.</p>
+
+<h3>如何使用方法混写</h3>
+
+<p>举一个UIAlertView的例子，UIAlertView 有一个 show 的方法，我们想改变这个 show 的方法，可以按如下实现:</p>
+
+<p>UIAlertView+GHSwizzling.m</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;UIAlertView+GHSwizzling.h&quot;</span>
+</span><span class='line'><span class="cp">#import &lt;objc/runtime.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">UIAlertView</span> <span class="nl">(GHSwizzling)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">load</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kt">SEL</span> <span class="n">show</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">show</span><span class="p">);</span>
+</span><span class='line'>        <span class="kt">SEL</span> <span class="n">replaceSHow</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">_gh_show</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Method</span> <span class="n">existingMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">show</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Method</span> <span class="n">newMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">replaceSHow</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">method_exchangeImplementations</span><span class="p">(</span><span class="n">existingMethod</span><span class="p">,</span> <span class="n">newMethod</span><span class="p">);</span><span class="c1">//交换两个方法</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">_gh_show</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="n">_gh_show</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;alert show!&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>从上面代码我们可以看到，实现方法混写的步骤：</p>
+
+<ol>
+<li><p>编写自己希望实现方法的代码，上述中为 <code>_gh_show</code>,我们看到 该方法里调用了自己，好像会陷入递归调用的死循环，不过我们需要知道，这个方法是要和 <code>show</code> 方法交换的。</p></li>
+<li><p>获取自己实现方法的 method 和原实现方法的 method.</p></li>
+<li><p>通过 <code>method_exchangeImplementations()</code> 函数交换两个方法.</p></li>
+</ol>
+
+
+<h3>注意事项</h3>
+
+<ol>
+<li><p>方法混写最好在类的 category 中的 <code>+load</code> 方法中进行方法交换.</p></li>
+<li><p>方法混写的代码最好在 dispatch_once 中实现。</p></li>
+<li><p>要注意给自己实现的方法加上命名空间，以防止出现重复命名的问题，比如上述中的&#8221;<em>gh</em>&ldquo;前缀.</p></li>
+<li><p>不要滥用这个方法,该方法被称之为 Objective-C 中的黑魔法，滥用会导致难以调试的bug.</p></li>
+</ol>
+
+
+<h3>参考资料</h3>
+
+<ol>
+<li><p><a href="http://nshipster.com/method-swizzling/">Method Swizzling</a></p></li>
+<li><p><a href="http://blog.csdn.net/yiyaaixuexi/article/details/9374411">Objective-C的hook方案（一）: Method Swizzling</a></p></li>
+<li><p><a href="http://www.cnblogs.com/kesalin/archive/2012/01/05/objc_method_swizzling.html">[Cocoa]深入浅出Cocoa之Method Swizzling</a></p></li>
+<li><p><a href="http://sjpsega.com/blog/2014/09/17/oc-method-swizzling/">Objective-C Method Swizzling</a></p></li>
+<li><p><a href="http://billwang1990.github.io/blog/2014/01/04/about-swizzling/">关于swizzling</a></p></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Objective-C中的对象关联(Associated Objects)]]></title>
