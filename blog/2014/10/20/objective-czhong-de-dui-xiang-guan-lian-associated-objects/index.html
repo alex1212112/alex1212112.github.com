@@ -191,6 +191,7 @@
 
 <ol>
 <li>不应该用 objc_removeAssociatedObjects() 来删除对象的属性，因为可能会导致其他客户对其添加的属性也被移除了。规范的方法是：调用 objc_setAssociatedObject 方法并传入一个 nil 值来清除一个关联。</li>
+<li>应该小心使用对象关联，不要滥用，因为可能会引起难以调试的bug。</li>
 </ol>
 
 
