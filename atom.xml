@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
   <link href="http://alex1212112.github.io/"/>
-  <updated>2014-10-20T18:14:40+08:00</updated>
+  <updated>2014-10-24T11:01:26+08:00</updated>
   <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -108,6 +108,8 @@
 </ol>
 
 
+<p>注意: 这只是方法混写中的一种，交换两个实现方法，还有 <code>method_setImplementayion()</code>等方法.</p>
+
 <h3>注意事项</h3>
 
 <ol>
@@ -115,7 +117,7 @@
 <li><p>方法混写的代码最好在 dispatch_once 中实现。</p></li>
 <li><p>要注意给自己实现的方法加上命名空间，以防止出现重复命名的问题，比如上述中的&#8221;<em>gh</em>&ldquo;前缀.</p></li>
 <li><p>不要滥用这个方法,该方法被称之为 Objective-C 中的黑魔法，滥用会导致难以调试的bug.</p></li>
-<li><p>只要在 <code>+load</code> 中实现了 Method Swizzling, 那么该类的这个方法在整个应用的生命周期以内都被 Swizzling 了，要想调用原来正常的方法，就只能通过调用自己实现的方法名了。</p></li>
+<li><p>只要在 <code>+load</code> 中实现了 <code>method_exchangeImplementations()</code>, 那么该类的这个方法在整个应用的生命周期以内都被 Swizzling 了，要想调用原来正常的方法，就只能通过调用自己实现的方法名了。</p></li>
 </ol>
 
 
