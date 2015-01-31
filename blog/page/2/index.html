@@ -7,7 +7,7 @@
 	<meta name="author" content="ghren">
 
 	
-	<meta name="description" content="简介 UIKit dynamics(UIKit动力学)是UIKit的一套动画和交互体系。和我们用的CoreAnimation或者UIView animations一样，只不过UIKit 动力学将现实世界动力驱动的动画引入了UIKit，比如重力，铰链连接，碰撞，悬挂、吸附等效果。 基本概念和元素 &hellip;">
+	<meta name="description" content="问题描述： UITableView deleteRowsAtIndexPaths:withRowAnimation:在使用的时候，当你删除该行的时候，tableView并不会reload，所以该 行的下一行的indexPath并没有改变，当下一行为最后一行的时候， &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -74,6 +74,98 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/06/13/uitableview-xiang-guan/">
+		
+			UITableView 相关</a>
+	</h2>
+	<div class="entry-content">
+		<p><img src="/images/4902731144446386506.jpg" alt="" /></p>
+
+<h4>问题描述：</h4>
+
+<p> UITableView deleteRowsAtIndexPaths:withRowAnimation:在使用的时候，当你删除该行的时候，tableView并不会reload，所以该    行的下一行的indexPath并没有改变，当下一行为最后一行的时候，你的Model里的数据在删除的时候调用[arrayremoveObjectAtIndex:indexPath.row] 时候会报错：数组越界。</p>
+
+<h4>解决办法:</h4>
+
+<p>假如你直接使用[tableView reloadData]，那么就看不到  tableView的动画效果了，所以不能用[tableView reloadData];代替的方法是使用 reloadSections:withRowAnimation:方法。</p>
+
+<hr />
+
+<h4>问题描述：</h4>
+
+<p>如何设置UITableViewCell accessoryType的颜色？</p>
+
+<h4>解决办法:</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">cell</span><span class="p">.</span><span class="n">tintColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">greenColor</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>注意：类型为UITableViewCellAccessoryDisclosureIndicator 的不能通过这种方法更改，其颜色只能灰色。</p>
+
+<hr />
+
+<h4>问题描述：</h4>
+
+<p>如何获取UITableViewCell 在TableView中的frame？</p>
+
+<p> 解决办法:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="n">CGRect</span> <span class="n">cellFrame</span> <span class="o">=</span> <span class="p">[</span><span class="n">_tableView</span> <span class="nl">rectForRowAtIndexPath:</span><span class="p">[</span><span class="n">NSIndexPath</span> <span class="nl">indexPathForRow:</span><span class="n">index</span> <span class="nl">inSection:</span><span class="mi">0</span><span class="p">]];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<hr />
+
+<h4>问题描述：</h4>
+
+<p>在使用Grouped UITableView的时候，如何去掉上面默认的空白</p>
+
+<h4>解决办法:</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">_tableView</span><span class="p">.</span><span class="n">tableHeaderView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="n">_tableView</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="mf">0.01f</span><span class="p">)];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-13T13:48:02+08:00" pubdate data-updated="true">Jun 13<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/06/13/uitableview-xiang-guan/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -828,7 +920,7 @@
     
     <div class="center"><a href="/blog/archives">Blog Archives</a></div>
 </nav></div>
-	<footer id="footer" class="inner">Copyright &copy; 2014
+	<footer id="footer" class="inner">Copyright &copy; 2015
 
     ghren
 
