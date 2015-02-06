@@ -7,6 +7,8 @@ categories:
 ---
 
 
+![](http://ww3.sinaimg.cn/large/8bcaa2dfjw1ec8pxqd4plj20dw07sdgr.jpg)
+
 iOS7提供了一套供开发者方便自定义Viewcontroller间切换动画的API，我们可以利用这些API来自定义自己的转场效果，替代系统提供的默认push、present等动画效果。
 
 ## 实现流程 

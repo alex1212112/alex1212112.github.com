@@ -2,7 +2,7 @@
 #      Main Configs       #
 # ----------------------- #
 
-url:  https://github.com/alex1212112/alex1212112.github.com.git
+url: http://alex1212112.github.io
 title: Summerrose’s Blog
 subtitle: 既见君子，云胡不喜
 author: ghren
@@ -90,11 +90,12 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name:
-disqus_show_comment_count: false
+disqus_short_name: alex1212112
+disqus_show_comment_count: true
 
 # Google Analytics
 google_analytics_tracking_id:
 
 # Facebook Like
 facebook_like: false
+
