@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
   <link href="http://alex1212112.github.io/"/>
-  <updated>2015-01-31T21:20:06+08:00</updated>
+  <updated>2015-02-06T12:03:52+08:00</updated>
   <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -87,6 +87,8 @@
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p>注意 添加 <code>@import LocalAuthentication;</code></p>
 
 <h4>显示 Touch ID 的 UI视图</h4>
 
@@ -237,8 +239,8 @@
 <h3>参考资料</h3>
 
 <ol>
-<li><p><a href="https://github.com/secondgear/SGKeychain">SGKeychain</a></p></li>
-<li><p><a href="http://www.cocoachina.com/ios/20141114/10222.html">在iOS 8 SDK中使用Touch ID API</a></p></li>
+<li><a href="https://github.com/secondgear/SGKeychain">SGKeychain</a></li>
+<li><a href="http://www.cocoachina.com/ios/20141114/10222.html">在iOS 8 SDK中使用Touch ID API</a></li>
 <li><a href="http://blog.csdn.net/johnson_puning/article/details/36188255"> iOS8 Touch ID api接口调用</a></li>
 </ol>
 
