@@ -115,7 +115,7 @@
 
 <p>如何获取UITableViewCell 在TableView中的frame？</p>
 
-<p> 解决办法:</p>
+<h4>解决办法:</h4>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="n">CGRect</span> <span class="n">cellFrame</span> <span class="o">=</span> <span class="p">[</span><span class="n">_tableView</span> <span class="nl">rectForRowAtIndexPath:</span><span class="p">[</span><span class="n">NSIndexPath</span> <span class="nl">indexPathForRow:</span><span class="n">index</span> <span class="nl">inSection:</span><span class="mi">0</span><span class="p">]];</span>
@@ -138,6 +138,27 @@
 
 
 <p></p>
+
+<hr />
+
+<h4>问题描述</h4>
+
+<p>iOS8 如何如何使 tableView cell 自适应高度 ？</p>
+
+<h4>解决办法</h4>
+
+<p>对自定义的Cell 进行约束布局（Autolayout）,</p>
+
+<p>在<code>viewDidLoad</code>里添加</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'>   <span class="n">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">rowHeight</span> <span class="o">=</span> <span class="n">UITableViewAutomaticDimension</span><span class="p">;</span>
+</span><span class='line'>   <span class="n">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">estimatedRowHeight</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
 
 		
 		
