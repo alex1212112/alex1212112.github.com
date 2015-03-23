@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
   <link href="http://alex1212112.github.io/"/>
-  <updated>2015-03-23T21:45:08+08:00</updated>
+  <updated>2015-03-23T21:50:55+08:00</updated>
   <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -60,10 +60,10 @@
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="n">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;flower&quot;</span><span class="p">];</span>
-</span><span class='line'> <span class="n">CIImage</span> <span class="o">*</span><span class="n">inputImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIImage</span> <span class="nl">imageWithCGImage:</span><span class="n">image</span><span class="p">.</span><span class="n">CGImage</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;flower&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="n">CIImage</span> <span class="o">*</span><span class="n">inputImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIImage</span> <span class="nl">imageWithCGImage:</span><span class="n">image</span><span class="p">.</span><span class="n">CGImage</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'> <span class="n">CIImage</span> <span class="o">*</span><span class="n">outImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">kernel</span> <span class="nl">applyWithExtent:</span><span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span> <span class="nl">roiCallback:</span><span class="o">^</span><span class="n">CGRect</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="n">CIImage</span> <span class="o">*</span><span class="n">outImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">kernel</span> <span class="nl">applyWithExtent:</span><span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span> <span class="nl">roiCallback:</span><span class="o">^</span><span class="n">CGRect</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="k">return</span> <span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="p">}</span> <span class="nl">arguments:</span><span class="err">@</span><span class="p">[</span><span class="n">inputImage</span><span class="p">]];</span>
@@ -87,42 +87,49 @@
 
 <p>这是一个 函数，其中返回值 vec4 是一个 由 float 构成的向量，苹果在文档里说这个函数的返回值必须是这种类型。函数的名称 叫 <code>moveUpTwoPixels</code>,函数的参数为一个 sampler 类型，对于我们的程序来说，这个参数要求我们传递一个CIImage，这里的参数也可以有多个，对应着</p>
 
-<p> &#8220;`objc
- &ndash; (CIImage *)applyWithExtent:(CGRect)extent</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">CIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">applyWithExtent:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">extent</span>
+</span><span class='line'>                   <span class="nf">arguments:</span><span class="p">(</span><span class="n">NSArray</span><span class="o">*</span><span class="p">)</span><span class="nv">args</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<pre><code>               arguments:(NSArray*)args
-</code></pre>
 
-<p> &#8220;`
- 方法里的 args 的参数。</p>
+<p> 方法里的 args 的参数。</p>
 
-<p> ###CIColorKernel</p>
+<h3>CIColorKernel</h3>
 
-<p> 我们也可以创建一个CIColorKernel:</p>
+<p>我们也可以创建一个CIColorKernel:</p>
 
-<p> &#8220;`objc</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">kernelString</span> <span class="o">=</span>
+</span><span class='line'>    <span class="s">@&quot;kernel vec4 chromaKey( __sample s, __color c, float threshold ) { </span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class='line'>    <span class="s">@&quot;  vec4 diff = s.rgba - c;</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class='line'>    <span class="s">@&quot;  float distance = length( diff );</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class='line'>    <span class="s">@&quot;  float alpha = compare( distance - threshold, 0.0, 0.5 );</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class='line'>    <span class="s">@&quot;  return vec4( s.rgb, alpha ); </span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class='line'>    <span class="s">@&quot;}&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">CIColorKernel</span> <span class="o">*</span><span class="n">kernel</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIColorKernel</span> <span class="nl">kernelWithString:</span><span class="n">kernelString</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<pre><code> NSString *kernelString =
-@"kernel vec4 chromaKey( __sample s, __color c, float threshold ) { \n"
-@"  vec4 diff = s.rgba - c;\n"
-@"  float distance = length( diff );\n"
-@"  float alpha = compare( distance - threshold, 0.0, 0.5 );\n"
-@"  return vec4( s.rgb, alpha ); \n"
-@"}";
 
-CIColorKernel *kernel = [CIColorKernel kernelWithString:kernelString];
-</code></pre>
+<p> 使用的时候</p>
 
-<p> &#8220;`
- 使用的时候</p>
-
-<p> <code>objc
+<p><code>objc
  UIImage *image = [UIImage imageNamed:@"flower"];
  CIImage *inputImage = [CIImage imageWithCGImage:image.CGImage];
  CIImage *outImage = [kernel applyWithExtent:inputImage.extent arguments:@[inputImage,[CIColor colorWithRed:0.0f green:1.0f blue:0.0f],@0.0f]];
 </code></p>
 
-<p> ###更多</p>
+<h3>更多</h3>
 
 <p> 进一步学习中。。。</p>
 
