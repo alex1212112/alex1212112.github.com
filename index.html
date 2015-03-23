@@ -187,13 +187,16 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>使用的时候</p>
+<p>使用的时候:</p>
 
-<p><code>objc
- UIImage *image = [UIImage imageNamed:@"flower"];
- CIImage *inputImage = [CIImage imageWithCGImage:image.CGImage];
- CIImage *outImage = [kernel applyWithExtent:inputImage.extent arguments:@[inputImage,[CIColor colorWithRed:0.0f green:1.0f blue:0.0f],@0.0f]];
-</code></p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;flower&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="n">CIImage</span> <span class="o">*</span><span class="n">inputImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIImage</span> <span class="nl">imageWithCGImage:</span><span class="n">image</span><span class="p">.</span><span class="n">CGImage</span><span class="p">];</span>
+</span><span class='line'><span class="n">CIImage</span> <span class="o">*</span><span class="n">outImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">kernel</span> <span class="nl">applyWithExtent:</span><span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span> <span class="nl">arguments:</span><span class="err">@</span><span class="p">[</span><span class="n">inputImage</span><span class="p">,[</span><span class="n">CIColor</span> <span class="nl">colorWithRed:</span><span class="mf">0.0f</span> <span class="nl">green:</span><span class="mf">1.0f</span> <span class="nl">blue:</span><span class="mf">0.0f</span><span class="p">],</span><span class="err">@</span><span class="mf">0.0f</span><span class="p">]];</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>更多</h3>
 
