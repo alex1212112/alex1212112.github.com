@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
   <link href="http://alex1212112.github.io/"/>
-  <updated>2015-02-11T16:32:09+08:00</updated>
+  <updated>2015-03-23T21:45:08+08:00</updated>
   <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -12,6 +12,133 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[CIKernel 的学习]]></title>
+    <link href="http://alex1212112.github.io/blog/2015/03/23/cikernel-de-xue-xi/"/>
+    <updated>2015-03-23T21:39:36+08:00</updated>
+    <id>http://alex1212112.github.io/blog/2015/03/23/cikernel-de-xue-xi</id>
+    <content type="html"><![CDATA[<p><img src="http://alex1212112.github.io/images/201503232142.png" alt="" /></p>
+
+<p>在使用 Core Image 的时候，Apple 提供的效果有时候无法满足我们的需求，我们希望能实现自己的滤镜，这个时候我们可以用 CIKernel。CIKernel 是 iOS8 的时候出现的，它是一种类似于 OpenGL 着色器的处理程序。苹果提供了一系列的函数和数据类型供我们使用它。具体参见<a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Reference/CIKernelLangRef/ci_gslang_ext.html">Core Image Kernel Language</a>。</p>
+
+<h3>子类</h3>
+
+<p>CIKernel 有两个子类：<code>CIColorKernel</code>和<code>CIColorKernel</code>。</p>
+
+<h3>初始化</h3>
+
+<p>我们通过一个 <code>NSString</code> 来初始化一个 <code>CIKernel</code>；</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'>   <span class="n">NSString</span> <span class="o">*</span><span class="n">kernelString</span> <span class="o">=</span>
+</span><span class='line'>    <span class="s">@&quot;kernel vec4 moveUpTwoPixels (sampler image) {</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class='line'>    <span class="s">@&quot;  vec2 dc = destCoord();</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class='line'>    <span class="s">@&quot;  vec2 offset = vec2(0.0, 2.0);</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class='line'>    <span class="s">@&quot;  return sample (image, samplerTransform (image, dc + offset));</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class='line'>    <span class="s">@&quot;}&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">CIKernel</span> <span class="o">*</span><span class="n">kernel</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIKernel</span> <span class="nl">kernelWithString:</span><span class="n">kernelString</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用</h3>
+
+<p>使用的时候可以这么用：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="n">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;flower&quot;</span><span class="p">];</span>
+</span><span class='line'> <span class="n">CIImage</span> <span class="o">*</span><span class="n">inputImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIImage</span> <span class="nl">imageWithCGImage:</span><span class="n">image</span><span class="p">.</span><span class="n">CGImage</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'> <span class="n">CIImage</span> <span class="o">*</span><span class="n">outImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">kernel</span> <span class="nl">applyWithExtent:</span><span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span> <span class="nl">roiCallback:</span><span class="o">^</span><span class="n">CGRect</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span> <span class="nl">arguments:</span><span class="err">@</span><span class="p">[</span><span class="n">inputImage</span><span class="p">]];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我们可以看到，核心代码为：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">kernel</span> <span class="n">vec4</span> <span class="nf">moveUpTwoPixels</span> <span class="p">(</span><span class="n">sampler</span> <span class="n">image</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">vec2</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">destCoord</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">vec2</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">vec2</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">sample</span> <span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">samplerTransform</span> <span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dc</span> <span class="o">+</span> <span class="n">offset</span><span class="p">));</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这是一个 函数，其中返回值 vec4 是一个 由 float 构成的向量，苹果在文档里说这个函数的返回值必须是这种类型。函数的名称 叫 <code>moveUpTwoPixels</code>,函数的参数为一个 sampler 类型，对于我们的程序来说，这个参数要求我们传递一个CIImage，这里的参数也可以有多个，对应着</p>
+
+<p> &#8220;`objc
+ &ndash; (CIImage *)applyWithExtent:(CGRect)extent</p>
+
+<pre><code>               arguments:(NSArray*)args
+</code></pre>
+
+<p> &#8220;`
+ 方法里的 args 的参数。</p>
+
+<p> ###CIColorKernel</p>
+
+<p> 我们也可以创建一个CIColorKernel:</p>
+
+<p> &#8220;`objc</p>
+
+<pre><code> NSString *kernelString =
+@"kernel vec4 chromaKey( __sample s, __color c, float threshold ) { \n"
+@"  vec4 diff = s.rgba - c;\n"
+@"  float distance = length( diff );\n"
+@"  float alpha = compare( distance - threshold, 0.0, 0.5 );\n"
+@"  return vec4( s.rgb, alpha ); \n"
+@"}";
+
+CIColorKernel *kernel = [CIColorKernel kernelWithString:kernelString];
+</code></pre>
+
+<p> &#8220;`
+ 使用的时候</p>
+
+<p> <code>objc
+ UIImage *image = [UIImage imageNamed:@"flower"];
+ CIImage *inputImage = [CIImage imageWithCGImage:image.CGImage];
+ CIImage *outImage = [kernel applyWithExtent:inputImage.extent arguments:@[inputImage,[CIColor colorWithRed:0.0f green:1.0f blue:0.0f],@0.0f]];
+</code></p>
+
+<p> ###更多</p>
+
+<p> 进一步学习中。。。</p>
+
+<h3>参考资料</h3>
+
+<ol>
+<li><p><a href="http://www.shinobicontrols.com/blog/posts/2014/08/19/ios8-day-by-day-day-19-coreimage-kernels">iOS8 Day-by-Day :: Day 19 :: CoreImage Kernels</a></p></li>
+<li><p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Reference/CIKernelLangRef/ci_gslang_ext.html#//apple_ref/doc/uid/TP40004397-CH206-TPXREF101">Core Image Kernel Language</a></p></li>
+<li><p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_intro/ci_intro.html#//apple_ref/doc/uid/TP30001185">About Core Image</a></p></li>
+<li><p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_advanced_concepts/ci.advanced_concepts.html#//apple_ref/doc/uid/TP30001185-CH9-SW1">What You Need to Know Before Writing a Custom Filter</a></p></li>
+<li><p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_custom_filters/ci_custom_filters.html#//apple_ref/doc/uid/TP30001185-CH6-TPXREF101">Creating Custom Filters</a></p></li>
+<li><p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_image_units/ci_image_units.html#//apple_ref/doc/uid/TP30001185-CH7-SW12">Packaging and Loading Image Units</a></p></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Touch ID 的使用]]></title>
