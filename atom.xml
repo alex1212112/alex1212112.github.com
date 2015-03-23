@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
   <link href="http://alex1212112.github.io/"/>
-  <updated>2015-03-23T21:50:55+08:00</updated>
+  <updated>2015-03-23T21:53:11+08:00</updated>
   <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -121,7 +121,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p> 使用的时候</p>
+<p>使用的时候</p>
 
 <p><code>objc
  UIImage *image = [UIImage imageNamed:@"flower"];
