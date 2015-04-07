@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
   <link href="http://alex1212112.github.io/"/>
-  <updated>2015-03-23T22:07:50+08:00</updated>
+  <updated>2015-04-07T11:50:13+08:00</updated>
   <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -12,6 +12,117 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[CALayer(一)]]></title>
+    <link href="http://alex1212112.github.io/blog/2015/04/07/calayer-%5B%3F%5D/"/>
+    <updated>2015-04-07T11:38:10+08:00</updated>
+    <id>http://alex1212112.github.io/blog/2015/04/07/calayer-[?]</id>
+    <content type="html"><![CDATA[<p><img src="http://alex1212112.github.io/images/201504071144.png" alt="" /></p>
+
+<h3>目录</h3>
+
+<ol>
+<li>简介</li>
+<li>contents</li>
+<li>参考资料</li>
+</ol>
+
+
+<h3>简介</h3>
+
+<p>CALayer（图层） 可以看作是UIView的内部实现，每一个 UIView 都有一个 名称为layer 的属性，我们看到的view的具体内容都是这个layer展示的，UIView 对 CALayer 做了一些封装，并在此基础之上提供了和用户交互的一系列方法。和 UIVIew 一样，CALayer 也有相同的层级关系，每一个CALyer 对象都可以增加 sublayer。通过 CALayer 我们可以实现一些 UIView 无法实现的效果，比如阴影，圆角，边框等，而且还可以实现很多 UIView 无法实现的非常炫酷的动画。</p>
+
+<h3>contents</h3>
+
+<p>CALayer 有一个 id 类型的contents的属性，这个 contents 负责显示具体的内容，比如一张图片等，这里要注意假如要为 contents 设置一张图片的话，不能用UIImage，用UIImage的话，显示出来的图层上面什么都没有。要用 CGImageRef 类型的值，但 CGImageRef 不是Cocoa 对象，而是一个Core Foundation类型，所以要通过 toll-free bridging 来转换一下，比如</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">layer</span><span class="p">.</span><span class="n">contents</span> <span class="o">=</span> <span class="p">(</span><span class="n">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">image</span><span class="p">.</span><span class="n">CGImage</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>除了给 contents 赋值 CGImageRef 外，还可以用 Core Graphics 直接绘制的方法来设置 contents 的内容，主要是通过集成 UIView 并实现 <code>-drawRect:</code>方法来实现的。</p>
+
+<p>关于 contents 显示的具体方式，CALayer 有一些很有用的属性可以设置，比如：</p>
+
+<ul>
+<li>contentsGravity</li>
+<li>contentsScale</li>
+<li>maskToBounds</li>
+<li>contentsRect</li>
+<li>contentsCenter</li>
+</ul>
+
+
+<h4>contentsGravity</h4>
+
+<p>contentsGravity 类似于 UIView 中的 contentMode 属性，就是决定 contents 在图层的边界中怎么对齐，比如是居中还是靠上等，contentsGravity可选的常量值主要有：</p>
+
+<ul>
+<li>kCAGravityCenter</li>
+<li>kCAGravityTop</li>
+<li>kCAGravityBottom</li>
+<li>kCAGravityLeft</li>
+<li>kCAGravityRight</li>
+<li>kCAGravityTopLeft</li>
+<li>kCAGravityTopRight</li>
+<li>kCAGravityBottomLeft</li>
+<li>kCAGravityBottomRight</li>
+<li>kCAGravityResize</li>
+<li>kCAGravityResizeAspect</li>
+<li>kCAGravityResizeAspectFill</li>
+</ul>
+
+
+<p>我们可以从名字看出它们的作用。</p>
+
+<h4>contentsScale</h4>
+
+<p>contentsScale 主要用来告诉系统在绘制 contents 的时候一个点绘制几个像素，比如以前的非 Retina 屏幕的时候，就是1，现在的 Phone6 plus 是3，别的 Retina 屏幕就是2，因此当我们是 Retina 屏幕的时候在设置 图层的 contents 的时候不要忘了加上</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">layer</span><span class="p">.</span><span class="n">contentsScale</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIScreen</span> <span class="n">mainScreen</span><span class="p">]</span> <span class="n">scale</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>maskToBounds</h4>
+
+<p>作用和 UIView 的 clipsToBounds 类似，就是决定是否显示超出该图层边界的内容，要注意如果该属性要设置为 YES 的话，再设置阴影效果是不起作用的，因为阴影超出了图层的边界。</p>
+
+<h4>contentsRect</h4>
+
+<p>contentsRect 能让 CALayer 只显示 contents 的一部分，它的范围在 0 到 1 之间,比如说设置如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">layer</span><span class="p">.</span><span class="n">contentsRect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">0.5f</span><span class="p">,</span> <span class="mf">0.5f</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>那么实际显示在layer上的就是 contents 的左上部分。这个方法在一些地方会很有用，比如 cocosd 中精灵纹理的图片就是载入一张拼合了很多图片的大图，然后在需要的时候通过这个方法对不同的区域进行切割。</p>
+
+<h4>contentsCenter</h4>
+
+<p>contentsCenter是一个CGRect，它定义了一个固定的边框和一个在图层上可拉伸的区域，它的范围在 0 到 1 之间，只有 contents 大小和图层大小不一致时，才发挥作用，系统默认的 contentsCenter 的大小为 {0,0,1,1}, 即 contents 会被均匀的拉伸，如果我们设置:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">layer</span><span class="p">.</span><span class="n">contentsCenter</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>那么其均匀拉伸的区域就是中间的区域，四个角的地方保持不变，借用一张图表示如下:</p>
+
+<p><img src="http://alex1212112.github.io/images/contentsCenter.png" alt="" /></p>
+
+<h3>参考资料</h3>
+
+<ol>
+<li><p><a href="http://zsisme.gitbooks.io/ios-/content/chapter2/the-contents-image.html">contents 属性</a></p></li>
+<li><p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Reference/CALayer_class/index.html">CALayer</a></p></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[CIKernel 的学习]]></title>
