@@ -7,9 +7,8 @@
 	<meta name="author" content="ghren">
 
 	
-	<meta name="description" content="目录 简介
-contents
-参考资料 简介 CALayer（图层） 可以看作是UIView的内部实现，每一个 UIView 都有一个 名称为layer 的属性，我们看到的view的具体内容都是这个layer展示的，UIView 对 CALayer 做了一些封装， &hellip;">
+	<meta name="description" content="目录 Swift 与 Objectve-C 混编
+Swift 如何使用 Objective-C 的 cocoapods Swift 与 Objectve-C 混编 Swift 文件里使用 Objective-C 类 无论是在 Swift 工程中新建 Objectve-C 的类，还是在 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -76,6 +75,86 @@ contents
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/04/12/swift-yu-objective-c-hun-bian-ji-ru-he-diao-yong-cocoapods/">
+		
+			Swift 与 Objective-C 混编及如何调用 Cocoapods</a>
+	</h2>
+	<div class="entry-content">
+		<p><img src="/images/201504121200.png" alt="" /></p>
+
+<h3>目录</h3>
+
+<ol>
+<li>Swift 与 Objectve-C 混编</li>
+<li>Swift 如何使用 Objective-C 的 cocoapods</li>
+</ol>
+
+
+<h3>Swift 与 Objectve-C 混编</h3>
+
+<h4>Swift 文件里使用 Objective-C 类</h4>
+
+<p>无论是在 Swift 工程中新建 Objectve-C 的类，还是在 Objective-C 中新建 Swift 的类，Xcode 都会提示 <code>Would you like to configure an Objective-C bridging header?</code> ，选择是，就会新建一个Bridging 的文件，文件的名称一般是 <code>ProjectName-Bridging-Header.h</code>,比如项目名称是 <code>Cat</code>，那么名称就会是<code>Cat-Bridging-Header.h</code>，然后在这个文件里引用 Swift 需要用到的 Objective-C 的头文件，比如</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;GHCatView.h&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>那么就在 Swift 的类里使用 Objective-C 类了.</p>
+
+<h4>Objective-C 文件里使用 Swift 类</h4>
+
+<p>直接在.m 文件里</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;Clock-swift.h&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Swift 如何使用 Objective-C 的 Cocoapods</h3>
+
+<p>通过 cocoapods 使用第三方的 Objective-C 的组件的时候，在<code>ProjectName-Bridging-Header.h</code>里面引入相关的头文件，比如你要使用 Mantle，就可以</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &lt;Mantle/Mantle.h&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>接下来就可以在 Swift 的文件里使用了</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-04-12T11:42:05+08:00" pubdate data-updated="true">Apr 12<span>th</span>, 2015</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="/blog/2015/04/12/swift-yu-objective-c-hun-bian-ji-ru-he-diao-yong-cocoapods/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -1700,102 +1779,6 @@ contents
 </div>
 	
 	<div class="comments"><a href="/blog/2014/08/12/ioszhong-de-zi-jie-xu/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan/">
-		
-			iOS中的断点续传</a>
-	</h2>
-	<div class="entry-content">
-		<p><img src="/images/201407161730.png" alt="" /></p>
-
-<h4>关键点</h4>
-
-<p>实现断点续传的关键是自定义http request的头部的range域属性</p>
-
-<p>Range头域可以请求实体的一个或者多个子范围。例如，</p>
-
-<p>表示头500个字节：bytes=0-499</p>
-
-<p>表示第二个500字节：bytes=500-999</p>
-
-<p>表示最后500个字节：bytes=-500</p>
-
-<p>表示500字节以后的范围：bytes=500-</p>
-
-<p>第一个和最后一个字节：bytes=0-0,-1</p>
-
-<p>同时指定几个范围：bytes=500-600,601-999</p>
-
-<h4>基本思想</h4>
-
-<p>1、获取已下载文件的大小，用来确定下载的文件从什么地方开始续传(即获取range属性的范围);</p>
-
-<p>2、设置http request请求头文件，要包含range属性;</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSMutableURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableURLRequest</span> <span class="nl">requestWithURL:</span><span class="n">url</span> <span class="nl">cachePolicy:</span><span class="n">NSURLRequestUseProtocolCachePolicy</span> <span class="nl">timeoutInterval:</span><span class="mf">5.0f</span><span class="p">];</span>
-</span><span class='line'>   <span class="c1">// 设置请求头文件</span>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">rangeValue</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;bytes=%llu-&quot;</span><span class="p">,</span> <span class="n">from</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">request</span> <span class="nl">addValue:</span><span class="n">rangeValue</span> <span class="nl">forHTTPHeaderField:</span><span class="s">@&quot;Range&quot;</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>3、 发起http下载请求;</p>
-
-<h4>具体实现</h4>
-
-<p>可以用iOS自带的NSURLConnection，也可以使用第三方如AFNetWorking实现。</p>
-
-<p><a href="http://www.cnblogs.com/liufeng24/p/3555303.html">NSURLConnection实现方法</a>；</p>
-
-<p><a href="http://blog.csdn.net/zhaoxy_thu/article/details/21383515">AFNetworking实现方法</a>;</p>
-
-<p><a href="https://github.com/thibaultCha/TCBlobDownload">TCBlobDownload</a>;</p>
-
-<h4>参考资料</h4>
-
-<p>1.<a href="http://blog.csdn.net/sirchenhua/article/details/7286312">ios 实现断点续传 一 nsurlconnection</a>;</p>
-
-<p>2.<a href="http://longminxiang.blog.163.com/blog/static/5933298520137933235997/">IOS Http断点续传浅析</a>;</p>
-
-<p>3.<a href="http://www.cnblogs.com/liufeng24/p/3555303.html">iOS开发网络编程之断点续传-NSURLConnection</a>;</p>
-
-<p>4.<a href="http://blog.csdn.net/zhaoxy_thu/article/details/21383515">AFNetworking实现程序重新启动时的断点续传</a>；</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-07-16T17:25:31+08:00" pubdate data-updated="true">Jul 16<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-</div>
-	
-	<div class="comments"><a href="/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>

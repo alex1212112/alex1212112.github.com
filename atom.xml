@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
   <link href="http://alex1212112.github.io/"/>
-  <updated>2015-04-07T11:55:49+08:00</updated>
+  <updated>2015-04-12T12:01:32+08:00</updated>
   <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -12,6 +12,56 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Swift 与 Objective-C 混编及如何调用 Cocoapods]]></title>
+    <link href="http://alex1212112.github.io/blog/2015/04/12/swift-yu-objective-c-hun-bian-ji-ru-he-diao-yong-cocoapods/"/>
+    <updated>2015-04-12T11:42:05+08:00</updated>
+    <id>http://alex1212112.github.io/blog/2015/04/12/swift-yu-objective-c-hun-bian-ji-ru-he-diao-yong-cocoapods</id>
+    <content type="html"><![CDATA[<p><img src="http://alex1212112.github.io/images/201504121200.png" alt="" /></p>
+
+<h3>目录</h3>
+
+<ol>
+<li>Swift 与 Objectve-C 混编</li>
+<li>Swift 如何使用 Objective-C 的 cocoapods</li>
+</ol>
+
+
+<h3>Swift 与 Objectve-C 混编</h3>
+
+<h4>Swift 文件里使用 Objective-C 类</h4>
+
+<p>无论是在 Swift 工程中新建 Objectve-C 的类，还是在 Objective-C 中新建 Swift 的类，Xcode 都会提示 <code>Would you like to configure an Objective-C bridging header?</code> ，选择是，就会新建一个Bridging 的文件，文件的名称一般是 <code>ProjectName-Bridging-Header.h</code>,比如项目名称是 <code>Cat</code>，那么名称就会是<code>Cat-Bridging-Header.h</code>，然后在这个文件里引用 Swift 需要用到的 Objective-C 的头文件，比如</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;GHCatView.h&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>那么就在 Swift 的类里使用 Objective-C 类了.</p>
+
+<h4>Objective-C 文件里使用 Swift 类</h4>
+
+<p>直接在.m 文件里</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;Clock-swift.h&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Swift 如何使用 Objective-C 的 Cocoapods</h3>
+
+<p>通过 cocoapods 使用第三方的 Objective-C 的组件的时候，在<code>ProjectName-Bridging-Header.h</code>里面引入相关的头文件，比如你要使用 Mantle，就可以</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &lt;Mantle/Mantle.h&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>接下来就可以在 Swift 的文件里使用了</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[CALayer(一)]]></title>

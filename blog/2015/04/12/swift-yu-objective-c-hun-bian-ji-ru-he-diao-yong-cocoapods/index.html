@@ -1,0 +1,202 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Swift 与 Objective-C 混编及如何调用 Cocoapods - Summerrose’s Blog</title>
+	<meta name="author" content="ghren">
+
+	
+	<meta name="description" content="目录 Swift 与 Objectve-C 混编
+Swift 如何使用 Objective-C 的 cocoapods Swift 与 Objectve-C 混编 Swift 文件里使用 Objective-C 类 无论是在 Swift 工程中新建 Objectve-C 的类，还是在 &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script async="true" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">Summerrose’s Blog</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:alex1212112.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:alex1212112.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Swift 与 Objective-C 混编及如何调用 Cocoapods</h2>
+	<div class="entry-content"><p><img src="/images/201504121200.png" alt="" /></p>
+
+<h3>目录</h3>
+
+<ol>
+<li>Swift 与 Objectve-C 混编</li>
+<li>Swift 如何使用 Objective-C 的 cocoapods</li>
+</ol>
+
+
+<h3>Swift 与 Objectve-C 混编</h3>
+
+<h4>Swift 文件里使用 Objective-C 类</h4>
+
+<p>无论是在 Swift 工程中新建 Objectve-C 的类，还是在 Objective-C 中新建 Swift 的类，Xcode 都会提示 <code>Would you like to configure an Objective-C bridging header?</code> ，选择是，就会新建一个Bridging 的文件，文件的名称一般是 <code>ProjectName-Bridging-Header.h</code>,比如项目名称是 <code>Cat</code>，那么名称就会是<code>Cat-Bridging-Header.h</code>，然后在这个文件里引用 Swift 需要用到的 Objective-C 的头文件，比如</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;GHCatView.h&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>那么就在 Swift 的类里使用 Objective-C 类了.</p>
+
+<h4>Objective-C 文件里使用 Swift 类</h4>
+
+<p>直接在.m 文件里</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;Clock-swift.h&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Swift 如何使用 Objective-C 的 Cocoapods</h3>
+
+<p>通过 cocoapods 使用第三方的 Objective-C 的组件的时候，在<code>ProjectName-Bridging-Header.h</code>里面引入相关的头文件，比如你要使用 Mantle，就可以</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &lt;Mantle/Mantle.h&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>接下来就可以在 Swift 的文件里使用了</p>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-04-12T11:42:05+08:00" pubdate data-updated="true">Apr 12<span>th</span>, 2015</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2015
+
+    ghren
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'alex1212112';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://alex1212112.github.io/blog/2015/04/12/swift-yu-objective-c-hun-bian-ji-ru-he-diao-yong-cocoapods/';
+        var disqus_url = 'http://alex1212112.github.io/blog/2015/04/12/swift-yu-objective-c-hun-bian-ji-ru-he-diao-yong-cocoapods/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>
