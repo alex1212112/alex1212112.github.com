@@ -7,8 +7,7 @@
 	<meta name="author" content="ghren">
 
 	
-	<meta name="description" content="目录 Swift 与 Objectve-C 混编
-Swift 如何使用 Objective-C 的 cocoapods Swift 与 Objectve-C 混编 Swift 文件里使用 Objective-C 类 无论是在 Swift 工程中新建 Objectve-C 的类，还是在 &hellip;">
+	<meta name="description" content="介绍 在iOS7 以后，整个扁平化的 iOS 界面都大量采用了高斯模糊的效果来展示层次，比如在主界面上从底面上划出来 的控制面板，或者从顶部向下划出来的通知栏界面，都实时模糊了主界面背景，在 iOS7 的时候我们总共有 3.5 个办法来实现这些效果： 利用苹果开源的 UIImage+ &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -80,6 +79,152 @@ Swift 如何使用 Objective-C 的 cocoapods Swift 与 Objectve-C 混编 Swift �
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/05/10/ios8-zhong-de-shi-shi-mo-hu-view%5Bnil%5Duivisualeffectview/">
+		
+			iOS8 中的实时模糊View－UIVisualEffectView</a>
+	</h2>
+	<div class="entry-content">
+		<p><img src="/images/201505101313.png" alt="" /></p>
+
+<h3>介绍</h3>
+
+<p>在iOS7 以后，整个扁平化的 iOS 界面都大量采用了高斯模糊的效果来展示层次，比如在主界面上从底面上划出来 的控制面板，或者从顶部向下划出来的通知栏界面，都实时模糊了主界面背景，在 iOS7 的时候我们总共有 3.5 个办法来实现这些效果：</p>
+
+<ol>
+<li>利用苹果开源的 UIImage+ImageEffects</li>
+<li>利用 GPUImage 的高斯模糊滤镜</li>
+<li>利用CoreImage 的高斯模糊滤镜</li>
+</ol>
+
+
+<p>在 iOS7 初期的时候还有人使用 UIToolBar 覆盖在 superView 上的方法来实现，但是后来这个方法失效了，所以只能算半个。不过到了 iOS8，苹果提供了一个非常好用的方案－UIVisualEffectView。</p>
+
+<p>UIVisualEffectView 是 UIView 的子类，因此使用的时候就是实例化一个 UIVisualEffectView，然后添加到superView 上就 OK 了。 That‘s it，就这么简单。</p>
+
+<p>UIVisualEffectView 有两种效果，一种是 UIBlurEffect，即高斯模糊效果，一种是 UIVibrancyEffect，这种效果能把背景 View 和 当前 View 混合起来，通常使用的时候要在模糊后的 View 上 显示一些内容的话，就要在 UIBlurEffect 的 View 上 再添加一层 UIVibrancyEffect，这样可以使整个显示效果更舒适一点，下面这张图展示了在背景图片完全相同的情况下使用和不使用 Vibrancy 的不同:</p>
+
+<p><img src="http://www.cocoachina.com/cms/uploads/allimg/141011/10310Q192-19.png" alt="" /></p>
+
+<h3>代码</h3>
+
+<p>Objectivie-C</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//初始化一个 UIVisualEffect，UIBlurEffect 是 UIVisualEffect 的子类</span>
+</span><span class='line'><span class="n">UIBlurEffect</span> <span class="o">*</span><span class="n">blurEffect</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIBlurEffect</span> <span class="nl">effectWithStyle:</span><span class="n">UIBlurEffectStyleExtraLight</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//初始化 模糊效果的 UIVisualEffectView</span>
+</span><span class='line'><span class="n">UIVisualEffectView</span> <span class="o">*</span> <span class="n">blurEffectView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIVisualEffectView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithEffect:</span><span class="n">blurEffect</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//设置 blurEffectView 的 frame</span>
+</span><span class='line'><span class="n">blurEffectView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">bounds</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//添加 blurEffectView 到 self.View 上,如果只是做模糊效果，那么到这一步已经完了</span>
+</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">view</span> <span class="nl">addSubview:</span><span class="n">blurEffectView</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//初始化 Vibrancy 类型的 UIVisualEffect，vibrancyEffect 也是UIVisualEffect 的子类，而且初始化这个 Effect 需要用到 blurEffect，我们就还用上面的好了，假如重新初始化一个 blurEffect，要注意这个新的 blurEffect 的 style 要和上面的保持一致，不然就实现不了 Vibrancy效果</span>
+</span><span class='line'><span class="n">UIVibrancyEffect</span> <span class="o">*</span><span class="n">vibrancyEffect</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIVibrancyEffect</span> <span class="nl">effectForBlurEffect:</span><span class="n">blurEffect</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//初始化 Vibrancy 效果的 UIVisualEffectView</span>
+</span><span class='line'><span class="n">UIVisualEffectView</span> <span class="o">*</span><span class="n">vibrancyEffectView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIVisualEffectView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithEffect:</span><span class="n">vibrancyEffect</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//设置 vibrancyEffectView 的frame</span>
+</span><span class='line'><span class="n">vibrancyEffectView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">blurEffectView</span><span class="p">.</span><span class="n">bounds</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//注意是 blurEffectView.contentView. 苹果官方注释说了  Do not add subviews directly to UIVisualEffectView, use this view instead</span>
+</span><span class='line'><span class="p">[</span><span class="n">blurEffectView</span><span class="p">.</span><span class="n">contentView</span> <span class="nl">addSubview:</span><span class="n">vibrancyEffectView</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//初始化一个 label</span>
+</span><span class='line'><span class="n">UILabel</span> <span class="o">*</span><span class="n">label</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UILabel</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">vibrancyEffectView</span><span class="p">.</span><span class="n">bounds</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">label</span><span class="p">.</span><span class="n">textAlignment</span> <span class="o">=</span> <span class="n">NSTextAlignmentCenter</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">label</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">@&quot;Live long and Prosper&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">label</span><span class="p">.</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIFont</span> <span class="nl">fontWithName:</span><span class="s">@&quot;SnellRoundhand-Black&quot;</span> <span class="nl">size:</span><span class="mf">29.0f</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//添加 label</span>
+</span><span class='line'><span class="p">[</span><span class="n">vibrancyEffectView</span><span class="p">.</span><span class="n">contentView</span> <span class="nl">addSubview:</span><span class="n">label</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>参考资料</h3>
+
+<ol>
+<li><a href="http://www.raywenderlich.com/84043/ios-8-visual-effects-tutorial">UIVisualEffectView Tutorial</a></li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-10T13:08:00+08:00" pubdate data-updated="true">May 10<span>th</span>, 2015</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="/blog/2015/05/10/ios8-zhong-de-shi-shi-mo-hu-view%5Bnil%5Duivisualeffectview/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/04/12/swift-yu-objective-c-hun-bian-ji-ru-he-diao-yong-cocoapods/">
 		
 			Swift 与 Objective-C 混编及如何调用 Cocoapods</a>
@@ -113,7 +258,7 @@ Swift 如何使用 Objective-C 的 cocoapods Swift 与 Objectve-C 混编 Swift �
 <p>直接在.m 文件里</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;Clock-swift.h&quot;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;Cat-swift.h&quot;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1666,120 +1811,6 @@ Swift 如何使用 Objective-C 的 cocoapods Swift 与 Objectve-C 混编 Swift �
 </div>
 	
 	<div class="comments"><a href="/blog/2014/09/02/kvojian-jie/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/08/12/ioszhong-de-zi-jie-xu/">
-		
-			iOS中的字节序</a>
-	</h2>
-	<div class="entry-content">
-		<p><img src="/images/b8c60f715c7d7ad3736a3efde8f56eae65d9d45810251-ck6IkC_fw658.png" alt="" /></p>
-
-<h4>起因</h4>
-
-<p>最近在做 iOS 蓝牙开发的时候，将多字节数据从APP端发到蓝牙设备端的时候，发现字节顺序都是反的，比如发送一个 0x0500 的数据给蓝牙设备端，设备端收到以后就变成了0x0005,研究发现这就是字节序不对导致的问题。</p>
-
-<h4>什么是字节序</h4>
-
-<p>采用维基百科的解释如下：</p>
-
-<blockquote><p>在几乎所有的机器上，多字节对象都被存储为连续的字节序列。例如在C语言中，一个类型为int的变量x地址为0x100，那么其对应地址表达式&amp;x的值为0x100。且x的四个字节将被存储在存储器的0x100, 0x101, 0x102, 0x103位置。</p>
-
-<p>而存储地址内的排列则有两个通用规则。一个多位的整数将按照其存储地址的最低或最高字节排列。如果最低有效字节在最高有效字节的前面，则称小端序；反之则称大端序。在网络应用中，字节序是一个必须被考虑的因素，因为不同机器类型可能采用不同标准的字节序，所以均按照网络标准转化。</p>
-
-<p>例如假设上述变量x类型为int，位于地址0x100处，它的十六进制为0x01234567，地址范围为0x100~0x103字节，其内部排列顺序依赖于机器的类型。大端法从首位开始将是：0x100: 01, 0x101: 23,..。而小端法将是：0x100: 67, 0x101: 45,..</p></blockquote>
-
-<p><img src="/images/280px-Big-Endian.svg.png" alt="" /></p>
-
-<p><img src="/images/280px-Little-Endian.svg.png" alt="" /></p>
-
-<h4>相关体系</h4>
-
-<ul>
-<li><p>x86，MOS Technology 6502，Z80，VAX，PDP-11等处理器为Little endian。</p></li>
-<li><p>Motorola 6800，Motorola 68000，PowerPC 970，System/370，SPARC（除V9外）等处理器为Big endian</p></li>
-<li><p>ARM, PowerPC (除PowerPC 970外), DEC Alpha, SPARC V9, MIPS, PA-RISC and IA64的字节序是可配置的。</p></li>
-<li><p>网络传输一般采用大端序，也被称之为网络字节序，或网络序。IP协议中定义大端序为网络字节序。伯克利socket API定义了一组转换函数，用于16和32bit整数在网络序和本机字节序之间的转换。htonl，htons用于本机序转换到网络序；ntohl，ntohs用于网络序转换到本机序。</p></li>
-</ul>
-
-
-<h4>iOS中的字节序</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">NSHostByteOrder</span><span class="p">()</span> <span class="o">==</span> <span class="n">NS_LittleEndian</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;LittleEndian&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">NSHostByteOrder</span><span class="p">()</span> <span class="o">==</span> <span class="n">NS_BigEndian</span><span class="p">){</span>
-</span><span class='line'>         <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;BigEndian&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>         <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Unknow&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>通过上述代码打印出来的log，可以知道iOS系统目前采用的是小端序。因此在进行socket网络传输之类的工作时，要记得先把字节序进行转换，然后再传输。iOS自身提供了相应的转换方法，如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">UInt16</span>  <span class="n">Byte</span> <span class="o">=</span> <span class="mh">0x1234</span><span class="p">;</span>
-</span><span class='line'><span class="n">HTONS</span><span class="p">(</span><span class="n">Byte</span><span class="p">);</span><span class="c1">//转换</span>
-</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Byte == %x&quot;</span><span class="p">,</span><span class="n">Byte</span><span class="p">);</span><span class="c1">//打印出来发现顺序变了</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>上述代码中 HTONS(x) 是对2字节进行转换，如果要对4字节进行转换，就要用 HTONL(x)进行转换了，要对更高字节，比如8字节（64位）进行转换，就要自己写转换的方法了。</p>
-
-<h4>参考资料</h4>
-
-<ol>
-<li><p><a href="http://ixhan.com/2009/10/little-about-byte-order/">关于字节序</a>;</p></li>
-<li><p><a href="http://geeklu.com/2012/01/macios-socket/">Mac&amp;iOS Socket</a>;</p></li>
-<li><p><a href="http://blog.csdn.net/ernest201210/article/details/8690686"> 网络字节序与主机字节序 高低位</a>;</p></li>
-<li><p><a href="http://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82%E5%BA%8F">字节序</a>;</p></li>
-<li><p><a href="https://developer.apple.com/library/mac/documentation/corefoundation/Conceptual/CFMemoryMgmt/Concepts/ByteOrdering.html">Byte Ordering</a>;</p></li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-08-12T12:07:08+08:00" pubdate data-updated="true">Aug 12<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-</div>
-	
-	<div class="comments"><a href="/blog/2014/08/12/ioszhong-de-zi-jie-xu/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>

@@ -1,0 +1,267 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>iOS8 中的实时模糊View－UIVisualEffectView - Summerrose’s Blog</title>
+	<meta name="author" content="ghren">
+
+	
+	<meta name="description" content="介绍 在iOS7 以后，整个扁平化的 iOS 界面都大量采用了高斯模糊的效果来展示层次，比如在主界面上从底面上划出来 的控制面板，或者从顶部向下划出来的通知栏界面，都实时模糊了主界面背景，在 iOS7 的时候我们总共有 3.5 个办法来实现这些效果： 利用苹果开源的 UIImage+ &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script async="true" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">Summerrose’s Blog</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:alex1212112.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:alex1212112.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">iOS8 中的实时模糊View－UIVisualEffectView</h2>
+	<div class="entry-content"><p><img src="/images/201505101313.png" alt="" /></p>
+
+<h3>介绍</h3>
+
+<p>在iOS7 以后，整个扁平化的 iOS 界面都大量采用了高斯模糊的效果来展示层次，比如在主界面上从底面上划出来 的控制面板，或者从顶部向下划出来的通知栏界面，都实时模糊了主界面背景，在 iOS7 的时候我们总共有 3.5 个办法来实现这些效果：</p>
+
+<ol>
+<li>利用苹果开源的 UIImage+ImageEffects</li>
+<li>利用 GPUImage 的高斯模糊滤镜</li>
+<li>利用CoreImage 的高斯模糊滤镜</li>
+</ol>
+
+
+<p>在 iOS7 初期的时候还有人使用 UIToolBar 覆盖在 superView 上的方法来实现，但是后来这个方法失效了，所以只能算半个。不过到了 iOS8，苹果提供了一个非常好用的方案－UIVisualEffectView。</p>
+
+<p>UIVisualEffectView 是 UIView 的子类，因此使用的时候就是实例化一个 UIVisualEffectView，然后添加到superView 上就 OK 了。 That‘s it，就这么简单。</p>
+
+<p>UIVisualEffectView 有两种效果，一种是 UIBlurEffect，即高斯模糊效果，一种是 UIVibrancyEffect，这种效果能把背景 View 和 当前 View 混合起来，通常使用的时候要在模糊后的 View 上 显示一些内容的话，就要在 UIBlurEffect 的 View 上 再添加一层 UIVibrancyEffect，这样可以使整个显示效果更舒适一点，下面这张图展示了在背景图片完全相同的情况下使用和不使用 Vibrancy 的不同:</p>
+
+<p><img src="http://www.cocoachina.com/cms/uploads/allimg/141011/10310Q192-19.png" alt="" /></p>
+
+<h3>代码</h3>
+
+<p>Objectivie-C</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//初始化一个 UIVisualEffect，UIBlurEffect 是 UIVisualEffect 的子类</span>
+</span><span class='line'><span class="n">UIBlurEffect</span> <span class="o">*</span><span class="n">blurEffect</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIBlurEffect</span> <span class="nl">effectWithStyle:</span><span class="n">UIBlurEffectStyleExtraLight</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//初始化 模糊效果的 UIVisualEffectView</span>
+</span><span class='line'><span class="n">UIVisualEffectView</span> <span class="o">*</span> <span class="n">blurEffectView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIVisualEffectView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithEffect:</span><span class="n">blurEffect</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//设置 blurEffectView 的 frame</span>
+</span><span class='line'><span class="n">blurEffectView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">bounds</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//添加 blurEffectView 到 self.View 上,如果只是做模糊效果，那么到这一步已经完了</span>
+</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">view</span> <span class="nl">addSubview:</span><span class="n">blurEffectView</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//初始化 Vibrancy 类型的 UIVisualEffect，vibrancyEffect 也是UIVisualEffect 的子类，而且初始化这个 Effect 需要用到 blurEffect，我们就还用上面的好了，假如重新初始化一个 blurEffect，要注意这个新的 blurEffect 的 style 要和上面的保持一致，不然就实现不了 Vibrancy效果</span>
+</span><span class='line'><span class="n">UIVibrancyEffect</span> <span class="o">*</span><span class="n">vibrancyEffect</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIVibrancyEffect</span> <span class="nl">effectForBlurEffect:</span><span class="n">blurEffect</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//初始化 Vibrancy 效果的 UIVisualEffectView</span>
+</span><span class='line'><span class="n">UIVisualEffectView</span> <span class="o">*</span><span class="n">vibrancyEffectView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIVisualEffectView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithEffect:</span><span class="n">vibrancyEffect</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//设置 vibrancyEffectView 的frame</span>
+</span><span class='line'><span class="n">vibrancyEffectView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">blurEffectView</span><span class="p">.</span><span class="n">bounds</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//注意是 blurEffectView.contentView. 苹果官方注释说了  Do not add subviews directly to UIVisualEffectView, use this view instead</span>
+</span><span class='line'><span class="p">[</span><span class="n">blurEffectView</span><span class="p">.</span><span class="n">contentView</span> <span class="nl">addSubview:</span><span class="n">vibrancyEffectView</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//初始化一个 label</span>
+</span><span class='line'><span class="n">UILabel</span> <span class="o">*</span><span class="n">label</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UILabel</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">vibrancyEffectView</span><span class="p">.</span><span class="n">bounds</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">label</span><span class="p">.</span><span class="n">textAlignment</span> <span class="o">=</span> <span class="n">NSTextAlignmentCenter</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">label</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">@&quot;Live long and Prosper&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">label</span><span class="p">.</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIFont</span> <span class="nl">fontWithName:</span><span class="s">@&quot;SnellRoundhand-Black&quot;</span> <span class="nl">size:</span><span class="mf">29.0f</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//添加 label</span>
+</span><span class='line'><span class="p">[</span><span class="n">vibrancyEffectView</span><span class="p">.</span><span class="n">contentView</span> <span class="nl">addSubview:</span><span class="n">label</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>参考资料</h3>
+
+<ol>
+<li><a href="http://www.raywenderlich.com/84043/ios-8-visual-effects-tutorial">UIVisualEffectView Tutorial</a></li>
+</ol>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-10T13:08:00+08:00" pubdate data-updated="true">May 10<span>th</span>, 2015</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2015
+
+    ghren
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'alex1212112';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://alex1212112.github.io/blog/2015/05/10/ios8-zhong-de-shi-shi-mo-hu-view%5Bnil%5Duivisualeffectview/';
+        var disqus_url = 'http://alex1212112.github.io/blog/2015/05/10/ios8-zhong-de-shi-shi-mo-hu-view%5Bnil%5Duivisualeffectview/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>
