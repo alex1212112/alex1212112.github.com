@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
   <link href="http://alex1212112.github.io/"/>
-  <updated>2015-05-27T18:57:35+08:00</updated>
+  <updated>2015-05-27T19:11:28+08:00</updated>
   <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -31,8 +31,8 @@
 <h3>回答</h3>
 
 <ol>
-<li><p>停止已经启动的<code>UILocalNotification</code>，创建一个新的<code>UILocalNotification</code>并启动，直接修改已经启动的<code>UILocalNotification</code>是不生效的，因为你在  <code>[[UIApplication sharedApplication] scheduleLocalNotification:notification]</code> 的时候，复制了一个当前的notification，并提交到系统的推送队列上，假如不提交的话，系统是不认识这个 notification 的。</p></li>
-<li><p>执行完 <code>cancelAllLocalNotifications</code> 后，你再打印 <code>[UIApplication sharedApplication].scheduledLocalNotifications</code>，发现其并不为空，stackoverflow 上有人说这个方法不是同步执行的，只会在当前的 run loop 结束之后生效,有人说可以通过</p></li>
+<li><p>停止已经启动的<code>UILocalNotification</code>，创建一个新的<code>UILocalNotification</code>并启动，直接修改已经启动的<code>UILocalNotification</code>是不生效的，因为你在<code>[[UIApplication sharedApplication] scheduleLocalNotification:notification]</code>的时候，复制了一个当前的notification，并提交到系统的推送队列上，假如不提交的话，系统是不认识这个notification的。</p></li>
+<li><p>执行完 <code>cancelAllLocalNotifications</code> 后，你再打印<code>[UIApplication sharedApplication].scheduledLocalNotifications</code>,发现其并不为空,stackoverflow 上有人说这个方法不是同步执行的，只会在当前的 run loop 结束之后生效,有人说可以通过</p></li>
 </ol>
 
 
