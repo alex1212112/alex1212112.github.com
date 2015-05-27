@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
   <link href="http://alex1212112.github.io/"/>
-  <updated>2015-05-10T13:23:46+08:00</updated>
+  <updated>2015-05-27T18:53:18+08:00</updated>
   <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -12,6 +12,63 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[关于 UILocalNotification 的几个问题]]></title>
+    <link href="http://alex1212112.github.io/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/"/>
+    <updated>2015-05-27T18:47:25+08:00</updated>
+    <id>http://alex1212112.github.io/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti</id>
+    <content type="html"><![CDATA[<p><img src="http://alex1212112.github.io/images/201505271852.png" alt="" /></p>
+
+<h3>问题</h3>
+
+<ol>
+<li><p>如何修改已经启动的 UILocalNotification</p></li>
+<li><p>为何 cancelAllLocalNotifications 方法调用完毕之后并不生效</p></li>
+</ol>
+
+
+<h3>回答</h3>
+
+<ol>
+<li><p>停止已经启动的 UILocalNotification，创建一个新的 UILocalNotification 并启动，直接修改已经启动的 UILocalNotification 是不生效的，因为你在  <code>[[UIApplication sharedApplication] scheduleLocalNotification:notification]</code> 的时候，相当于复制了一个当前的notification，并提交到系统的推送队列上，假如不提交的话，系统是不认识这个 notification 的。</p></li>
+<li><p>执行完 cancelAllLocalNotifications 后，你再打印 <code>[UIApplication sharedApplication].scheduledLocalNotifications</code>，发现其并不为空，stackoverflow 上有人说这个方法不是同步执行的，只会在当前的 run loop 结束之后生效,有人说可以通过</p></li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">].</span><span class="n">scheduledLocalNotifications</span> <span class="o">=</span> <span class="nb">nil</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>的方法使其立即生效，测试发现并没有什么作用，真正有用的方法还是 stackoverflow 上一个开发者提出的变通方法:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">cancelAllLocalNotifications</span><span class="p">];</span>
+</span><span class='line'>    <span class="kt">long</span> <span class="n">count</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">((</span><span class="n">count</span> <span class="o">=</span> <span class="p">[[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">scheduledLocalNotifications</span><span class="p">]</span> <span class="n">count</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Remaining notificaitons to cancel: %lu&quot;</span><span class="p">,(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">count</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">NSThread</span> <span class="nl">sleepForTimeInterval:</span><span class="mf">.01f</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对于问题1，有时候在 <code>[[UIApplication sharedApplication] cancelLocalNotification:notification]</code>的时候可能会发现并没有立即cancel掉，也可以采用这样的方法，在 cancel 完之后 执行下 <code>[NSThread sleepForTimeInterval:.01f]</code>;</p>
+
+<h3>参考资料</h3>
+
+<ol>
+<li><p><a href="http://stackoverflow.com/questions/25948037/ios-8-uiapplication-sharedapplication-scheduledlocalnotifications-empty">scheduledLocalNotifications</a></p></li>
+<li><p><a href="http://stackoverflow.com/questions/13163535/cancelalllocalnotifications-not-working-on-iphone-3gs">cancelAllLocalNotifications</a></p></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[iOS8 中的实时模糊View－UIVisualEffectView]]></title>
