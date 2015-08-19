@@ -7,8 +7,12 @@
 	<meta name="author" content="ghren">
 
 	
-	<meta name="description" content="问题 如何修改已经启动的UILocalNotification
-为何cancelAllLocalNotifications方法调用完毕之后并不生效 回答 停止已经启动的UILocalNotification，创建一个新的UILocalNotification并启动， &hellip;">
+	<meta name="description" content="官方地址（github）
+ReactiveCocoa与Functional Reactive Programming
+说说ReactiveCocoa 2
+ReactiveCocoa2实战
+Reactive​Cocoa-NSHipster
+ReactiveCocoa学习笔记 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -75,6 +79,66 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/">
+		
+			ReactiveCocoa 学习资料</a>
+	</h2>
+	<div class="entry-content">
+		<p><img src="/images/201508191805.png" alt="" /></p>
+
+<ol>
+<li><p><a href="https://github.com/ReactiveCocoa/ReactiveCocoa">官方地址（github）</a></p></li>
+<li><p><a href="http://limboy.me/ios/2013/06/19/frp-reactivecocoa.html">ReactiveCocoa与Functional Reactive Programming</a></p></li>
+<li><p><a href="http://limboy.me/ios/2013/12/27/reactivecocoa-2.html">说说ReactiveCocoa 2</a></p></li>
+<li><p><a href="http://limboy.me/ios/2014/06/06/deep-into-reactivecocoa2.html">ReactiveCocoa2实战</a></p></li>
+<li><p><a href="http://nshipster.cn/reactivecocoa/">Reactive​Cocoa-NSHipster</a></p></li>
+<li><p><a href="http://yulingtianxia.com/blog/2014/07/29/reactivecocoa/">ReactiveCocoa学习笔记</a></p></li>
+<li><p><a href="http://benbeng.leanote.com/post/ReactiveCocoaTutorial-part1">ReactiveCocoa入门教程——第一部分</a></p></li>
+<li><p><a href="http://benbeng.leanote.com/post/ReactiveCocoaTutorial-part2">ReactiveCocoa入门教程——第二部分</a></p></li>
+<li><p><a href="http://southpeak.github.io/blog/2014/09/21/zai-reactivecocoazhong-jiang-%5B%3F%5D-ge-viewmodelbang-ding-dao-uitableviewshang/">在ReactiveCocoa中将一个ViewModel绑定到UITableView上</a></p></li>
+<li><p><a href="http://blog.devtang.com/blog/2014/02/11/reactivecocoa-introduction/">ReactiveCocoa &ndash; iOS开发的新框架</a></p></li>
+<li><p><a href="http://blog.sunnyxx.com/2014/03/06/rac_0_overview/">Reactive Cocoa Tutorial [0] = Overview</a></p></li>
+<li><p><a href="http://blog.sunnyxx.com/2014/03/06/rac_1_macros/">Reactive Cocoa Tutorial [1] = 神奇的Macros</a></p></li>
+<li><p><a href="http://blog.sunnyxx.com/2014/03/06/rac_2_racstream/">Reactive Cocoa Tutorial [2] = 百变RACStream</a>;</p></li>
+<li><p><a href="http://blog.sunnyxx.com/2014/03/06/rac_3_racsignal/">Reactive Cocoa Tutorial [3] = RACSignal的巧克力工厂</a></p></li>
+<li><p><a href="http://blog.sunnyxx.com/2014/04/19/rac_4_filters/">Reactive Cocoa Tutorial [4] = 只取所需的Filters</a></p></li>
+</ol>
+
+
+<p>学习顺序为 2，3，4，7，8，11，12，13，14，15，其他。</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-19T17:58:36+08:00" pubdate data-updated="true">Aug 19<span>th</span>, 2015</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -1431,266 +1495,6 @@
 </div>
 	
 	<div class="comments"><a href="/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/10/18/foundationkuang-jia-zhong-ji-he-lei-de-%5B%3F%5D-xie-yong-fa-nsarray/">
-		
-			Foundation框架中集合类的一些用法-NSArray</a>
-	</h2>
-	<div class="entry-content">
-		<p><img src="/images/201410191739.png" alt="" /></p>
-
-<h3>目录</h3>
-
-<ol>
-<li>遍历</li>
-<li>排序</li>
-<li>过滤</li>
-<li>其他</li>
-<li>参考资料</li>
-</ol>
-
-
-<h3>遍历</h3>
-
-<h4>普通for循环</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="p">[</span><span class="n">array</span> <span class="n">count</span><span class="p">];</span> <span class="n">n</span> <span class="o">++</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>for in 方式（NSFastEnumeration方式）</h4>
-
-<p>该方式无法获取到数组的下标，在不需要下标且数组元素很多的时候，可以用这种方式</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="k">for</span> <span class="p">(</span><span class="kt">id</span> <span class="n">object</span> <span class="k">in</span> <span class="n">array</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>enumerateObjectsUsingBlock方式</h4>
-
-<p>数组遍历的 block 方式 ，其中的stop标志提供了一个优雅的停止遍历的方法，当 *stop = Yes 的时候，遍历就会停止</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsUsingBlock:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="n">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>enumerateObjectsWithOptions方式</h4>
-
-<p>option 设置为 NSEnumerationConcurrent 为并发遍历方式,</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsWithOptions:</span><span class="n">NSEnumerationConcurrent</span> <span class="nl">usingBlock:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="n">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这里要注意使用并发方式进行遍历的话，最好不要在block里使用 NSMutableArray 之类的非线程安全的对象，当引起读写冲突的时候，会抛出 double free 的异常。</p>
-
-<p>option 设置为 NSEnumerationReverse 为倒序遍历方式</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsWithOptions:</span><span class="n">NSEnumerationReverse</span> <span class="nl">usingBlock:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="n">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>排序</h3>
-
-<p>假如数组里要排序的对象如下；</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="nc">User</span> : <span class="nc">NSObject</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">copy</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">copy</span><span class="p">)</span> <span class="n">NSNumber</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>使用NSDescriptor进行排序</h4>
-
-<p>按年龄和姓名进行排序,该方法可以对属性的多个key进行排序</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">sortDescriptors</span> <span class="o">=</span> <span class="err">@</span><span class="p">[[</span><span class="n">NSSortDescriptor</span> <span class="nl">sortDescriptorWithKey:</span><span class="s">@&quot;age&quot;</span> <span class="nl">ascending:</span><span class="n">YES</span><span class="p">],[</span><span class="n">NSSortDescriptor</span> <span class="nl">sortDescriptorWithKey:</span><span class="s">@&quot;name&quot;</span> <span class="nl">ascending:</span><span class="n">YES</span><span class="p">]];</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span>  <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingDescriptors:</span><span class="n">sortDescriptors</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>使用NSComparator进行排序</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingComparator:</span><span class="o">^</span><span class="n">NSComparisonResult</span><span class="p">(</span><span class="n">User</span> <span class="o">*</span><span class="n">user1</span><span class="p">,</span> <span class="n">User</span> <span class="o">*</span><span class="n">user2</span><span class="p">){</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">user1</span><span class="p">.</span><span class="n">age</span> <span class="nl">compare:</span><span class="n">user2</span><span class="p">.</span><span class="n">age</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>使用selctor</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">compare:</span><span class="p">)];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>其中compare为 User对象的方法</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSComparisonResult</span><span class="p">)</span><span class="nf">compare:</span><span class="p">(</span><span class="n">User</span> <span class="o">*</span><span class="p">)</span><span class="nv">otherUser</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">age</span> <span class="nl">compare:</span><span class="n">otherUser</span><span class="p">.</span><span class="n">age</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>过滤</h3>
-
-<p>有时候需要按照一定规则从数组中过滤出符合要求的元素，这时候就要用到NSPredicate了,常用的格式化的用法如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSPredicate</span> <span class="o">*</span><span class="n">predicate</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSPredicate</span> <span class="nl">predicateWithFormat:</span><span class="s">@&quot;((age &gt;= %@) AND (age &lt; %@))&quot;</span><span class="p">,</span><span class="err">@</span><span class="mi">20</span><span class="p">,</span><span class="err">@</span><span class="mi">30</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">filteredArrayUsingPredicate:</span><span class="n">predicate</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这个便返回了 user 数组中 age 在 20 到 30 之间的元素。</p>
-
-<p>NSPredicate 也有个 block 用法</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSPredicate</span> <span class="o">*</span><span class="n">predicate</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSPredicate</span> <span class="nl">predicateWithBlock:</span><span class="o">^</span><span class="kt">BOOL</span><span class="p">(</span><span class="kt">id</span> <span class="n">evaluatedObject</span><span class="p">,</span> <span class="n">NSDictionary</span> <span class="o">*</span><span class="n">bindings</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">return</span>  <span class="p">((</span><span class="n">User</span> <span class="o">*</span><span class="p">)</span><span class="n">evaluatedObject</span><span class="p">).</span><span class="n">age</span> <span class="o">&gt;=</span> <span class="mi">20</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="n">User</span> <span class="o">*</span><span class="p">)</span><span class="n">evaluatedObject</span><span class="p">).</span><span class="n">age</span> <span class="o">&lt;=</span> <span class="mi">30</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}];</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">filteredArrayUsingPredicate:</span><span class="n">predicate</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>其他</h3>
-
-<h4>去重</h4>
-
-<p>有一个优雅的KVC用法</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath:</span><span class="s">@&quot;@distinctUnionOfObjects.self&quot;</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>别忘了前面 distinctUnionOfObjects 前面的 @ 符号,假如只想返回一个由user数组中的姓名组成的不重复的新数组，可以</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath:</span><span class="s">@&quot;@distinctUnionOfObjects.name&quot;</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>还要注意假如数组里面存储的是我们自己的对象多话，这个对象还要实现等通性判断的方法：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span><span class="p">;</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nf">hash</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>假如不实现等同性判断的话，系统默认的会把两个对象的指针相同才认为是同一个对象，有时候这显然不是我们想要的. 对象等同性具体实现可参考<a href="http://alex1212112.github.io/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/">对象等同性判断</a>。</p>
-
-<h3>参考资料</h3>
-
-<ol>
-<li><p><a href="http://beyondvincent.com/blog/2014/01/26/how-to-sort-nsarray-with-custom-objects/">对 NSArray 中自定义的对象进行排序</a></p></li>
-<li><p><a href="http://objccn.io/issue-7-1/">基础集合类</a></p></li>
-<li><p><a href="http://blog.sunnyxx.com/2014/04/30/ios_iterator/">ios中集合遍历方法的比较和技巧</a></p></li>
-<li><p><a href="http://nshipster.cn/nspredicate/">NSPredicate</a></p></li>
-<li><p><a href="http://nshipster.cn/kvc-collection-operators/">KVC Collection Operators</a></p></li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-18T21:21:07+08:00" pubdate data-updated="true">Oct 18<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-</div>
-	
-	<div class="comments"><a href="/blog/2014/10/18/foundationkuang-jia-zhong-ji-he-lei-de-%5B%3F%5D-xie-yong-fa-nsarray/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>

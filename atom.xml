@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
   <link href="http://alex1212112.github.io/"/>
-  <updated>2015-05-27T19:11:28+08:00</updated>
+  <updated>2015-08-19T18:08:00+08:00</updated>
   <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -12,6 +12,36 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ReactiveCocoa 学习资料]]></title>
+    <link href="http://alex1212112.github.io/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/"/>
+    <updated>2015-08-19T17:58:36+08:00</updated>
+    <id>http://alex1212112.github.io/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao</id>
+    <content type="html"><![CDATA[<p><img src="http://alex1212112.github.io/images/201508191805.png" alt="" /></p>
+
+<ol>
+<li><p><a href="https://github.com/ReactiveCocoa/ReactiveCocoa">官方地址（github）</a></p></li>
+<li><p><a href="http://limboy.me/ios/2013/06/19/frp-reactivecocoa.html">ReactiveCocoa与Functional Reactive Programming</a></p></li>
+<li><p><a href="http://limboy.me/ios/2013/12/27/reactivecocoa-2.html">说说ReactiveCocoa 2</a></p></li>
+<li><p><a href="http://limboy.me/ios/2014/06/06/deep-into-reactivecocoa2.html">ReactiveCocoa2实战</a></p></li>
+<li><p><a href="http://nshipster.cn/reactivecocoa/">Reactive​Cocoa-NSHipster</a></p></li>
+<li><p><a href="http://yulingtianxia.com/blog/2014/07/29/reactivecocoa/">ReactiveCocoa学习笔记</a></p></li>
+<li><p><a href="http://benbeng.leanote.com/post/ReactiveCocoaTutorial-part1">ReactiveCocoa入门教程——第一部分</a></p></li>
+<li><p><a href="http://benbeng.leanote.com/post/ReactiveCocoaTutorial-part2">ReactiveCocoa入门教程——第二部分</a></p></li>
+<li><p><a href="http://southpeak.github.io/blog/2014/09/21/zai-reactivecocoazhong-jiang-%5B%3F%5D-ge-viewmodelbang-ding-dao-uitableviewshang/">在ReactiveCocoa中将一个ViewModel绑定到UITableView上</a></p></li>
+<li><p><a href="http://blog.devtang.com/blog/2014/02/11/reactivecocoa-introduction/">ReactiveCocoa &ndash; iOS开发的新框架</a></p></li>
+<li><p><a href="http://blog.sunnyxx.com/2014/03/06/rac_0_overview/">Reactive Cocoa Tutorial [0] = Overview</a></p></li>
+<li><p><a href="http://blog.sunnyxx.com/2014/03/06/rac_1_macros/">Reactive Cocoa Tutorial [1] = 神奇的Macros</a></p></li>
+<li><p><a href="http://blog.sunnyxx.com/2014/03/06/rac_2_racstream/">Reactive Cocoa Tutorial [2] = 百变RACStream</a>;</p></li>
+<li><p><a href="http://blog.sunnyxx.com/2014/03/06/rac_3_racsignal/">Reactive Cocoa Tutorial [3] = RACSignal的巧克力工厂</a></p></li>
+<li><p><a href="http://blog.sunnyxx.com/2014/04/19/rac_4_filters/">Reactive Cocoa Tutorial [4] = 只取所需的Filters</a></p></li>
+</ol>
+
+
+<p>学习顺序为 2，3，4，7，8，11，12，13，14，15，其他。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[关于 UILocalNotification 的几个问题]]></title>
