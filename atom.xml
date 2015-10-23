@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
   <link href="http://alex1212112.github.io/"/>
-  <updated>2015-10-23T16:54:17+08:00</updated>
+  <updated>2015-10-23T17:08:41+08:00</updated>
   <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -50,47 +50,47 @@
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'>    <span class="n">NSOperationQueue</span> <span class="o">*</span> <span class="n">queue</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSOperationQueue</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSOperationQueue</span> <span class="o">*</span> <span class="n">queue</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSOperationQueue</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">queue</span><span class="p">.</span><span class="n">maxConcurrentOperationCount</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//每次只执行一个任务</span>
+</span><span class='line'><span class="n">queue</span><span class="p">.</span><span class="n">maxConcurrentOperationCount</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//每次只执行一个任务</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="p">[</span><span class="n">queue</span> <span class="nl">addOperation:</span> <span class="p">[</span><span class="n">NSBlockOperation</span> <span class="nl">blockOperationWithBlock:</span><span class="o">^</span><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">queue</span> <span class="nl">addOperation:</span> <span class="p">[</span><span class="n">NSBlockOperation</span> <span class="nl">blockOperationWithBlock:</span><span class="o">^</span><span class="p">{</span>
 </span><span class='line'>
-</span><span class='line'>            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span> <span class="p">]];</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="err">```</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="o">*</span> <span class="n">dispatch</span> <span class="n">queue</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="n">dispatch</span> <span class="n">queue</span> <span class="err">也分串行队列和并发队列，我们这里需要创建一个串行队列。</span>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span> <span class="p">]];</span>
+</span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>objc</p>
+<ul>
+<li><p>dispatch queue</p>
 
-<pre><code>dispatch_queue_t serialQueue = dispatch_queue_create("com.ghren.MultiThread.test", DISPATCH_QUEUE_SERIAL); //生成一个串行队列
+<p> dispatch queue 也分串行队列和并发队列，我们这里需要创建一个串行队列。</p></li>
+</ul>
 
-for (NSInteger count = 0; count &lt; 3; count ++) {
 
-    dispatch_async(serialQueue, ^{
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">dispatch_queue_t</span> <span class="n">serialQueue</span> <span class="o">=</span> <span class="n">dispatch_queue_create</span><span class="p">(</span><span class="s">&quot;com.ghren.MultiThread.test&quot;</span><span class="p">,</span> <span class="n">DISPATCH_QUEUE_SERIAL</span><span class="p">);</span> <span class="c1">//生成一个串行队列</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">serialQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">});</span><span class="c1">//向该串行队列中添加任务</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-        NSLog(@"%ld",count);
-    });//向该串行队列中添加任务
-}
-```
-</code></pre>
 
 <h3>使用 dispatch_group</h3>
 
