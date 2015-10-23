@@ -101,7 +101,7 @@
 
 <p>使用串行队列，对于一个资源，同一时刻只有一个任务（线程）访问，这样就避免了资源竞争，实现了资源的同步。我们可以通过 NSOperationQueue 或 dispatch queue来实现串行队列。</p>
 
-<ol>
+<ul>
 <li><p>NSOperationQueue</p>
 
 <p> 创建一个    NSOperationQueue 队列，然后将该队列的最大并发数设置为 1，就是一个串行队列。</p>
@@ -124,22 +124,22 @@
 <p> &#8220;`</p></li>
 <li><p>dispatch queue</p>
 
-<p>dispatch queue 也分串行队列喝并发队列，我们这里需要创建一个串行队列。</p>
+<p> dispatch queue 也分串行队列和并发队列，我们这里需要创建一个串行队列。</p>
 
-<p> &#8220;`objc
-     dispatch_queue_t serialQueue = dispatch_queue_create(&ldquo;com.ghren.MultiThread.test&rdquo;, DISPATCH_QUEUE_SERIAL); //生成一个串行队列</p>
+<p>  &#8220;`objc
+      dispatch_queue_t serialQueue = dispatch_queue_create(&ldquo;com.ghren.MultiThread.test&rdquo;, DISPATCH_QUEUE_SERIAL); //生成一个串行队列</p>
 
-<pre><code> for (NSInteger count = 0; count &lt; 3; count ++) {
+<pre><code>  for (NSInteger count = 0; count &lt; 3; count ++) {
 
-     dispatch_async(serialQueue, ^{
+      dispatch_async(serialQueue, ^{
 
-         NSLog(@"%ld",count);
-     });//向该串行队列中添加任务
- }
+          NSLog(@"%ld",count);
+      });//向该串行队列中添加任务
+  }
 </code></pre>
 
-<p> &#8220;`</p></li>
-</ol>
+<p>  &#8220;`</p></li>
+</ul>
 
 
 <h3>使用 dispatch_group</h3>
