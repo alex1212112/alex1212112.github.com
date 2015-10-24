@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
   <link href="http://alex1212112.github.io/"/>
-  <updated>2015-10-23T17:08:41+08:00</updated>
+  <updated>2015-10-24T21:33:40+08:00</updated>
   <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -65,9 +65,8 @@
 
 
 <ul>
-<li><p>dispatch queue</p>
-
-<p> dispatch queue 也分串行队列和并发队列，我们这里需要创建一个串行队列。</p></li>
+<li>dispatch queue
+dispatch queue 也分串行队列和并发队列，我们这里需要创建一个串行队列。</li>
 </ul>
 
 
@@ -604,7 +603,7 @@
 
 <h3>子类</h3>
 
-<p>CIKernel 有两个子类：<code>CIColorKernel</code>和<code>CIColorKernel</code>。</p>
+<p>CIKernel 有两个子类：<code>CIColorKernel</code>和<code>CIWarpKernel</code>。</p>
 
 <h3>初始化</h3>
 
