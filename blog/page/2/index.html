@@ -7,10 +7,10 @@
 	<meta name="author" content="ghren">
 
 	
-	<meta name="description" content="我们经常会遇到判断两个对象是否相等的的情况，如果食用 == 操作符来进行判断，比较出来多结果不一定是我们想要的，因为 == 操作符比较的事两个对象对指针，而不是对象的值。 NSObject 协议中有两个用语判断等同性的关键方法： 1
-2
-- (NSUInteger)hash;
-- (BOOL) &hellip;">
+	<meta name="description" content="目录 什么是对象关联（Associated Objects）
+如何使用
+注意事项
+参考资料 什么是对象关联(Associated Objects) 对象关联是Objective-C 2.0运行时的一个特性，起始于OS X Snow Leopard和iOS 4。 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -77,6 +77,167 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/">
+		
+			Objective-C 中的对象关联(Associated Objects)</a>
+	</h2>
+	<div class="entry-content">
+		<p><img src="/images/201410201218.png" alt="" /></p>
+
+<h3>目录</h3>
+
+<ol>
+<li>什么是对象关联（Associated Objects）</li>
+<li>如何使用</li>
+<li>注意事项</li>
+<li>参考资料</li>
+</ol>
+
+
+<h3>什么是对象关联(Associated Objects)</h3>
+
+<p>对象关联是Objective-C 2.0运行时的一个特性，起始于OS X Snow Leopard和iOS 4。我们有时候需要在对象中存放一些相关的信息，而又无法通过别的手段实现时，就可以把这些信息通过对象关联的方法与对象关联起来，在需要的时候通过对应的 key 就可以获取到对象的这些信息，比如说我们可以在 Category 中通过对象关联添加自定义的属性。对象关联通过  &lt;objc/runtime.h> 中定义的三个方法实现的:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">void</span> <span class="nf">objc_setAssociatedObject</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">,</span> <span class="kt">id</span> <span class="n">value</span><span class="p">,</span> <span class="n">objc_AssociationPolicy</span> <span class="n">policy</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">id</span> <span class="nf">objc_getAssociatedObject</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">objc_removeAssociatedObjects</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">)</span><span class="err">；</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>如何使用对象关联</h3>
+
+<p>我们可以使用关联对象在 Category 中添加自定义的属性，比如为一个 GHPerson 类添加一个体重的属性（weight）:</p>
+
+<p>GHPerson+GHAssociatedObject.h</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;GHPerson.h&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@interface</span> <span class="nc">GHPerson</span> <span class="nl">(GHAssociatedObject)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">NSNumber</span> <span class="o">*</span><span class="n">weight</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GHPerson+GHAssociatedObject.m</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;GHPerson+GHAssociatedObject.h&quot;</span>
+</span><span class='line'><span class="cp">#import &lt;objc/runtime.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">char</span> <span class="n">weightKey</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@implementation</span> <span class="nc">GHPerson</span> <span class="nl">(GHAssociatedObject)</span>
+</span><span class='line'><span class="k">@dynamic</span> <span class="n">weight</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setWeight:</span><span class="p">(</span><span class="n">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nv">weight</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">objc_setAssociatedObject</span> <span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="o">&amp;</span><span class="n">weightKey</span><span class="p">,</span><span class="n">weight</span><span class="p">,</span><span class="n">OBJC_ASSOCIATION_RETAIN</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nf">weight</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>   <span class="k">return</span> <span class="p">(</span><span class="n">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="n">objc_getAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">weightKey</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中 weightKey 是我们关联对象时用到的key，一般最好使用一个 char 类型的静态全局变量。从关联这个角度上看，我们用的属性不过是把对象关联到了一个实例变量上面。</p>
+
+<p>我们看到 objc_setAssociatedObject 中的第 4 个参数，它表明了一个引用的关系，和 @property 中的属性等同：</p>
+
+<blockquote><p>OBJC_ASSOCIATION_ASSIGN   等同于 @property (assign) 或 @property (unsafe_unretained)</p>
+
+<p>OBJC_ASSOCIATION_RETAIN_NONATOMIC 等同于 @property (nonatomic, strong),其不可以被原子化</p>
+
+<p>OBJC_ASSOCIATION_COPY_NONATOMIC       等同于 @property (nonatomic, copy),其不可以被原子化</p>
+
+<p>OBJC_ASSOCIATION_RETAIN  等同于  @property (atomic, strong),  可以被原子化</p>
+
+<p>OBJC_ASSOCIATION_COPY  等同于  @property (atomic, copy), 可以被原子化</p></blockquote>
+
+<h3>注意事项</h3>
+
+<ol>
+<li>不应该用 objc_removeAssociatedObjects() 来删除对象的属性，因为可能会导致其他客户对其添加的属性也被移除了。规范的方法是：调用 objc_setAssociatedObject 方法并传入一个 nil 值来清除一个关联。</li>
+<li>应该小心使用对象关联，不要滥用，因为可能会引起难以调试的bug。</li>
+</ol>
+
+
+<h3>参考资料</h3>
+
+<ol>
+<li><a href="http://nshipster.cn/associated-objects/">Associated Objects</a></li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-20T12:14:09+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -1888,104 +2049,6 @@
 </div>
 	
 	<div class="comments"><a href="/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/06/09/uiviewxiang-guan/">
-		
-			UIView相关</a>
-	</h2>
-	<div class="entry-content">
-		<p><img src="http://ww3.sinaimg.cn/large/8bcaa2dfjw1ec8pxpionej20dw07sdgj.jpg" alt="" /></p>
-
-<h4>问题描述:</h4>
-
-<p>有时候设置subView的center如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">subView</span><span class="p">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">view</span><span class="p">.</span><span class="n">center</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>但实际显示出来发现subView的位置不对，该如何处理？</p>
-
-<h4>解决办法:</h4>
-
-<p> 改为</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">subView</span><span class="p">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">CGPointMake</span><span class="p">(</span><span class="n">view</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-</span><span class='line'><span class="n">view</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>不要使用view.center,除非view和subView共用同一个superView,center这个属性指的是子view的中心点在父view中的位置,是以父view的坐标系为参考的；</p>
-
-<hr />
-
-<h4>问题描述:</h4>
-
-<p>UIView在自己实现draw方法时候，为什么整个view的背景都变成黑色？</p>
-
-<h4>解决办法:</h4>
-
-<p>设置下view的backgroundColor就OK了。</p>
-
-<p>说明：当view的backgroundColor为nil并且opaque属性为YES，自己实现draw方法，view的背景颜色就会变成黑色。</p>
-
-<hr />
-
-<h4>问题描述:</h4>
-
-<p>UIView 通过layer 的 shadowColor、shadowOpacity、shadowOffset、shadowRadius 几个属性可以很方便的为 UIView 添加阴影效果。但是在添加了阴影后，会出现动画卡顿的现象，如何解决？</p>
-
-<h4>解决办法:</h4>
-
-<p>为阴影指定路径，即设置 layer 的 shadowPath 属性。如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">view</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">shadowPath</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIBezierPath</span>  <span class="nl">bezierPathWithRect:</span><span class="n">view</span><span class="p">.</span><span class="n">bounds</span><span class="p">].</span><span class="n">CGPath</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>说明：不指定阴影路径时，绘制阴影会产生大量的 Offscreen-Rendered 。而 Offscreen-Rendered（离屏渲染）和 Blending（混合）是 iOS 绘图中对性能影响比较大的两方面。</p>
-
-<p>参考：<a href="http://blog.devdlh.com/blog/2013/03/18/performance-problerm-caused-by-shadowpath/">绘制阴影引发的 iOS 绘图性能问题总结</a></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-06-09T10:21:49+08:00" pubdate data-updated="true">Jun 9<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-</div>
-	
-	<div class="comments"><a href="/blog/2014/06/09/uiviewxiang-guan/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>
