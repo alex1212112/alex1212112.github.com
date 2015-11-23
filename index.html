@@ -7,12 +7,9 @@
 	<meta name="author" content="ghren">
 
 	
-	<meta name="description" content="目录 介绍
-用途
-Runloop Mode
-Runloop Mode Item
-Run Loop 运行机制
-自定义 input source 介绍 Run Loop 正如其字面意思一样，表示运行循环，可以理解为一个 do-while 循环。Run Loop 与线程密切相关， &hellip;">
+	<meta name="description" content="目录 概述
+事件与种类
+使用 Dispatch Source 概述 iOS 中有两种 Source，一种是 Run Loop Source ,一种是 Dispatch Source。 Source 可以理解为产生事件的地方，Source 产生事件，然后 Source 的回调函数负责 处理这些事件 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -79,6 +76,228 @@ Run Loop 运行机制
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/11/24/dispatch-source/">
+		
+			Dispatch Source</a>
+	</h2>
+	<div class="entry-content">
+		<h3>目录</h3>
+
+<ol>
+<li>概述</li>
+<li>事件与种类</li>
+<li>使用 Dispatch Source</li>
+</ol>
+
+
+<h3>概述</h3>
+
+<p>iOS 中有两种 Source，一种是 Run Loop Source ,一种是 Dispatch Source。</p>
+
+<p>Source 可以理解为产生事件的地方，Source 产生事件，然后 Source 的回调函数负责 处理这些事件。</p>
+
+<p>在 Run Loop 中， Run Loop Source 产生事件，之后唤醒 Run Loop， Run Loop 便执行该 Source 的回调函数。</p>
+
+<p>Dispatch Source 也会产生一些特定的事件，当这些事件发生的时候，其回调的 block 会自动加入到 对应的 dispatch queue 中。</p>
+
+<h3>事件与种类</h3>
+
+<p>Dispatch Source 监控的事件主要有以下几种：</p>
+
+<ol>
+<li>Timer dispatch sources generate periodic notifications.</li>
+<li>Signal dispatch sources notify you when a UNIX signal arrives.</li>
+<li>Descriptor sources notify you of various file- and socket-based operations, such as:
+
+<ul>
+<li>When data is available for reading</li>
+<li>When it is possible to write data</li>
+<li>When files are deleted, moved, or renamed in the file system</li>
+<li>When file meta information changes</li>
+</ul>
+</li>
+<li>Process dispatch sources notify you of process-related events, such as:
+
+<ul>
+<li>When a process exits</li>
+<li>When a process issues a fork or exec type of call</li>
+<li>When a signal is delivered to the process</li>
+</ul>
+</li>
+<li>Mach port dispatch sources notify you of Mach-related events.</li>
+<li>Custom dispatch sources are ones you define and trigger yourself.</li>
+</ol>
+
+
+<p>对应着系统定义的 Dispatch Source 种类：</p>
+
+<ol>
+<li>DISPATCH_SOURCE_TYPE_TIMER 定时器</li>
+<li>DISPATCH_SOURCE_TYPE_SIGNAL 接收到 UNIX 信号</li>
+<li>DISPATCH_SOURCE_TYPE_READ 文件可读</li>
+<li>DISPATCH_SOURCE_TYPE_WRITE 文件可写</li>
+<li>DISPATCH_SOURCE_TYPE_VNODE 文件系统有变更</li>
+<li>DISPATCH_SOURCE_TYPE_PROC 与进程相关的事件</li>
+<li>DISPATCH_SOURCE_TYPE_MACH_SEND  Mach 端口发送事件</li>
+<li>DISPATCH_SOURCE_TYPE_MACH_RECV  Mach 端口接收事件</li>
+<li>DISPATCH_SOURCE_TYPE_DATA_ADD 用户自定义的事件－变量相加</li>
+<li>DISPATCH_SOURCE_TYPE_DATA_OR  用户自定义的事件－变量相或</li>
+</ol>
+
+
+<p>这些事件都是来自于 XNU 内核中，kqueue 是用来处理这些事件的最好的一种方法，Dispatch Source 就是对 kqueue 的封装。</p>
+
+<h3>使用 Dispatch Source</h3>
+
+<p>使用 Dispatch Source 一般分为以下几步：</p>
+
+<ol>
+<li>创建 Dispatch Source</li>
+<li>配置 Dispatch Source</li>
+<li>启动 Dispathc source</li>
+<li>手动或自动发送 Dispatch Source 事件</li>
+</ol>
+
+
+<h4>自定义 Dispatch Source</h4>
+
+<p>首先创建并配置 Dispatch Sourcce</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>self.count = 0;
+</span><span class='line'>dispatch_queue_t queue = dispatch_get_main_queue();
+</span><span class='line'>self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_DATA_ADD, 0, 0, queue);//创建 Dispatch Source，种类为DISPATCH_SOURCE_TYPE_DATA_ADD，即获取到的变量会相加
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>dispatch_source_set_event_handler(self.source, ^{
+</span><span class='line'>
+</span><span class='line'>    UInt64 value = dispatch_source_get_data(self.source);
+</span><span class='line'>    
+</span><span class='line'>    self.count += value;
+</span><span class='line'>    NSLog(@"n = %ld",(long)self.count);
+</span><span class='line'>    
+</span><span class='line'>});//配置 Dispatch Source 的回调 block，即当收到该 Source 事件时候，就把该 block 追加到对应的queue中
+</span><span class='line'>
+</span><span class='line'>dispatch_resume(self.source); //启动 Source， Source 默认是 suspend 的，需要手动启动</span></code></pre></td></tr></table></div></figure>
+
+
+<p>发送 Dispatch Source 事件</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (IBAction)buttonDidClicked:(id)sender {
+</span><span class='line'>    
+</span><span class='line'>    self.count = 0.0;
+</span><span class='line'>    
+</span><span class='line'>    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT , 0);
+</span><span class='line'>    
+</span><span class='line'>    for (NSInteger i = 0; i &lt; 100; i++) {
+</span><span class='line'>        
+</span><span class='line'>        dispatch_async(queue, ^{
+</span><span class='line'>            
+</span><span class='line'>            dispatch_source_merge_data(self.source, 1);//发送 Source 事件
+</span><span class='line'>            sleep(1);
+</span><span class='line'>            
+</span><span class='line'>        });
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>之后，我们点击按钮之后，就会通过全局并发队列 发送 100 次 Source 事件，不过并不会 回调 100 次 回调 Block， 这是因为对应的 队列在接收到 Source 事件之后，假如队列处于空闲状态，就会执行对应的 回调 Block，假如队列处于 busy 状态，该事件就会和后面的一系列同种事件通过一定的方式被合并起来（此例中是按照相加的方式），等到队列空闲的时候再执行。</p>
+
+<h4>Dispatch Source Timer</h4>
+
+<p>利用 Dispatch Source 的 DISPATCH_SOURCE_TYPE_TIMER 类型，我们可以创建一个 跨线程的 定时器（我们平时使用的 NSTimer 是基于 Run Loop 的 timer 事件，只能在对应的线程里触发）</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dispatch_queue_t queue = dispatch_get_main_queue();
+</span><span class='line'>self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);//创建一个 timer；
+</span><span class='line'>dispatch_source_set_timer(self.timer, DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC, 0 * NSEC_PER_SEC);//配置 timer，从现在起，每两秒在主线程触发一次，精度为0s
+</span><span class='line'>dispatch_source_set_event_handler(self.timer, ^{
+</span><span class='line'>    
+</span><span class='line'>    NSLog(@"%ld", self.count++);
+</span><span class='line'>});//timer 触发之后的回调 block
+</span><span class='line'>
+</span><span class='line'>dispatch_resume(self.time); //启动 timer</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>参考资料</h3>
+
+<ol>
+<li><p><a href="https://developer.apple.com/library/mac/documentation/General/Conceptual/ConcurrencyProgrammingGuide/GCDWorkQueues/GCDWorkQueues.html">Dispatch Sources</a>;</p></li>
+<li><p><a href="http://www.dreamingwish.com/article/grand-central-dispatch-basic-3.html">GCD入门（三）: Dispatch Sources</a>;</p></li>
+<li><p><a href="https://github.com/ChenYilong/ParseSourceCodeStudy/blob/master/01_Parse%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/Parse%E7%9A%84%E5%BA%95%E5%B1%82%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF.md">Parse的底层多线程处理思路：GCD高级用法</a>;</p></li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-24T00:16:49+08:00" pubdate data-updated="true">Nov 24<span>th</span>, 2015</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="/blog/2015/11/24/dispatch-source/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -1628,157 +1847,6 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 </div>
 	
 	<div class="comments"><a href="/blog/2015/01/31/touch-id-de-shi-yong/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/">
-		
-			Objective-C 中的方法混写(Method Swizzling)</a>
-	</h2>
-	<div class="entry-content">
-		<p><img src="/images/201410201751.png" alt="" /></p>
-
-<h3>目录</h3>
-
-<ol>
-<li>什么是方法混写（Method Swizzling）</li>
-<li>如何使用方法混写</li>
-<li>注意事项</li>
-<li>参考资料</li>
-</ol>
-
-
-<h3>什么是方法混写(Method Swizzling)</h3>
-
-<p>Objective-C 中对象调用方法，或者叫“消息传递”,是通过一种动态绑定机制实现的，即对象收到消息后，究竟调用哪个方法，完全于运行期决定，而且方法名和其对应的实现也是可以在运行期改变的，这样，我们不需要源代码，也不用通过继承子类的来覆写方法，就能改变这个类中的方法。这种在运行期改变类的方法实现的手段被称之为方法混写（Method Swizzling）.</p>
-
-<h3>如何使用方法混写</h3>
-
-<p>举一个UIAlertView的例子，UIAlertView 有一个 show 的方法，我们想改变这个 show 的方法，可以按如下实现:</p>
-
-<p>UIAlertView+GHSwizzling.m</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;UIAlertView+GHSwizzling.h&quot;</span>
-</span><span class='line'><span class="cp">#import &lt;objc/runtime.h&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@implementation</span> <span class="nc">UIAlertView</span> <span class="nl">(GHSwizzling)</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">load</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">static</span> <span class="n">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="kt">SEL</span> <span class="n">show</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">show</span><span class="p">);</span>
-</span><span class='line'>        <span class="kt">SEL</span> <span class="n">replaceSHow</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">_gh_show</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">Method</span> <span class="n">existingMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">show</span><span class="p">);</span>
-</span><span class='line'>        <span class="n">Method</span> <span class="n">newMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">replaceSHow</span><span class="p">);</span>
-</span><span class='line'>        <span class="n">method_exchangeImplementations</span><span class="p">(</span><span class="n">existingMethod</span><span class="p">,</span> <span class="n">newMethod</span><span class="p">);</span><span class="c1">//交换两个方法</span>
-</span><span class='line'>    <span class="p">});</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">_gh_show</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="n">_gh_show</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;alert show!&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">@end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>从上面代码我们可以看到，实现方法混写的步骤：</p>
-
-<ol>
-<li><p>编写自己希望实现方法的代码，上述中为 <code>_gh_show</code>,我们看到 该方法里调用了自己，好像会陷入递归调用的死循环，不过我们需要知道，这个方法是要和 <code>show</code> 方法交换的。</p></li>
-<li><p>获取自己实现方法的 method 和原实现方法的 method.</p></li>
-<li><p>通过 <code>method_exchangeImplementations()</code> 函数交换两个方法.</p></li>
-</ol>
-
-
-<p>注意: 这只是方法混写中的一种，交换两个实现方法，还有 <code>method_setImplementayion()</code>等方法.</p>
-
-<h3>注意事项</h3>
-
-<ol>
-<li><p>方法混写最好在类的 category 中的 <code>+load</code> 方法中进行方法交换.</p></li>
-<li><p>方法混写的代码最好在 dispatch_once 中实现。</p></li>
-<li><p>要注意给自己实现的方法加上命名空间，以防止出现重复命名的问题，比如上述中的&#8221;<em>gh</em>&ldquo;前缀.</p></li>
-<li><p>不要滥用这个方法,该方法被称之为 Objective-C 中的黑魔法，滥用会导致难以调试的bug.</p></li>
-<li><p>只要在 <code>+load</code> 中实现了 <code>method_exchangeImplementations()</code>, 那么该类的这个方法在整个应用的生命周期以内都被 Swizzling 了，要想调用原来正常的方法，就只能通过调用自己实现的方法名了。</p></li>
-</ol>
-
-
-<h3>参考资料</h3>
-
-<ol>
-<li><p><a href="http://nshipster.com/method-swizzling/">Method Swizzling</a></p></li>
-<li><p><a href="http://blog.csdn.net/yiyaaixuexi/article/details/9374411">Objective-C的hook方案（一）: Method Swizzling</a></p></li>
-<li><p><a href="http://www.cnblogs.com/kesalin/archive/2012/01/05/objc_method_swizzling.html">[Cocoa]深入浅出Cocoa之Method Swizzling</a></p></li>
-<li><p><a href="http://sjpsega.com/blog/2014/09/17/oc-method-swizzling/">Objective-C Method Swizzling</a></p></li>
-<li><p><a href="http://billwang1990.github.io/blog/2014/01/04/about-swizzling/">关于swizzling</a></p></li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-20T17:47:07+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-</div>
-	
-	<div class="comments"><a href="/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>

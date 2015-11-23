@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
   <link href="http://alex1212112.github.io/"/>
-  <updated>2015-11-21T21:19:36+08:00</updated>
+  <updated>2015-11-24T00:18:09+08:00</updated>
   <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -12,6 +12,198 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Dispatch Source]]></title>
+    <link href="http://alex1212112.github.io/blog/2015/11/24/dispatch-source/"/>
+    <updated>2015-11-24T00:16:49+08:00</updated>
+    <id>http://alex1212112.github.io/blog/2015/11/24/dispatch-source</id>
+    <content type="html"><![CDATA[<h3>目录</h3>
+
+<ol>
+<li>概述</li>
+<li>事件与种类</li>
+<li>使用 Dispatch Source</li>
+</ol>
+
+
+<h3>概述</h3>
+
+<p>iOS 中有两种 Source，一种是 Run Loop Source ,一种是 Dispatch Source。</p>
+
+<p>Source 可以理解为产生事件的地方，Source 产生事件，然后 Source 的回调函数负责 处理这些事件。</p>
+
+<p>在 Run Loop 中， Run Loop Source 产生事件，之后唤醒 Run Loop， Run Loop 便执行该 Source 的回调函数。</p>
+
+<p>Dispatch Source 也会产生一些特定的事件，当这些事件发生的时候，其回调的 block 会自动加入到 对应的 dispatch queue 中。</p>
+
+<h3>事件与种类</h3>
+
+<p>Dispatch Source 监控的事件主要有以下几种：</p>
+
+<ol>
+<li>Timer dispatch sources generate periodic notifications.</li>
+<li>Signal dispatch sources notify you when a UNIX signal arrives.</li>
+<li>Descriptor sources notify you of various file- and socket-based operations, such as:
+
+<ul>
+<li>When data is available for reading</li>
+<li>When it is possible to write data</li>
+<li>When files are deleted, moved, or renamed in the file system</li>
+<li>When file meta information changes</li>
+</ul>
+</li>
+<li>Process dispatch sources notify you of process-related events, such as:
+
+<ul>
+<li>When a process exits</li>
+<li>When a process issues a fork or exec type of call</li>
+<li>When a signal is delivered to the process</li>
+</ul>
+</li>
+<li>Mach port dispatch sources notify you of Mach-related events.</li>
+<li>Custom dispatch sources are ones you define and trigger yourself.</li>
+</ol>
+
+
+<p>对应着系统定义的 Dispatch Source 种类：</p>
+
+<ol>
+<li>DISPATCH_SOURCE_TYPE_TIMER 定时器</li>
+<li>DISPATCH_SOURCE_TYPE_SIGNAL 接收到 UNIX 信号</li>
+<li>DISPATCH_SOURCE_TYPE_READ 文件可读</li>
+<li>DISPATCH_SOURCE_TYPE_WRITE 文件可写</li>
+<li>DISPATCH_SOURCE_TYPE_VNODE 文件系统有变更</li>
+<li>DISPATCH_SOURCE_TYPE_PROC 与进程相关的事件</li>
+<li>DISPATCH_SOURCE_TYPE_MACH_SEND  Mach 端口发送事件</li>
+<li>DISPATCH_SOURCE_TYPE_MACH_RECV  Mach 端口接收事件</li>
+<li>DISPATCH_SOURCE_TYPE_DATA_ADD 用户自定义的事件－变量相加</li>
+<li>DISPATCH_SOURCE_TYPE_DATA_OR  用户自定义的事件－变量相或</li>
+</ol>
+
+
+<p>这些事件都是来自于 XNU 内核中，kqueue 是用来处理这些事件的最好的一种方法，Dispatch Source 就是对 kqueue 的封装。</p>
+
+<h3>使用 Dispatch Source</h3>
+
+<p>使用 Dispatch Source 一般分为以下几步：</p>
+
+<ol>
+<li>创建 Dispatch Source</li>
+<li>配置 Dispatch Source</li>
+<li>启动 Dispathc source</li>
+<li>手动或自动发送 Dispatch Source 事件</li>
+</ol>
+
+
+<h4>自定义 Dispatch Source</h4>
+
+<p>首先创建并配置 Dispatch Sourcce</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>self.count = 0;
+</span><span class='line'>dispatch_queue_t queue = dispatch_get_main_queue();
+</span><span class='line'>self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_DATA_ADD, 0, 0, queue);//创建 Dispatch Source，种类为DISPATCH_SOURCE_TYPE_DATA_ADD，即获取到的变量会相加
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>dispatch_source_set_event_handler(self.source, ^{
+</span><span class='line'>
+</span><span class='line'>    UInt64 value = dispatch_source_get_data(self.source);
+</span><span class='line'>    
+</span><span class='line'>    self.count += value;
+</span><span class='line'>    NSLog(@"n = %ld",(long)self.count);
+</span><span class='line'>    
+</span><span class='line'>});//配置 Dispatch Source 的回调 block，即当收到该 Source 事件时候，就把该 block 追加到对应的queue中
+</span><span class='line'>
+</span><span class='line'>dispatch_resume(self.source); //启动 Source， Source 默认是 suspend 的，需要手动启动</span></code></pre></td></tr></table></div></figure>
+
+
+<p>发送 Dispatch Source 事件</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (IBAction)buttonDidClicked:(id)sender {
+</span><span class='line'>    
+</span><span class='line'>    self.count = 0.0;
+</span><span class='line'>    
+</span><span class='line'>    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT , 0);
+</span><span class='line'>    
+</span><span class='line'>    for (NSInteger i = 0; i &lt; 100; i++) {
+</span><span class='line'>        
+</span><span class='line'>        dispatch_async(queue, ^{
+</span><span class='line'>            
+</span><span class='line'>            dispatch_source_merge_data(self.source, 1);//发送 Source 事件
+</span><span class='line'>            sleep(1);
+</span><span class='line'>            
+</span><span class='line'>        });
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>之后，我们点击按钮之后，就会通过全局并发队列 发送 100 次 Source 事件，不过并不会 回调 100 次 回调 Block， 这是因为对应的 队列在接收到 Source 事件之后，假如队列处于空闲状态，就会执行对应的 回调 Block，假如队列处于 busy 状态，该事件就会和后面的一系列同种事件通过一定的方式被合并起来（此例中是按照相加的方式），等到队列空闲的时候再执行。</p>
+
+<h4>Dispatch Source Timer</h4>
+
+<p>利用 Dispatch Source 的 DISPATCH_SOURCE_TYPE_TIMER 类型，我们可以创建一个 跨线程的 定时器（我们平时使用的 NSTimer 是基于 Run Loop 的 timer 事件，只能在对应的线程里触发）</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dispatch_queue_t queue = dispatch_get_main_queue();
+</span><span class='line'>self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);//创建一个 timer；
+</span><span class='line'>dispatch_source_set_timer(self.timer, DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC, 0 * NSEC_PER_SEC);//配置 timer，从现在起，每两秒在主线程触发一次，精度为0s
+</span><span class='line'>dispatch_source_set_event_handler(self.timer, ^{
+</span><span class='line'>    
+</span><span class='line'>    NSLog(@"%ld", self.count++);
+</span><span class='line'>});//timer 触发之后的回调 block
+</span><span class='line'>
+</span><span class='line'>dispatch_resume(self.time); //启动 timer</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>参考资料</h3>
+
+<ol>
+<li><p><a href="https://developer.apple.com/library/mac/documentation/General/Conceptual/ConcurrencyProgrammingGuide/GCDWorkQueues/GCDWorkQueues.html">Dispatch Sources</a>;</p></li>
+<li><p><a href="http://www.dreamingwish.com/article/grand-central-dispatch-basic-3.html">GCD入门（三）: Dispatch Sources</a>;</p></li>
+<li><p><a href="https://github.com/ChenYilong/ParseSourceCodeStudy/blob/master/01_Parse%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/Parse%E7%9A%84%E5%BA%95%E5%B1%82%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF.md">Parse的底层多线程处理思路：GCD高级用法</a>;</p></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Run Loop]]></title>
@@ -2773,321 +2965,6 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[UIKit动力学(UIKit Dynamics)学习]]></title>
-    <link href="http://alex1212112.github.io/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi/"/>
-    <updated>2014-06-11T11:17:46+08:00</updated>
-    <id>http://alex1212112.github.io/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi</id>
-    <content type="html"><![CDATA[<p><img src="http://alex1212112.github.io/images/4908ab0eae4b946b9066eafd11f8030580c2c4f79dfd.png" alt="" /></p>
-
-<h4>简介</h4>
-
-<p>UIKit dynamics(UIKit动力学)是UIKit的一套动画和交互体系。和我们用的CoreAnimation或者UIView animations一样，只不过UIKit 动力学将现实世界动力驱动的动画引入了UIKit，比如重力，铰链连接，碰撞，悬挂、吸附等效果。</p>
-
-<h4>基本概念和元素</h4>
-
-<ul>
-<li><p>UIdynamicItem: 实现了UIDynamicItem委托的对象，它是动画的执行者，相关的物理属性也是加在这个对象上，由于iOS7之后，UIView和UICollectionViewLayoutAttributes类默认实现了该协议，所以UIView就可以看作是一个UIdynamicItem；</p></li>
-<li><p>UIDynamicBehavior：动力行为的描述，用来指定UIDynamicItem应该如何运动，即定义适用的物理规则。一般我们使用这个类的子类对象来对一组UIDynamicItem应该遵守的行为规则进行描述，在iOS7中，系统默认提供了如下的动力行为：</p>
-
-<p>  1、UIGravityBehavior：重力行为</p>
-
-<p>  2、UICollisionBehavior：碰撞行为</p>
-
-<p>  3、UIAttachmentBehavior：铰链行为，两个物体连接的状态，可以模拟无形变或者弹性行遍的情况</p>
-
-<p>  4、UISnapBehavior：吸附行为，将UIView通过动画吸附到某个点上。</p>
-
-<p>  5、UIPushBehavior：推行为，比如为一个UIView施加一个力的作用，我们可以指定力的大小，方向和租用点等信息。</p>
-
-<p>  6、UIDynamicItemBehavior：动力学辅助元素行为，系统有一组自定义的默认值</p></li>
-<li><p>UIDynamicAnimator；动画的播放者，动力行为（UIDynamicBehavior）的容器，添加到容器内的行为将发挥作用；</p></li>
-<li><p>ReferenceView：力学参考系，只有当想要添加力学的UIView是ReferenceView的子view时，动力UI才发生作用，比如你可以把ViewController的view作为ReferenceView；</p></li>
-</ul>
-
-
-<h4>代码示例（一个简单的重力行为）</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/**</span>
-</span><span class='line'><span class="cm"> *  初始化subView</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">initSubView</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">_subView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">){</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span>   <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class='line'>        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span>   <span class="mf">108.0f</span><span class="p">,</span>
-</span><span class='line'>        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class='line'>        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class='line'>    <span class="p">}];</span>
-</span><span class='line'>    <span class="n">_subView</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">lightGrayColor</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">view</span> <span class="nl">addSubview:</span><span class="n">_subView</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="cm">/**</span>
-</span><span class='line'><span class="cm"> *  简单的重力行为</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> *  @param sender leftButton</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">leftButtonClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">_subView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span>  <span class="p">(</span><span class="n">CGRect</span><span class="p">){</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span>   <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class='line'>        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span>   <span class="mf">108.0f</span><span class="p">,</span>
-</span><span class='line'>        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class='line'>        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">_animator</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// 1 假如animator为空的话，就以当前ViewController的View为参考View初始化一个animator</span>
-</span><span class='line'>        <span class="n">_animator</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIDynamicAnimator</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithReferenceView:</span><span class="n">self</span><span class="p">.</span><span class="n">view</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="c1">//  移除animator上所有的力学行为</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">_animator</span> <span class="n">removeAllBehaviors</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="c1">// 2 初始化重力行为</span>
-</span><span class='line'>    <span class="n">UIGravityBehavior</span> <span class="o">*</span><span class="n">gravityBeahvior</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIGravityBehavior</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithItems:</span><span class="err">@</span><span class="p">[</span><span class="n">_subView</span><span class="p">]];</span>
-</span><span class='line'>
-</span><span class='line'>       <span class="c1">// 3 添加重力行为到animator上，使重力行为生效</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">_animator</span> <span class="nl">addBehavior:</span><span class="n">gravityBeahvior</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>代码中关键的地方已经用注释表示出来，在制作一个简单的UIKit 动力学行为的的步骤如下：</p>
-
-<ol>
-<li>通过参考系(ReferenceView)来初始化一个UIDynamicAnimator；</li>
-<li>初始化一个力学行为，上述代码中是一个重力行为UIGravityBehavior；</li>
-<li>把配置好的力学行为添加到animator中；</li>
-</ol>
-
-
-<p>表现出来的效果如下图：</p>
-
-<p><img src="http://alex1212112.github.io/images/201406111150gravity.gif" alt="" /></p>
-
-<h4>代码示例（带碰撞的重力行为）</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/**</span>
-</span><span class='line'><span class="cm"> *  带重力的碰撞行为</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> *  @param sender middleButton</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">middleButtonClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">_subView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span>  <span class="p">(</span><span class="n">CGRect</span><span class="p">){</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span>   <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class='line'>        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span>   <span class="mf">108.0f</span><span class="p">,</span>
-</span><span class='line'>        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class='line'>        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">_animator</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="n">_animator</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIDynamicAnimator</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithReferenceView:</span><span class="n">self</span><span class="p">.</span><span class="n">view</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">_animator</span> <span class="n">removeAllBehaviors</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">//初始化一个碰撞的行为</span>
-</span><span class='line'>    <span class="n">UICollisionBehavior</span> <span class="o">*</span><span class="n">collisionBehavior</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UICollisionBehavior</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithItems:</span><span class="err">@</span><span class="p">[</span><span class="n">_subView</span><span class="p">]];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">//配置碰撞的边界，下述代码设置碰撞边界为参考系(self.view)的边框作为碰撞边界</span>
-</span><span class='line'>    <span class="n">collisionBehavior</span><span class="p">.</span><span class="n">translatesReferenceBoundsIntoBoundary</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">_animator</span> <span class="nl">addBehavior:</span><span class="n">collisionBehavior</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">//重力行为</span>
-</span><span class='line'>    <span class="n">UIGravityBehavior</span> <span class="o">*</span><span class="n">gravityBeahvior</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIGravityBehavior</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithItems:</span><span class="err">@</span><span class="p">[</span><span class="n">_subView</span><span class="p">]];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">_animator</span> <span class="nl">addBehavior:</span><span class="n">gravityBeahvior</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>表现出来的效果如下图：</p>
-
-<p><img src="http://alex1212112.github.io/images/201406111150gravityCollision.gif" alt="" /></p>
-
-<p>注：碰撞行为有自己的delegate回调，可以帮助我们了解碰撞的具体情况，包括哪个item和哪个item开始发生碰撞，碰撞接触点是什么，是否和边界碰撞，和哪个边界碰撞了等信息。参见:<a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollisionBehaviorDelegate_Protocol/Reference/Reference.html">UICollisionBehavior</a>.</p>
-
-<h4>代码示例（吸附行为）</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/**</span>
-</span><span class='line'><span class="cm"> *  吸附行为</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> *  @param sender rightButton</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">rightButtonClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">_subView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span>  <span class="p">(</span><span class="n">CGRect</span><span class="p">){</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span>   <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class='line'>        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span>   <span class="mf">108.0f</span><span class="p">,</span>
-</span><span class='line'>        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class='line'>        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">_animator</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="n">_animator</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIDynamicAnimator</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithReferenceView:</span><span class="n">self</span><span class="p">.</span><span class="n">view</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">_animator</span> <span class="n">removeAllBehaviors</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">//初始化一个吸附行为</span>
-</span><span class='line'>    <span class="n">UISnapBehavior</span> <span class="o">*</span><span class="n">snap</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UISnapBehavior</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithItem:</span><span class="n">_subView</span> <span class="nl">snapToPoint:</span><span class="p">(</span><span class="n">CGPoint</span><span class="p">){</span><span class="mf">100.0f</span><span class="p">,</span><span class="mf">300.0f</span><span class="p">}];</span>
-</span><span class='line'>    <span class="c1">//添加吸附行为到animator</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">_animator</span> <span class="nl">addBehavior:</span><span class="n">snap</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>表现出来的效果如下图：</p>
-
-<p><img src="http://alex1212112.github.io/images/201406111151snap.gif" alt="" /></p>
-
-<h4>下载</h4>
-
-<p><a href="https://github.com/alex1212112/DynamicsDemo">Demo下载地址</a></p>
-
-<h4>参考资料</h4>
-
-<p><a href="http://onevcat.com/2013/06/uikit-dynamics-started/">UIKit Dynamics入门</a></p>
-
-<p><a href="http://beyondvincent.com/blog/2013/06/16/88/">iOS7新特征汇总[05]初窥UIKit动力(UIKit Dynamics)</a></p>
-
-<p><a href="http://www.raywenderlich.com/zh-hans/52617/uikit-%E5%8A%9B%E5%AD%A6%E6%95%99%E7%A8%8B">UIKit-力学教程</a></p>
 ]]></content>
   </entry>
   
