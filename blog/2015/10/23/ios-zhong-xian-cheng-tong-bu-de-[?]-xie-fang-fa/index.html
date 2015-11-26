@@ -8,10 +8,12 @@
   <title>iOS 中线程同步的一些方法 - Summerrose’s Blog</title>
   <meta name="author" content="ghren">
 
-   
-  <meta name="description" content="">
   
-  <meta name="keywords" content="">
+  <meta name="description" content="目录 使用串行队列
+使用 dispatch_group
+使用 dispatch_barrier
+使用 dispatch_semaphore 串行队列 使用串行队列，对于一个资源，同一时刻只有一个任务（线程）访问，这样就避免了资源竞争，实现了资源的同步。我们可以通过 NSOperationQueue &hellip;">
+  
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -21,62 +23,57 @@
   
   <link rel="canonical" href="http://alex1212112.github.io/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa">
   <link href="/favicon.png" rel="icon">
-  <link href='http://fonts.googleapis.com/css?family=Quicksand:300,400' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
-  <script src="/js/jquery.js"></script>
-  <script src="/js/bootstrap-collapse.js"></script>
-  <script src="/js/modernizr-2.0.js"></script>
-  <script src="/js/octopress.js" type="text/javascript"></script>
-  <script src="/js/application.js"></script>
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
 
   
 
 </head>
 
 <body   >
-  <div class="navbar navbar-inverse navbar-static-top">
-  	<div class="navbar-inner">
-  	  <div class="container">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-          <span class="fui-menu-24"></span>
-        </a>
-  	  	<div class="nav-collapse collapse navbar-responsive-collapse" style="height:0;">
-  	      <ul class="nav">
-    
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:alex1212112.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
 </ul>
 
-<ul class="nav pull-right">
-    
-    
-    
-    
-    
-    
-    
-
-    
-</ul>
-
-  	    </div>
-  	  </div>
-  	</div>
-  </div>
-  <div class="container" id="main">
-      <div class="row-fluid">
-        <div id="content">
-          <div>
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
 <article class="hentry" role="article">
   
-
   <header>
-  <div class="jumbotron">
-    iOS 中线程同步的一些方法
-	<h5>
+    
+      <h1 class="entry-title">iOS 中线程同步的一些方法</h1>
+    
+    
+      <p class="meta">
+        
 
 
 
@@ -88,12 +85,16 @@
   
 
 
-<i class="icon-calendar-empty"></i> <time datetime="2015-10-23T15:21:04+08:00" pubdate data-updated="true">Oct 23<span>rd</span>, 2015</time></h5>
-  </div>
-</header>
-  <div class="row-fluid">
-    <div class="span12">
-      <h3>目录</h3>
+<time datetime="2015-10-23T15:21:04+08:00" pubdate data-updated="true">Oct 23<span>rd</span>, 2015</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>目录</h3>
 
 <ol>
 <li>使用串行队列</li>
@@ -300,56 +301,51 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 </span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;start another task&quot;</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-    </div>
-  </div>
-
+</div>
 
 
   <footer>
-    <hr>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">ghren</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-23T15:21:04+08:00" pubdate data-updated="true">Oct 23<span>rd</span>, 2015</time>
+      
+
+
+    </p>
     
-    <div class="row-fluid">
-      
-      <div class="span6">
-        <p class="meta">
-        
-        
-
-
-        </p>
-      </div>
-      
-      <div class="span6 social-sharing">
-        <div class="sharing">
-  <div class="addthis_toolbox addthis_default_style ">
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alex1212112.github.io/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/" data-via="" data-counturl="http://alex1212112.github.io/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/" >Tweet</a>
   
   
-  <a class="addthis_button_tweet"></a>
   
-  
-  <a class="addthis_counter addthis_pill_style"></a>
-  </div>
-  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
 </div>
 
-      </div>
-      
-      
-    </div>
     
-    <div class="row-fluid">
-      <div class="span12">
-        <p class="meta">
-          
-            <a class="basic-alignment left" href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/" title="Previous Post: ReactiveCocoa 学习资料">&laquo; ReactiveCocoa 学习资料</a>
-          
-          
-            <a class="basic-alignment right" href="/blog/2015/11/21/run-loop/" title="Next Post: Run Loop">Run Loop &raquo;</a>
-          
-        </p>
-      </div>
-    </div>
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/" title="Previous Post: ReactiveCocoa 学习资料">&laquo; ReactiveCocoa 学习资料</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/11/21/run-loop/" title="Next Post: Run Loop">Run Loop &raquo;</a>
+      
+    </p>
   </footer>
 </article>
 
@@ -361,21 +357,51 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 
 </div>
 
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/11/24/dispatch-source/">Dispatch Source</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/21/run-loop/">Run Loop</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/">iOS 中线程同步的一些方法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/">ReactiveCocoa 学习资料</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/">关于 UILocalNotification 的几个问题</a>
+      </li>
+    
+  </ul>
+</section>
 
 
-        </div>
-      </div>
-      <div class="row-fluid">
-        <footer class="footer-page" role="contentinfo">
-          <p>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
   Copyright &copy; 2015 - ghren -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span> - Theme by <a href="http://alexgaribay.com">Alex Garibay</a>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
-
-        </footer>
-      </div>
-  </div>
+</footer>
   
 
 <script type="text/javascript">

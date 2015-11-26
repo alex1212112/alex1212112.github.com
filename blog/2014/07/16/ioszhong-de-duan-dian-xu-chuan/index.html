@@ -8,10 +8,9 @@
   <title>iOS中的断点续传 - Summerrose’s Blog</title>
   <meta name="author" content="ghren">
 
-   
-  <meta name="description" content="">
   
-  <meta name="keywords" content="">
+  <meta name="description" content="关键点 实现断点续传的关键是自定义http request的头部的range域属性 Range头域可以请求实体的一个或者多个子范围。例如， 表示头500个字节：bytes=0-499 表示第二个500字节：bytes=500-999 表示最后500个字节：bytes=-500 &hellip;">
+  
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -21,62 +20,57 @@
   
   <link rel="canonical" href="http://alex1212112.github.io/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan">
   <link href="/favicon.png" rel="icon">
-  <link href='http://fonts.googleapis.com/css?family=Quicksand:300,400' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
-  <script src="/js/jquery.js"></script>
-  <script src="/js/bootstrap-collapse.js"></script>
-  <script src="/js/modernizr-2.0.js"></script>
-  <script src="/js/octopress.js" type="text/javascript"></script>
-  <script src="/js/application.js"></script>
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
 
   
 
 </head>
 
 <body   >
-  <div class="navbar navbar-inverse navbar-static-top">
-  	<div class="navbar-inner">
-  	  <div class="container">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-          <span class="fui-menu-24"></span>
-        </a>
-  	  	<div class="nav-collapse collapse navbar-responsive-collapse" style="height:0;">
-  	      <ul class="nav">
-    
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:alex1212112.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
 </ul>
 
-<ul class="nav pull-right">
-    
-    
-    
-    
-    
-    
-    
-
-    
-</ul>
-
-  	    </div>
-  	  </div>
-  	</div>
-  </div>
-  <div class="container" id="main">
-      <div class="row-fluid">
-        <div id="content">
-          <div>
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
 <article class="hentry" role="article">
   
-
   <header>
-  <div class="jumbotron">
-    iOS中的断点续传
-	<h5>
+    
+      <h1 class="entry-title">iOS中的断点续传</h1>
+    
+    
+      <p class="meta">
+        
 
 
 
@@ -88,12 +82,16 @@
   
 
 
-<i class="icon-calendar-empty"></i> <time datetime="2014-07-16T17:25:31+08:00" pubdate data-updated="true">Jul 16<span>th</span>, 2014</time></h5>
-  </div>
-</header>
-  <div class="row-fluid">
-    <div class="span12">
-      <p><img src="/images/201407161730.png" alt="" /></p>
+<time datetime="2014-07-16T17:25:31+08:00" pubdate data-updated="true">Jul 16<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="/images/201407161730.png" alt="" /></p>
 
 <h4>关键点</h4>
 
@@ -151,56 +149,51 @@
 <p>3.<a href="http://www.cnblogs.com/liufeng24/p/3555303.html">iOS开发网络编程之断点续传-NSURLConnection</a>;</p>
 
 <p>4.<a href="http://blog.csdn.net/zhaoxy_thu/article/details/21383515">AFNetworking实现程序重新启动时的断点续传</a>；</p>
-
-    </div>
-  </div>
-
+</div>
 
 
   <footer>
-    <hr>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">ghren</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-16T17:25:31+08:00" pubdate data-updated="true">Jul 16<span>th</span>, 2014</time>
+      
+
+
+    </p>
     
-    <div class="row-fluid">
-      
-      <div class="span6">
-        <p class="meta">
-        
-        
-
-
-        </p>
-      </div>
-      
-      <div class="span6 social-sharing">
-        <div class="sharing">
-  <div class="addthis_toolbox addthis_default_style ">
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://alex1212112.github.io/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan/" data-via="" data-counturl="http://alex1212112.github.io/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan/" >Tweet</a>
   
   
-  <a class="addthis_button_tweet"></a>
   
-  
-  <a class="addthis_counter addthis_pill_style"></a>
-  </div>
-  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
 </div>
 
-      </div>
-      
-      
-    </div>
     
-    <div class="row-fluid">
-      <div class="span12">
-        <p class="meta">
-          
-            <a class="basic-alignment left" href="/blog/2014/07/01/cggeometry/" title="Previous Post: CGGeometry">&laquo; CGGeometry</a>
-          
-          
-            <a class="basic-alignment right" href="/blog/2014/08/12/ioszhong-de-zi-jie-xu/" title="Next Post: iOS中的字节序">iOS中的字节序 &raquo;</a>
-          
-        </p>
-      </div>
-    </div>
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/07/01/cggeometry/" title="Previous Post: CGGeometry">&laquo; CGGeometry</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/08/12/ioszhong-de-zi-jie-xu/" title="Next Post: iOS中的字节序">iOS中的字节序 &raquo;</a>
+      
+    </p>
   </footer>
 </article>
 
@@ -212,21 +205,51 @@
 
 </div>
 
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/11/24/dispatch-source/">Dispatch Source</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/21/run-loop/">Run Loop</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/">iOS 中线程同步的一些方法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/">ReactiveCocoa 学习资料</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/">关于 UILocalNotification 的几个问题</a>
+      </li>
+    
+  </ul>
+</section>
 
 
-        </div>
-      </div>
-      <div class="row-fluid">
-        <footer class="footer-page" role="contentinfo">
-          <p>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
   Copyright &copy; 2015 - ghren -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span> - Theme by <a href="http://alexgaribay.com">Alex Garibay</a>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
-
-        </footer>
-      </div>
-  </div>
+</footer>
   
 
 <script type="text/javascript">

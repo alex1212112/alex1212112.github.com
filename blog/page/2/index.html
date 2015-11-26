@@ -8,10 +8,12 @@
   <title>Summerrose’s Blog</title>
   <meta name="author" content="ghren">
 
-   
-  <meta name="description" content="">
   
-  <meta name="keywords" content="">
+  <meta name="description" content="目录 什么是方法混写（Method Swizzling）
+如何使用方法混写
+注意事项
+参考资料 什么是方法混写(Method Swizzling) Objective-C 中对象调用方法，或者叫“消息传递”,是通过一种动态绑定机制实现的，即对象收到消息后，究竟调用哪个方法，完全于运行期决定， &hellip;">
+  
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -21,78 +23,60 @@
   
   <link rel="canonical" href="http://alex1212112.github.io/blog/page/2">
   <link href="/favicon.png" rel="icon">
-  <link href='http://fonts.googleapis.com/css?family=Quicksand:300,400' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
-  <script src="/js/jquery.js"></script>
-  <script src="/js/bootstrap-collapse.js"></script>
-  <script src="/js/modernizr-2.0.js"></script>
-  <script src="/js/octopress.js" type="text/javascript"></script>
-  <script src="/js/application.js"></script>
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
 
   
 
 </head>
 
 <body   >
-  <div class="navbar navbar-inverse navbar-static-top">
-  	<div class="navbar-inner">
-  	  <div class="container">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-          <span class="fui-menu-24"></span>
-        </a>
-  	  	<div class="nav-collapse collapse navbar-responsive-collapse" style="height:0;">
-  	      <ul class="nav">
-    
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:alex1212112.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
 </ul>
 
-<ul class="nav pull-right">
-    
-    
-    
-    
-    
-    
-    
-
-    
-</ul>
-
-  	    </div>
-  	  </div>
-  	</div>
-  </div>
-  <div class="container" id="main">
-      <div class="row-fluid">
-        <div id="content">
-          <div class="jumbotron">
-  <div class="container">
-    
-      Summerrose’s Blog
-    
-    <h3 class="tagline">
-      
-        既见君子，云胡不喜
-      
-    </h3>
-  </div>
-</div>
-
-
-<div class="blog-index">
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
   
   
   
     <article>
       
-
-  <div class="row-fluid">
-    <div class="span2 post-meta">
-	  <h5 class="date-time">
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/">Objective-C 中的方法混写(Method Swizzling)</a></h1>
+    
+    
+      <p class="meta">
+        
 
 
 
@@ -104,21 +88,16 @@
   
 
 
-<i class="icon-calendar-empty"></i> <time datetime="2014-10-20T17:47:07+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2014</time></h5>
-          <div class="row-fluid">
-          
-          <a href="http://alex1212112.github.io/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/#disqus_thread">Comments </a> <span class="fui-bubble-16"></span>
-          
-          </div>
-          
-          <div class="row-fluid">
-          
-          </div>
-          
-    </div>
-    <div class="span10 post-container">
-      <h1 class="link"><a href="/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/">Objective-C 中的方法混写(Method Swizzling)</a></h1>
-      <p><img src="/images/201410201751.png" alt="" /></p>
+<time datetime="2014-10-20T17:47:07+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/201410201751.png" alt="" /></p>
 
 <h3>目录</h3>
 
@@ -231,26 +210,23 @@
 <li><p><a href="http://billwang1990.github.io/blog/2014/01/04/about-swizzling/">关于swizzling</a></p></li>
 </ol>
 
-
-      
-      
-    </div>
-  </div>
-
+</div>
+  
+  
 
 
     </article>
-    
-    <hr>
-    
   
   
     <article>
       
-
-  <div class="row-fluid">
-    <div class="span2 post-meta">
-	  <h5 class="date-time">
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/">Objective-C 中的对象关联(Associated Objects)</a></h1>
+    
+    
+      <p class="meta">
+        
 
 
 
@@ -262,21 +238,16 @@
   
 
 
-<i class="icon-calendar-empty"></i> <time datetime="2014-10-20T12:14:09+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2014</time></h5>
-          <div class="row-fluid">
-          
-          <a href="http://alex1212112.github.io/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/#disqus_thread">Comments </a> <span class="fui-bubble-16"></span>
-          
-          </div>
-          
-          <div class="row-fluid">
-          
-          </div>
-          
-    </div>
-    <div class="span10 post-container">
-      <h1 class="link"><a href="/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/">Objective-C 中的对象关联(Associated Objects)</a></h1>
-      <p><img src="/images/201410201218.png" alt="" /></p>
+<time datetime="2014-10-20T12:14:09+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/201410201218.png" alt="" /></p>
 
 <h3>目录</h3>
 
@@ -399,26 +370,23 @@
 <li><a href="http://nshipster.cn/associated-objects/">Associated Objects</a></li>
 </ol>
 
-
-      
-      
-    </div>
-  </div>
-
+</div>
+  
+  
 
 
     </article>
-    
-    <hr>
-    
   
   
     <article>
       
-
-  <div class="row-fluid">
-    <div class="span2 post-meta">
-	  <h5 class="date-time">
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/">关于对象等同性判断</a></h1>
+    
+    
+      <p class="meta">
+        
 
 
 
@@ -430,21 +398,16 @@
   
 
 
-<i class="icon-calendar-empty"></i> <time datetime="2014-10-19T20:20:26+08:00" pubdate data-updated="true">Oct 19<span>th</span>, 2014</time></h5>
-          <div class="row-fluid">
-          
-          <a href="http://alex1212112.github.io/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/#disqus_thread">Comments </a> <span class="fui-bubble-16"></span>
-          
-          </div>
-          
-          <div class="row-fluid">
-          
-          </div>
-          
-    </div>
-    <div class="span10 post-container">
-      <h1 class="link"><a href="/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/">关于对象等同性判断</a></h1>
-      <p><img src="/images/201410192024.png" alt="" /></p>
+<time datetime="2014-10-19T20:20:26+08:00" pubdate data-updated="true">Oct 19<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/201410192024.png" alt="" /></p>
 
 <p>我们经常会遇到判断两个对象是否相等的的情况，如果食用 == 操作符来进行判断，比较出来多结果不一定是我们想要的，因为 == 操作符比较的事两个对象对指针，而不是对象的值。 NSObject 协议中有两个用语判断等同性的关键方法：</p>
 
@@ -567,26 +530,23 @@
 <li><a href="http://www.objccn.io/issue-7-2/">值对象</a></li>
 </ol>
 
-
-      
-      
-    </div>
-  </div>
-
+</div>
+  
+  
 
 
     </article>
-    
-    <hr>
-    
   
   
     <article>
       
-
-  <div class="row-fluid">
-    <div class="span2 post-meta">
-	  <h5 class="date-time">
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/18/foundationkuang-jia-zhong-ji-he-lei-de-%5B%3F%5D-xie-yong-fa-nsarray/">Foundation框架中集合类的一些用法-NSArray</a></h1>
+    
+    
+      <p class="meta">
+        
 
 
 
@@ -598,21 +558,16 @@
   
 
 
-<i class="icon-calendar-empty"></i> <time datetime="2014-10-18T21:21:07+08:00" pubdate data-updated="true">Oct 18<span>th</span>, 2014</time></h5>
-          <div class="row-fluid">
-          
-          <a href="http://alex1212112.github.io/blog/2014/10/18/foundationkuang-jia-zhong-ji-he-lei-de-%5B%3F%5D-xie-yong-fa-nsarray/#disqus_thread">Comments </a> <span class="fui-bubble-16"></span>
-          
-          </div>
-          
-          <div class="row-fluid">
-          
-          </div>
-          
-    </div>
-    <div class="span10 post-container">
-      <h1 class="link"><a href="/blog/2014/10/18/foundationkuang-jia-zhong-ji-he-lei-de-%5B%3F%5D-xie-yong-fa-nsarray/">Foundation框架中集合类的一些用法-NSArray</a></h1>
-      <p><img src="/images/201410191739.png" alt="" /></p>
+<time datetime="2014-10-18T21:21:07+08:00" pubdate data-updated="true">Oct 18<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/10/18/foundationkuang-jia-zhong-ji-he-lei-de-%5B%3F%5D-xie-yong-fa-nsarray/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/201410191739.png" alt="" /></p>
 
 <h3>目录</h3>
 
@@ -834,26 +789,23 @@
 <li><p><a href="http://nshipster.cn/kvc-collection-operators/">KVC Collection Operators</a></p></li>
 </ol>
 
-
-      
-      
-    </div>
-  </div>
-
+</div>
+  
+  
 
 
     </article>
-    
-    <hr>
-    
   
   
     <article>
       
-
-  <div class="row-fluid">
-    <div class="span2 post-meta">
-	  <h5 class="date-time">
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/02/kvojian-jie/">KVO简介</a></h1>
+    
+    
+      <p class="meta">
+        
 
 
 
@@ -865,21 +817,16 @@
   
 
 
-<i class="icon-calendar-empty"></i> <time datetime="2014-09-02T16:24:18+08:00" pubdate data-updated="true">Sep 2<span>nd</span>, 2014</time></h5>
-          <div class="row-fluid">
-          
-          <a href="http://alex1212112.github.io/blog/2014/09/02/kvojian-jie/#disqus_thread">Comments </a> <span class="fui-bubble-16"></span>
-          
-          </div>
-          
-          <div class="row-fluid">
-          
-          </div>
-          
-    </div>
-    <div class="span10 post-container">
-      <h1 class="link"><a href="/blog/2014/09/02/kvojian-jie/">KVO简介</a></h1>
-      <p><img src="/images/201409021638.png" alt="" /></p>
+<time datetime="2014-09-02T16:24:18+08:00" pubdate data-updated="true">Sep 2<span>nd</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/02/kvojian-jie/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/201409021638.png" alt="" /></p>
 
 <h3>目录</h3>
 
@@ -1049,26 +996,23 @@
 <li><a href="http://beyondvincent.com/blog/2013/05/05/18/">iOS设计模式(01):观察者</a>；</li>
 </ol>
 
-
-      
-      
-    </div>
-  </div>
-
+</div>
+  
+  
 
 
     </article>
-    
-    <hr>
-    
   
   
     <article>
       
-
-  <div class="row-fluid">
-    <div class="span2 post-meta">
-	  <h5 class="date-time">
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/12/ioszhong-de-zi-jie-xu/">iOS中的字节序</a></h1>
+    
+    
+      <p class="meta">
+        
 
 
 
@@ -1080,21 +1024,16 @@
   
 
 
-<i class="icon-calendar-empty"></i> <time datetime="2014-08-12T12:07:08+08:00" pubdate data-updated="true">Aug 12<span>th</span>, 2014</time></h5>
-          <div class="row-fluid">
-          
-          <a href="http://alex1212112.github.io/blog/2014/08/12/ioszhong-de-zi-jie-xu/#disqus_thread">Comments </a> <span class="fui-bubble-16"></span>
-          
-          </div>
-          
-          <div class="row-fluid">
-          
-          </div>
-          
-    </div>
-    <div class="span10 post-container">
-      <h1 class="link"><a href="/blog/2014/08/12/ioszhong-de-zi-jie-xu/">iOS中的字节序</a></h1>
-      <p><img src="/images/b8c60f715c7d7ad3736a3efde8f56eae65d9d45810251-ck6IkC_fw658.png" alt="" /></p>
+<time datetime="2014-08-12T12:07:08+08:00" pubdate data-updated="true">Aug 12<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/12/ioszhong-de-zi-jie-xu/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/b8c60f715c7d7ad3736a3efde8f56eae65d9d45810251-ck6IkC_fw658.png" alt="" /></p>
 
 <h4>起因</h4>
 
@@ -1170,26 +1109,23 @@
 <li><p><a href="https://developer.apple.com/library/mac/documentation/corefoundation/Conceptual/CFMemoryMgmt/Concepts/ByteOrdering.html">Byte Ordering</a>;</p></li>
 </ol>
 
-
-      
-      
-    </div>
-  </div>
-
+</div>
+  
+  
 
 
     </article>
-    
-    <hr>
-    
   
   
     <article>
       
-
-  <div class="row-fluid">
-    <div class="span2 post-meta">
-	  <h5 class="date-time">
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan/">iOS中的断点续传</a></h1>
+    
+    
+      <p class="meta">
+        
 
 
 
@@ -1201,21 +1137,16 @@
   
 
 
-<i class="icon-calendar-empty"></i> <time datetime="2014-07-16T17:25:31+08:00" pubdate data-updated="true">Jul 16<span>th</span>, 2014</time></h5>
-          <div class="row-fluid">
-          
-          <a href="http://alex1212112.github.io/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan/#disqus_thread">Comments </a> <span class="fui-bubble-16"></span>
-          
-          </div>
-          
-          <div class="row-fluid">
-          
-          </div>
-          
-    </div>
-    <div class="span10 post-container">
-      <h1 class="link"><a href="/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan/">iOS中的断点续传</a></h1>
-      <p><img src="/images/201407161730.png" alt="" /></p>
+<time datetime="2014-07-16T17:25:31+08:00" pubdate data-updated="true">Jul 16<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/201407161730.png" alt="" /></p>
 
 <h4>关键点</h4>
 
@@ -1273,26 +1204,23 @@
 <p>3.<a href="http://www.cnblogs.com/liufeng24/p/3555303.html">iOS开发网络编程之断点续传-NSURLConnection</a>;</p>
 
 <p>4.<a href="http://blog.csdn.net/zhaoxy_thu/article/details/21383515">AFNetworking实现程序重新启动时的断点续传</a>；</p>
-
-      
-      
-    </div>
-  </div>
-
+</div>
+  
+  
 
 
     </article>
-    
-    <hr>
-    
   
   
     <article>
       
-
-  <div class="row-fluid">
-    <div class="span2 post-meta">
-	  <h5 class="date-time">
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/01/cggeometry/">CGGeometry</a></h1>
+    
+    
+      <p class="meta">
+        
 
 
 
@@ -1304,21 +1232,16 @@
   
 
 
-<i class="icon-calendar-empty"></i> <time datetime="2014-07-01T12:35:54+08:00" pubdate data-updated="true">Jul 1<span>st</span>, 2014</time></h5>
-          <div class="row-fluid">
-          
-          <a href="http://alex1212112.github.io/blog/2014/07/01/cggeometry/#disqus_thread">Comments </a> <span class="fui-bubble-16"></span>
-          
-          </div>
-          
-          <div class="row-fluid">
-          
-          </div>
-          
-    </div>
-    <div class="span10 post-container">
-      <h1 class="link"><a href="/blog/2014/07/01/cggeometry/">CGGeometry</a></h1>
-      <p><img src="/images/201407011244.png" alt="" /></p>
+<time datetime="2014-07-01T12:35:54+08:00" pubdate data-updated="true">Jul 1<span>st</span>, 2014</time>
+        
+         | <a href="/blog/2014/07/01/cggeometry/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/201407011244.png" alt="" /></p>
 
 <p>CGGeometry 是一个 Quartz 2D 框架中非常有用且好用的处理几何问题的基本组件，这里列出一些它的方法并简单说明如何使用。</p>
 
@@ -1582,26 +1505,23 @@
 <p><a href="http://www.cnblogs.com/xuling/archive/2012/02/09/2343427.html">Objective-c 中CGGeometry几何类常用方法简单整理</a>;</p>
 
 <p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Reference/CGGeometry/Reference/reference.html">CGGeometry Reference</a>;</p>
-
-      
-      
-    </div>
-  </div>
-
+</div>
+  
+  
 
 
     </article>
-    
-    <hr>
-    
   
   
     <article>
       
-
-  <div class="row-fluid">
-    <div class="span2 post-meta">
-	  <h5 class="date-time">
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/30/kvcjian-jie/">KVC简介</a></h1>
+    
+    
+      <p class="meta">
+        
 
 
 
@@ -1613,21 +1533,16 @@
   
 
 
-<i class="icon-calendar-empty"></i> <time datetime="2014-06-30T18:50:23+08:00" pubdate data-updated="true">Jun 30<span>th</span>, 2014</time></h5>
-          <div class="row-fluid">
-          
-          <a href="http://alex1212112.github.io/blog/2014/06/30/kvcjian-jie/#disqus_thread">Comments </a> <span class="fui-bubble-16"></span>
-          
-          </div>
-          
-          <div class="row-fluid">
-          
-          </div>
-          
-    </div>
-    <div class="span10 post-container">
-      <h1 class="link"><a href="/blog/2014/06/30/kvcjian-jie/">KVC简介</a></h1>
-      <p><img src="/images/2d7462592d67a98dbffc700f70ae01d4423b1c1256049.png" alt="" /></p>
+<time datetime="2014-06-30T18:50:23+08:00" pubdate data-updated="true">Jun 30<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/06/30/kvcjian-jie/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/2d7462592d67a98dbffc700f70ae01d4423b1c1256049.png" alt="" /></p>
 
 <h3>目录</h3>
 
@@ -1804,26 +1719,23 @@
 
 
 <p>@sum是一个操作符，对指定的属性（name.length）求和。</p>
-
-      
-      
-    </div>
-  </div>
-
+</div>
+  
+  
 
 
     </article>
-    
-    <hr>
-    
   
   
     <article>
       
-
-  <div class="row-fluid">
-    <div class="span2 post-meta">
-	  <h5 class="date-time">
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/13/uitableview-xiang-guan/">UITableView 相关</a></h1>
+    
+    
+      <p class="meta">
+        
 
 
 
@@ -1835,21 +1747,16 @@
   
 
 
-<i class="icon-calendar-empty"></i> <time datetime="2014-06-13T13:48:02+08:00" pubdate data-updated="true">Jun 13<span>th</span>, 2014</time></h5>
-          <div class="row-fluid">
-          
-          <a href="http://alex1212112.github.io/blog/2014/06/13/uitableview-xiang-guan/#disqus_thread">Comments </a> <span class="fui-bubble-16"></span>
-          
-          </div>
-          
-          <div class="row-fluid">
-          
-          </div>
-          
-    </div>
-    <div class="span10 post-container">
-      <h1 class="link"><a href="/blog/2014/06/13/uitableview-xiang-guan/">UITableView 相关</a></h1>
-      <p><img src="/images/4902731144446386506.jpg" alt="" /></p>
+<time datetime="2014-06-13T13:48:02+08:00" pubdate data-updated="true">Jun 13<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/06/13/uitableview-xiang-guan/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/4902731144446386506.jpg" alt="" /></p>
 
 <h4>问题描述：</h4>
 
@@ -1924,42 +1831,67 @@
 
 
 
-
-      
-      
-    </div>
-  </div>
-
+</div>
+  
+  
 
 
     </article>
-    
   
   <div class="pagination">
     
-    <a class="prev" href="/blog/page/3/">&larr; Older</a>
+      <a class="prev" href="/blog/page/3/">&larr; Older</a>
     
-
+    <a href="/blog/archives">Blog Archives</a>
     
     <a class="next" href="/">Newer &rarr;</a>
     
   </div>
 </div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/11/24/dispatch-source/">Dispatch Source</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/21/run-loop/">Run Loop</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/">iOS 中线程同步的一些方法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/">ReactiveCocoa 学习资料</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/">关于 UILocalNotification 的几个问题</a>
+      </li>
+    
+  </ul>
+</section>
 
 
-        </div>
-      </div>
-      <div class="row-fluid">
-        <footer class="footer-page" role="contentinfo">
-          <p>
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
   Copyright &copy; 2015 - ghren -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span> - Theme by <a href="http://alexgaribay.com">Alex Garibay</a>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
-
-        </footer>
-      </div>
-  </div>
+</footer>
   
 
 <script type="text/javascript">
