@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "KVO简介"
+title: "KVO 简介"
 date: 2014-09-02 16:24:18 +0800
 comments: true
 categories: 

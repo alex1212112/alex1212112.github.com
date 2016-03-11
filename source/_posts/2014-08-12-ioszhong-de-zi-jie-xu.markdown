@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "iOS中的字节序"
+title: "iOS 中的字节序"
 date: 2014-08-12 12:07:08 +0800
 comments: true
 categories: 

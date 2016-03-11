@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "iOS中的断点续传"
+title: "iOS 中的断点续传"
 date: 2014-07-16 17:25:31 +0800
 comments: true
 categories: 

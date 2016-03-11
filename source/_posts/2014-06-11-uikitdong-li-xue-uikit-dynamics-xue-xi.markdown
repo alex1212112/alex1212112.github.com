@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "UIKit动力学(UIKit Dynamics)学习"
+title: "UIKit 动力学(UIKit Dynamics)学习"
 date: 2014-06-11 11:17:46 +0800
 comments: true
 categories: 

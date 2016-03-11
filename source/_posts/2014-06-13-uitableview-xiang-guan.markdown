@@ -40,7 +40,7 @@ categories:
   	
 如何获取UITableViewCell 在TableView中的frame？
   	
- 解决办法:
+####解决办法:
 
 ```objc
  CGRect cellFrame = [_tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
@@ -57,6 +57,26 @@ categories:
 ```objc
 _tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _tableView.bounds.size.width, 0.01f)];
 ```	
+
+
+***
+
+####问题描述
+
+iOS8 如何如何使 tableView cell 自适应高度 ？
+
+####解决办法
+
+对自定义的Cell 进行约束布局（Autolayout）,
+
+在`viewDidLoad`里添加
+
+```objc
+   self.tableView.rowHeight = UITableViewAutomaticDimension;
+   self.tableView.estimatedRowHeight = 100;
+```
+
+
 
 
 

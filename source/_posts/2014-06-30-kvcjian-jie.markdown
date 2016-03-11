@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "KVC简介"
+title: "KVC 简介"
 date: 2014-06-30 18:50:23 +0800
 comments: true
 categories: 

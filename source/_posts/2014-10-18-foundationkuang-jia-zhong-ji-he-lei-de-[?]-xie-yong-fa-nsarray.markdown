@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Foundation框架中集合类的一些用法-NSArray"
+title: "Foundation 框架中集合类的一些用法-NSArray"
 date: 2014-10-18 21:21:07 +0800
 comments: true
 categories: 

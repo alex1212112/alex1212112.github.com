@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "iOS7中UIViewController的转场"
+title: "iOS7 中 UIViewController 的转场"
 date: 2014-05-05 18:57:40 +0800
 comments: true
 categories: 
