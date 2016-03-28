@@ -9,10 +9,7 @@
   <meta name="author" content="ghren">
 
   
-  <meta name="description" content="目录 什么是方法混写（Method Swizzling）
-如何使用方法混写
-注意事项
-参考资料 什么是方法混写(Method Swizzling) Objective-C 中对象调用方法，或者叫“消息传递”,是通过一种动态绑定机制实现的，即对象收到消息后，究竟调用哪个方法，完全于运行期决定， &hellip;">
+  <meta name="description" content="###目录 什么是方法混写（Method Swizzling） 如何使用方法混写 注意事项 参考资料 什么是方法混写(Method Swizzling) Objective-C 中对象调用方法，或者叫“消息传递”,是通过一种动态绑定机制实现的，即对象收到消息后，究竟调用哪个方法，完全于运行期决定 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,40 +18,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://alex1212112.github.io/posts/2/">
+  <link rel="canonical" href="http://alex1212112.github.io/posts/2">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin" rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Noto+Serif:400,700' rel='stylesheet' type='text/css'>
+
+
+
   
 
 </head>
 
 <body   >
-  <header role="banner">
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="alex1212112.github.io">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main">
-	<li><a href="/">Blog</a></li>
-	<li><a href="/blog/archives">Archives</a></li>
+  <nav id="main-nav" role="navigation">
+<ul class="main-navigation">
+  <li><a href="/" class="nav-link">Blog</a></li>
+  <li><a href="/blog/archives" class="nav-link">Archives</a></li>
+  <li><a href="/atom.xml" class="nav-link">RSS</a></li>
 </ul>
 
 </nav>
+  <header role="banner"><hgroup>
+	
+  <h1><a href="/">Summerrose’s Blog</a></h1>
+  
+    <h2>既见君子，云胡不喜</h2>
+  
+</hgroup>
+
+</header> 
+  
   <div id="main">
     <div id="content">
       <div class="blog-index">
@@ -74,7 +74,14 @@
 
 
 
-<time class='entry-date' datetime='2014-10-20T17:47:07+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:47 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2014-10-20T17:47:07+08:00" pubdate data-updated="true"></time>
         
            | <a href="/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/#disqus_thread"
              data-disqus-identifier="http://alex1212112.github.io/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/">Comments</a>
@@ -84,119 +91,139 @@
   </header>
 
 
-  <div class="entry-content"><p><img src="/images/201410201751.png" alt="" /></p>
-
-<h3>目录</h3>
+  <div class="entry-content"><p><img src="/images/201410201751.png" alt="" />
+###目录</p>
 
 <ol>
-<li>什么是方法混写（Method Swizzling）</li>
-<li>如何使用方法混写</li>
-<li>注意事项</li>
-<li>参考资料</li>
+  <li>什么是方法混写（Method Swizzling）</li>
+  <li>如何使用方法混写</li>
+  <li>注意事项</li>
+  <li>参考资料</li>
 </ol>
 
-
-<h3>什么是方法混写(Method Swizzling)</h3>
+<h3 id="method-swizzling">什么是方法混写(Method Swizzling)</h3>
 
 <p>Objective-C 中对象调用方法，或者叫“消息传递”,是通过一种动态绑定机制实现的，即对象收到消息后，究竟调用哪个方法，完全于运行期决定，而且方法名和其对应的实现也是可以在运行期改变的，这样，我们不需要源代码，也不用通过继承子类的来覆写方法，就能改变这个类中的方法。这种在运行期改变类的方法实现的手段被称之为方法混写（Method Swizzling）.</p>
 
-<h3>如何使用方法混写</h3>
+<h3 id="section">如何使用方法混写</h3>
 
 <p>举一个UIAlertView的例子，UIAlertView 有一个 show 的方法，我们想改变这个 show 的方法，可以按如下实现:</p>
 
 <p>UIAlertView+GHSwizzling.m</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;UIAlertView+GHSwizzling.h&quot;</span>
-</span><span class='line'><span class="cp">#import &lt;objc/runtime.h&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@implementation</span> <span class="bp">UIAlertView</span> <span class="nl">(GHSwizzling)</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="p">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">load</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">static</span> <span class="kt">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="kt">SEL</span> <span class="n">show</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">show</span><span class="p">);</span>
-</span><span class='line'>        <span class="kt">SEL</span> <span class="n">replaceSHow</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">_gh_show</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">Method</span> <span class="n">existingMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">show</span><span class="p">);</span>
-</span><span class='line'>        <span class="n">Method</span> <span class="n">newMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">replaceSHow</span><span class="p">);</span>
-</span><span class='line'>        <span class="n">method_exchangeImplementations</span><span class="p">(</span><span class="n">existingMethod</span><span class="p">,</span> <span class="n">newMethod</span><span class="p">);</span><span class="c1">//交换两个方法</span>
-</span><span class='line'>    <span class="p">});</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">_gh_show</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="n">_gh_show</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;alert show!&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">@end</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="cp">#import &quot;UIAlertView+GHSwizzling.h&quot;</span>
+</span><span class="line"><span class="cp">#import &lt;objc/runtime.h&gt;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@implementation</span> <span class="bp">UIAlertView</span> <span class="nl">(GHSwizzling)</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="p">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">load</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="k">static</span> <span class="kt">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
+</span><span class="line">    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class="line">
+</span><span class="line">        <span class="kt">SEL</span> <span class="n">show</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">show</span><span class="p">);</span>
+</span><span class="line">        <span class="kt">SEL</span> <span class="n">replaceSHow</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">_gh_show</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line">        <span class="n">Method</span> <span class="n">existingMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">show</span><span class="p">);</span>
+</span><span class="line">        <span class="n">Method</span> <span class="n">newMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">replaceSHow</span><span class="p">);</span>
+</span><span class="line">        <span class="n">method_exchangeImplementations</span><span class="p">(</span><span class="n">existingMethod</span><span class="p">,</span> <span class="n">newMethod</span><span class="p">);</span><span class="c1">//交换两个方法</span>
+</span><span class="line">    <span class="p">});</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">_gh_show</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="p">[</span><span class="nb">self</span> <span class="n">_gh_show</span><span class="p">];</span>
+</span><span class="line">    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;alert show!&quot;</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="k">@end</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>从上面代码我们可以看到，实现方法混写的步骤：</p>
 
 <ol>
-<li><p>编写自己希望实现方法的代码，上述中为 <code>_gh_show</code>,我们看到 该方法里调用了自己，好像会陷入递归调用的死循环，不过我们需要知道，这个方法是要和 <code>show</code> 方法交换的。</p></li>
-<li><p>获取自己实现方法的 method 和原实现方法的 method.</p></li>
-<li><p>通过 <code>method_exchangeImplementations()</code> 函数交换两个方法.</p></li>
+  <li>
+    <p>编写自己希望实现方法的代码，上述中为 <code>_gh_show</code>,我们看到 该方法里调用了自己，好像会陷入递归调用的死循环，不过我们需要知道，这个方法是要和 <code>show</code> 方法交换的。</p>
+  </li>
+  <li>
+    <p>获取自己实现方法的 method 和原实现方法的 method.</p>
+  </li>
+  <li>
+    <p>通过 <code>method_exchangeImplementations()</code> 函数交换两个方法.</p>
+  </li>
 </ol>
-
 
 <p>注意: 这只是方法混写中的一种，交换两个实现方法，还有 <code>method_setImplementayion()</code>等方法.</p>
 
-<h3>注意事项</h3>
+<h3 id="section-1">注意事项</h3>
 
 <ol>
-<li><p>方法混写最好在类的 category 中的 <code>+load</code> 方法中进行方法交换.</p></li>
-<li><p>方法混写的代码最好在 dispatch_once 中实现。</p></li>
-<li><p>要注意给自己实现的方法加上命名空间，以防止出现重复命名的问题，比如上述中的"<em>gh</em>&ldquo;前缀.</p></li>
-<li><p>不要滥用这个方法,该方法被称之为 Objective-C 中的黑魔法，滥用会导致难以调试的bug.</p></li>
-<li><p>只要在 <code>+load</code> 中实现了 <code>method_exchangeImplementations()</code>, 那么该类的这个方法在整个应用的生命周期以内都被 Swizzling 了，要想调用原来正常的方法，就只能通过调用自己实现的方法名了。</p></li>
+  <li>
+    <p>方法混写最好在类的 category 中的 <code>+load</code> 方法中进行方法交换.</p>
+  </li>
+  <li>
+    <p>方法混写的代码最好在 dispatch_once 中实现。</p>
+  </li>
+  <li>
+    <p>要注意给自己实现的方法加上命名空间，以防止出现重复命名的问题，比如上述中的”<em>gh</em>“前缀.</p>
+  </li>
+  <li>
+    <p>不要滥用这个方法,该方法被称之为 Objective-C 中的黑魔法，滥用会导致难以调试的bug.</p>
+  </li>
+  <li>
+    <p>只要在 <code>+load</code> 中实现了 <code>method_exchangeImplementations()</code>, 那么该类的这个方法在整个应用的生命周期以内都被 Swizzling 了，要想调用原来正常的方法，就只能通过调用自己实现的方法名了。</p>
+  </li>
 </ol>
 
-
-<h3>参考资料</h3>
+<h3 id="section-2">参考资料</h3>
 
 <ol>
-<li><p><a href="http://nshipster.com/method-swizzling/">Method Swizzling</a></p></li>
-<li><p><a href="http://blog.csdn.net/yiyaaixuexi/article/details/9374411">Objective-C的hook方案（一）: Method Swizzling</a></p></li>
-<li><p><a href="http://www.cnblogs.com/kesalin/archive/2012/01/05/objc_method_swizzling.html">[Cocoa]深入浅出Cocoa之Method Swizzling</a></p></li>
-<li><p><a href="http://sjpsega.com/blog/2014/09/17/oc-method-swizzling/">Objective-C Method Swizzling</a></p></li>
-<li><p><a href="http://billwang1990.github.io/blog/2014/01/04/about-swizzling/">关于swizzling</a></p></li>
+  <li>
+    <p><a href="http://nshipster.com/method-swizzling/">Method Swizzling</a></p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/yiyaaixuexi/article/details/9374411">Objective-C的hook方案（一）: Method Swizzling</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.cnblogs.com/kesalin/archive/2012/01/05/objc_method_swizzling.html">[Cocoa]深入浅出Cocoa之Method Swizzling</a></p>
+  </li>
+  <li>
+    <p><a href="http://sjpsega.com/blog/2014/09/17/oc-method-swizzling/">Objective-C Method Swizzling</a></p>
+  </li>
+  <li>
+    <p><a href="http://billwang1990.github.io/blog/2014/01/04/about-swizzling/">关于swizzling</a></p>
+  </li>
 </ol>
-
 </div>
   
   
@@ -218,7 +245,14 @@
 
 
 
-<time class='entry-date' datetime='2014-10-20T12:14:09+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:14 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2014-10-20T12:14:09+08:00" pubdate data-updated="true"></time>
         
            | <a href="/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/#disqus_thread"
              data-disqus-identifier="http://alex1212112.github.io/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/">Comments</a>
@@ -230,127 +264,130 @@
 
   <div class="entry-content"><p><img src="/images/201410201218.png" alt="" /></p>
 
-<h3>目录</h3>
+<h3 id="section">目录</h3>
 
 <ol>
-<li>什么是对象关联（Associated Objects）</li>
-<li>如何使用</li>
-<li>注意事项</li>
-<li>参考资料</li>
+  <li>什么是对象关联（Associated Objects）</li>
+  <li>如何使用</li>
+  <li>注意事项</li>
+  <li>参考资料</li>
 </ol>
 
+<h3 id="associated-objects">什么是对象关联(Associated Objects)</h3>
 
-<h3>什么是对象关联(Associated Objects)</h3>
+<p>对象关联是Objective-C 2.0运行时的一个特性，起始于OS X Snow Leopard和iOS 4。我们有时候需要在对象中存放一些相关的信息，而又无法通过别的手段实现时，就可以把这些信息通过对象关联的方法与对象关联起来，在需要的时候通过对应的 key 就可以获取到对象的这些信息，比如说我们可以在 Category 中通过对象关联添加自定义的属性。对象关联通过  &lt;objc/runtime.h&gt; 中定义的三个方法实现的:</p>
 
-<p>对象关联是Objective-C 2.0运行时的一个特性，起始于OS X Snow Leopard和iOS 4。我们有时候需要在对象中存放一些相关的信息，而又无法通过别的手段实现时，就可以把这些信息通过对象关联的方法与对象关联起来，在需要的时候通过对应的 key 就可以获取到对象的这些信息，比如说我们可以在 Category 中通过对象关联添加自定义的属性。对象关联通过  &lt;objc/runtime.h> 中定义的三个方法实现的:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">void</span> <span class="nf">objc_setAssociatedObject</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">,</span> <span class="kt">id</span> <span class="n">value</span><span class="p">,</span> <span class="n">objc_AssociationPolicy</span> <span class="n">policy</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">id</span> <span class="nf">objc_getAssociatedObject</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">objc_removeAssociatedObjects</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">)</span><span class="err">；</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="kt">void</span> <span class="nf">objc_setAssociatedObject</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">,</span> <span class="kt">id</span> <span class="n">value</span><span class="p">,</span> <span class="n">objc_AssociationPolicy</span> <span class="n">policy</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="kt">id</span> <span class="nf">objc_getAssociatedObject</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="n">objc_removeAssociatedObjects</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">)</span><span class="err">；</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<h3>如何使用对象关联</h3>
+<h3 id="section-1">如何使用对象关联</h3>
 
 <p>我们可以使用关联对象在 Category 中添加自定义的属性，比如为一个 GHPerson 类添加一个体重的属性（weight）:</p>
 
 <p>GHPerson+GHAssociatedObject.h</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;GHPerson.h&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@interface</span> <span class="nc">GHPerson</span> <span class="nl">(GHAssociatedObject)</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">weight</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@end</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="cp">#import &quot;GHPerson.h&quot;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@interface</span> <span class="nc">GHPerson</span> <span class="nl">(GHAssociatedObject)</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">weight</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@end</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>GHPerson+GHAssociatedObject.m</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;GHPerson+GHAssociatedObject.h&quot;</span>
-</span><span class='line'><span class="cp">#import &lt;objc/runtime.h&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">static</span> <span class="kt">char</span> <span class="n">weightKey</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@implementation</span> <span class="nc">GHPerson</span> <span class="nl">(GHAssociatedObject)</span>
-</span><span class='line'><span class="k">@dynamic</span> <span class="n">weight</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setWeight:</span><span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nv">weight</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">objc_setAssociatedObject</span> <span class="p">(</span><span class="nb">self</span><span class="p">,</span><span class="o">&amp;</span><span class="n">weightKey</span><span class="p">,</span><span class="n">weight</span><span class="p">,</span><span class="n">OBJC_ASSOCIATION_RETAIN</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nf">weight</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>   <span class="k">return</span> <span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="n">objc_getAssociatedObject</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">weightKey</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">@end</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="cp">#import &quot;GHPerson+GHAssociatedObject.h&quot;</span>
+</span><span class="line"><span class="cp">#import &lt;objc/runtime.h&gt;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">static</span> <span class="kt">char</span> <span class="n">weightKey</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@implementation</span> <span class="nc">GHPerson</span> <span class="nl">(GHAssociatedObject)</span>
+</span><span class="line"><span class="k">@dynamic</span> <span class="n">weight</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setWeight:</span><span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nv">weight</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="n">objc_setAssociatedObject</span> <span class="p">(</span><span class="nb">self</span><span class="p">,</span><span class="o">&amp;</span><span class="n">weightKey</span><span class="p">,</span><span class="n">weight</span><span class="p">,</span><span class="n">OBJC_ASSOCIATION_RETAIN</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nf">weight</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">   <span class="k">return</span> <span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="n">objc_getAssociatedObject</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">weightKey</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="k">@end</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>其中 weightKey 是我们关联对象时用到的key，一般最好使用一个 char 类型的静态全局变量。从关联这个角度上看，我们用的属性不过是把对象关联到了一个实例变量上面。</p>
 
 <p>我们看到 objc_setAssociatedObject 中的第 4 个参数，它表明了一个引用的关系，和 @property 中的属性等同：</p>
 
-<blockquote><p>OBJC_ASSOCIATION_ASSIGN   等同于 @property (assign) 或 @property (unsafe_unretained)</p>
+<blockquote>
+  <p>OBJC_ASSOCIATION_ASSIGN   等同于 @property (assign) 或 @property (unsafe_unretained)</p>
+</blockquote>
 
-<p>OBJC_ASSOCIATION_RETAIN_NONATOMIC 等同于 @property (nonatomic, strong),其不可以被原子化</p>
+<blockquote>
+  <p>OBJC_ASSOCIATION_RETAIN_NONATOMIC	等同于 @property (nonatomic, strong),其不可以被原子化</p>
+</blockquote>
 
-<p>OBJC_ASSOCIATION_COPY_NONATOMIC       等同于 @property (nonatomic, copy),其不可以被原子化</p>
+<blockquote>
+  <p>OBJC_ASSOCIATION_COPY_NONATOMIC	    等同于 @property (nonatomic, copy),其不可以被原子化</p>
+</blockquote>
 
-<p>OBJC_ASSOCIATION_RETAIN  等同于  @property (atomic, strong),  可以被原子化</p>
+<blockquote>
+  <p>OBJC_ASSOCIATION_RETAIN  等同于  @property (atomic, strong),  可以被原子化</p>
+</blockquote>
 
-<p>OBJC_ASSOCIATION_COPY  等同于  @property (atomic, copy), 可以被原子化</p></blockquote>
+<blockquote>
+  <p>OBJC_ASSOCIATION_COPY  等同于  @property (atomic, copy), 可以被原子化</p>
+</blockquote>
 
-<h3>注意事项</h3>
+<h3 id="section-2">注意事项</h3>
 
 <ol>
-<li>不应该用 objc_removeAssociatedObjects() 来删除对象的属性，因为可能会导致其他客户对其添加的属性也被移除了。规范的方法是：调用 objc_setAssociatedObject 方法并传入一个 nil 值来清除一个关联。</li>
-<li>应该小心使用对象关联，不要滥用，因为可能会引起难以调试的bug。</li>
+  <li>不应该用 objc_removeAssociatedObjects() 来删除对象的属性，因为可能会导致其他客户对其添加的属性也被移除了。规范的方法是：调用 objc_setAssociatedObject 方法并传入一个 nil 值来清除一个关联。</li>
+  <li>应该小心使用对象关联，不要滥用，因为可能会引起难以调试的bug。</li>
 </ol>
 
-
-<h3>参考资料</h3>
+<h3 id="section-3">参考资料</h3>
 
 <ol>
-<li><a href="http://nshipster.cn/associated-objects/">Associated Objects</a></li>
+  <li><a href="http://nshipster.cn/associated-objects/">Associated Objects</a></li>
 </ol>
-
 </div>
   
   
@@ -372,7 +409,14 @@
 
 
 
-<time class='entry-date' datetime='2014-10-19T20:20:26+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>8:20 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2014-10-19T20:20:26+08:00" pubdate data-updated="true"></time>
         
            | <a href="/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/#disqus_thread"
              data-disqus-identifier="http://alex1212112.github.io/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/">Comments</a>
@@ -386,123 +430,119 @@
 
 <p>我们经常会遇到判断两个对象是否相等的的情况，如果食用 == 操作符来进行判断，比较出来多结果不一定是我们想要的，因为 == 操作符比较的事两个对象对指针，而不是对象的值。 NSObject 协议中有两个用语判断等同性的关键方法：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nf">hash</span><span class="p">;</span>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span><span class="p">;</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nf">hash</span><span class="p">;</span>
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<p>NSObject类对其的默认实现为当且仅当其指针完全相同的时候，两个对象才相等。我们要实现自己的对象等同性就要覆写这两个方法。 有一点要理解，如果 &ldquo;isEqual:&rdquo; 方法判断两个对象相等，那么其 hash 方法也必须返回同一个值，但是，如果两个对象的 hash 方法返回同一个值， &ldquo;isEqual:&rdquo; 方法却未必认为二者相等。</p>
+<p>NSObject类对其的默认实现为当且仅当其指针完全相同的时候，两个对象才相等。我们要实现自己的对象等同性就要覆写这两个方法。 有一点要理解，如果 “isEqual:” 方法判断两个对象相等，那么其 hash 方法也必须返回同一个值，但是，如果两个对象的 hash 方法返回同一个值， “isEqual:” 方法却未必认为二者相等。</p>
 
 <p>假如有一个Person类如下:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="nc">Person</span> : <span class="bp">NSObject</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@end</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="k">@interface</span> <span class="nc">Person</span> : <span class="bp">NSObject</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@end</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>我们实现其等同性判断的步骤如下：</p>
 
 <ol>
-<li>编写一个等同性判定方法，类似 NSString 类中的 <code>isEqualToString:</code> 方法，我们这里可以声明为 <code>isEqualToPerson:</code>.</li>
-<li>覆写 <code>isEqual:</code> 方法和 <code>hash</code> 方法.</li>
+  <li>编写一个等同性判定方法，类似 NSString 类中的 <code>isEqualToString:</code> 方法，我们这里可以声明为 <code>isEqualToPerson:</code>.</li>
+  <li>覆写 <code>isEqual:</code> 方法和 <code>hash</code> 方法.</li>
 </ol>
-
 
 <p>具体实现如下：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqualToPerson:</span><span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="nv">person</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span> <span class="o">==</span> <span class="n">person</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">([</span><span class="n">_name</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">]</span> <span class="o">||</span> <span class="n">_name</span> <span class="o">==</span> <span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">))</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">([</span><span class="n">_age</span> <span class="nl">isEqualToNumber</span><span class="p">:</span><span class="n">person</span><span class="p">.</span><span class="n">age</span><span class="p">]</span> <span class="o">||</span> <span class="n">_age</span> <span class="o">==</span> <span class="n">person</span><span class="p">.</span><span class="n">age</span><span class="p">))</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">([</span><span class="nb">self</span> <span class="k">class</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="n">object</span> <span class="k">class</span><span class="p">])</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">isEqualToPerson</span><span class="p">:</span> <span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="n">object</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="p">[</span><span class="nb">super</span> <span class="nl">isEqual</span><span class="p">:</span><span class="n">object</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nf">hash</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">_name</span> <span class="n">hash</span><span class="p">]</span> <span class="o">^</span> <span class="p">[</span><span class="n">_age</span> <span class="n">hash</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqualToPerson:</span><span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="nv">person</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span> <span class="o">==</span> <span class="n">person</span><span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">([</span><span class="n">_name</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">]</span> <span class="o">||</span> <span class="n">_name</span> <span class="o">==</span> <span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">))</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">([</span><span class="n">_age</span> <span class="nl">isEqualToNumber</span><span class="p">:</span><span class="n">person</span><span class="p">.</span><span class="n">age</span><span class="p">]</span> <span class="o">||</span> <span class="n">_age</span> <span class="o">==</span> <span class="n">person</span><span class="p">.</span><span class="n">age</span><span class="p">))</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">([</span><span class="nb">self</span> <span class="k">class</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="n">object</span> <span class="k">class</span><span class="p">])</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">isEqualToPerson</span><span class="p">:</span> <span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="n">object</span><span class="p">];</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">else</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="p">[</span><span class="nb">super</span> <span class="nl">isEqual</span><span class="p">:</span><span class="n">object</span><span class="p">];</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nf">hash</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="k">return</span> <span class="p">[</span><span class="n">_name</span> <span class="n">hash</span><span class="p">]</span> <span class="o">^</span> <span class="p">[</span><span class="n">_age</span> <span class="n">hash</span><span class="p">];</span>
+</span><span class="line"><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>至此，我们已经完成了符合自己需求的对象等同性判断。</p>
 
-<h3>参考资料</h3>
+<h3 id="section">参考资料</h3>
 
 <ol>
-<li><a href="http://www.objccn.io/issue-7-2/">值对象</a></li>
+  <li><a href="http://www.objccn.io/issue-7-2/">值对象</a></li>
 </ol>
 
 </div>
@@ -526,7 +566,14 @@
 
 
 
-<time class='entry-date' datetime='2014-10-18T21:21:07+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:21 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2014-10-18T21:21:07+08:00" pubdate data-updated="true"></time>
         
            | <a href="/blog/2014/10/18/foundationkuang-jia-zhong-ji-he-lei-de-%5B%3F%5D-xie-yong-fa-nsarray/#disqus_thread"
              data-disqus-identifier="http://alex1212112.github.io/blog/2014/10/18/foundationkuang-jia-zhong-ji-he-lei-de-%5B%3F%5D-xie-yong-fa-nsarray/">Comments</a>
@@ -538,224 +585,213 @@
 
   <div class="entry-content"><p><img src="/images/201410191739.png" alt="" /></p>
 
-<h3>目录</h3>
+<h3 id="section">目录</h3>
 
 <ol>
-<li>遍历</li>
-<li>排序</li>
-<li>过滤</li>
-<li>其他</li>
-<li>参考资料</li>
+  <li>遍历</li>
+  <li>排序</li>
+  <li>过滤</li>
+  <li>其他</li>
+  <li>参考资料</li>
 </ol>
 
+<h3 id="section-1">遍历</h3>
 
-<h3>遍历</h3>
+<h4 id="for">普通for循环</h4>
 
-<h4>普通for循环</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="p">[</span><span class="n">array</span> <span class="n">count</span><span class="p">];</span> <span class="n">n</span> <span class="o">++</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"> <span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="p">[</span><span class="n">array</span> <span class="n">count</span><span class="p">];</span> <span class="n">n</span> <span class="o">++</span><span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<h4>for in 方式（NSFastEnumeration方式）</h4>
+<h4 id="for-in-nsfastenumeration">for in 方式（NSFastEnumeration方式）</h4>
 
 <p>该方式无法获取到数组的下标，在不需要下标且数组元素很多的时候，可以用这种方式</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="k">for</span> <span class="p">(</span><span class="kt">id</span> <span class="n">object</span> <span class="k">in</span> <span class="n">array</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"> <span class="k">for</span> <span class="p">(</span><span class="kt">id</span> <span class="n">object</span> <span class="k">in</span> <span class="n">array</span><span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
-<h4>enumerateObjectsUsingBlock方式</h4>
+<p>####enumerateObjectsUsingBlock方式</p>
 
 <p>数组遍历的 block 方式 ，其中的stop标志提供了一个优雅的停止遍历的方法，当 *stop = Yes 的时候，遍历就会停止</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsUsingBlock</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"> <span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsUsingBlock</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">}];</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<h4>enumerateObjectsWithOptions方式</h4>
+<h4 id="enumerateobjectswithoptions">enumerateObjectsWithOptions方式</h4>
 
 <p>option 设置为 NSEnumerationConcurrent 为并发遍历方式,</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsWithOptions</span><span class="p">:</span><span class="n">NSEnumerationConcurrent</span> <span class="nl">usingBlock</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsWithOptions</span><span class="p">:</span><span class="n">NSEnumerationConcurrent</span> <span class="nl">usingBlock</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">}];</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>这里要注意使用并发方式进行遍历的话，最好不要在block里使用 NSMutableArray 之类的非线程安全的对象，当引起读写冲突的时候，会抛出 double free 的异常。</p>
 
 <p>option 设置为 NSEnumerationReverse 为倒序遍历方式</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsWithOptions</span><span class="p">:</span><span class="n">NSEnumerationReverse</span> <span class="nl">usingBlock</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsWithOptions</span><span class="p">:</span><span class="n">NSEnumerationReverse</span> <span class="nl">usingBlock</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">}];</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<h3>排序</h3>
+<h3 id="section-2">排序</h3>
 
 <p>假如数组里要排序的对象如下；</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="nc">User</span> : <span class="bp">NSObject</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@end</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="k">@interface</span> <span class="nc">User</span> : <span class="bp">NSObject</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@end</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<h4>使用NSDescriptor进行排序</h4>
+<h4 id="nsdescriptor">使用NSDescriptor进行排序</h4>
 
 <p>按年龄和姓名进行排序,该方法可以对属性的多个key进行排序</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortDescriptors</span> <span class="o">=</span> <span class="l">@[</span><span class="p">[</span><span class="bp">NSSortDescriptor</span> <span class="nl">sortDescriptorWithKey</span><span class="p">:</span><span class="s">@&quot;age&quot;</span> <span class="nl">ascending</span><span class="p">:</span><span class="nb">YES</span><span class="p">],[</span><span class="bp">NSSortDescriptor</span> <span class="nl">sortDescriptorWithKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span> <span class="nl">ascending</span><span class="p">:</span><span class="nb">YES</span><span class="p">]</span><span class="l">]</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span>  <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingDescriptors</span><span class="p">:</span><span class="n">sortDescriptors</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortDescriptors</span> <span class="o">=</span> <span class="l">@[</span><span class="p">[</span><span class="bp">NSSortDescriptor</span> <span class="nl">sortDescriptorWithKey</span><span class="p">:</span><span class="s">@&quot;age&quot;</span> <span class="nl">ascending</span><span class="p">:</span><span class="nb">YES</span><span class="p">],[</span><span class="bp">NSSortDescriptor</span> <span class="nl">sortDescriptorWithKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span> <span class="nl">ascending</span><span class="p">:</span><span class="nb">YES</span><span class="p">]</span><span class="l">]</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span>  <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingDescriptors</span><span class="p">:</span><span class="n">sortDescriptors</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
+<h4 id="nscomparator">使用NSComparator进行排序</h4>
 
-<h4>使用NSComparator进行排序</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingComparator</span><span class="p">:</span><span class="o">^</span><span class="n">NSComparisonResult</span><span class="p">(</span><span class="n">User</span> <span class="o">*</span><span class="n">user1</span><span class="p">,</span> <span class="n">User</span> <span class="o">*</span><span class="n">user2</span><span class="p">){</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">user1</span><span class="p">.</span><span class="n">age</span> <span class="nl">compare</span><span class="p">:</span><span class="n">user2</span><span class="p">.</span><span class="n">age</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingComparator</span><span class="p">:</span><span class="o">^</span><span class="n">NSComparisonResult</span><span class="p">(</span><span class="n">User</span> <span class="o">*</span><span class="n">user1</span><span class="p">,</span> <span class="n">User</span> <span class="o">*</span><span class="n">user2</span><span class="p">){</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">return</span> <span class="p">[</span><span class="n">user1</span><span class="p">.</span><span class="n">age</span> <span class="nl">compare</span><span class="p">:</span><span class="n">user2</span><span class="p">.</span><span class="n">age</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line"><span class="p">}];</span>
 </span></code></pre></td></tr></table></div></figure>
 
+<h4 id="selctor">使用selctor</h4>
 
-<h4>使用selctor</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">compare</span><span class="p">:)];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">compare</span><span class="p">:)];</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>其中compare为 User对象的方法</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="n">NSComparisonResult</span><span class="p">)</span><span class="nf">compare:</span><span class="p">(</span><span class="n">User</span> <span class="o">*</span><span class="p">)</span><span class="nv">otherUser</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">age</span> <span class="nl">compare</span><span class="p">:</span><span class="n">otherUser</span><span class="p">.</span><span class="n">age</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="n">NSComparisonResult</span><span class="p">)</span><span class="nf">compare:</span><span class="p">(</span><span class="n">User</span> <span class="o">*</span><span class="p">)</span><span class="nv">otherUser</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">return</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">age</span> <span class="nl">compare</span><span class="p">:</span><span class="n">otherUser</span><span class="p">.</span><span class="n">age</span><span class="p">];</span>
+</span><span class="line"><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<h3>过滤</h3>
+<h3 id="section-3">过滤</h3>
 
 <p>有时候需要按照一定规则从数组中过滤出符合要求的元素，这时候就要用到NSPredicate了,常用的格式化的用法如下：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSPredicate</span> <span class="o">*</span><span class="n">predicate</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSPredicate</span> <span class="nl">predicateWithFormat</span><span class="p">:</span><span class="s">@&quot;((age &gt;= %@) AND (age &lt; %@))&quot;</span><span class="p">,</span><span class="mi">@20</span><span class="p">,</span><span class="mi">@30</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">filteredArrayUsingPredicate</span><span class="p">:</span><span class="n">predicate</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSPredicate</span> <span class="o">*</span><span class="n">predicate</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSPredicate</span> <span class="nl">predicateWithFormat</span><span class="p">:</span><span class="s">@&quot;((age &gt;= %@) AND (age &lt; %@))&quot;</span><span class="p">,</span><span class="mi">@20</span><span class="p">,</span><span class="mi">@30</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">filteredArrayUsingPredicate</span><span class="p">:</span><span class="n">predicate</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>这个便返回了 user 数组中 age 在 20 到 30 之间的元素。</p>
 
 <p>NSPredicate 也有个 block 用法</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSPredicate</span> <span class="o">*</span><span class="n">predicate</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSPredicate</span> <span class="nl">predicateWithBlock</span><span class="p">:</span><span class="o">^</span><span class="kt">BOOL</span><span class="p">(</span><span class="kt">id</span> <span class="n">evaluatedObject</span><span class="p">,</span> <span class="bp">NSDictionary</span> <span class="o">*</span><span class="n">bindings</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">return</span>  <span class="p">((</span><span class="n">User</span> <span class="o">*</span><span class="p">)</span><span class="n">evaluatedObject</span><span class="p">).</span><span class="n">age</span> <span class="o">&gt;=</span> <span class="mi">20</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="n">User</span> <span class="o">*</span><span class="p">)</span><span class="n">evaluatedObject</span><span class="p">).</span><span class="n">age</span> <span class="o">&lt;=</span> <span class="mi">30</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}];</span>
-</span><span class='line'>
-</span><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">filteredArrayUsingPredicate</span><span class="p">:</span><span class="n">predicate</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSPredicate</span> <span class="o">*</span><span class="n">predicate</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSPredicate</span> <span class="nl">predicateWithBlock</span><span class="p">:</span><span class="o">^</span><span class="kt">BOOL</span><span class="p">(</span><span class="kt">id</span> <span class="n">evaluatedObject</span><span class="p">,</span> <span class="bp">NSDictionary</span> <span class="o">*</span><span class="n">bindings</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">        <span class="k">return</span>  <span class="p">((</span><span class="n">User</span> <span class="o">*</span><span class="p">)</span><span class="n">evaluatedObject</span><span class="p">).</span><span class="n">age</span> <span class="o">&gt;=</span> <span class="mi">20</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="n">User</span> <span class="o">*</span><span class="p">)</span><span class="n">evaluatedObject</span><span class="p">).</span><span class="n">age</span> <span class="o">&lt;=</span> <span class="mi">30</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">}];</span>
+</span><span class="line">
+</span><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">filteredArrayUsingPredicate</span><span class="p">:</span><span class="n">predicate</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
+<h3 id="section-4">其他</h3>
 
-<h3>其他</h3>
-
-<h4>去重</h4>
+<h4 id="section-5">去重</h4>
 
 <p>有一个优雅的KVC用法</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath</span><span class="p">:</span><span class="s">@&quot;@distinctUnionOfObjects.self&quot;</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath</span><span class="p">:</span><span class="s">@&quot;@distinctUnionOfObjects.self&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>别忘了前面 distinctUnionOfObjects 前面的 @ 符号,假如只想返回一个由user数组中的姓名组成的不重复的新数组，可以</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath</span><span class="p">:</span><span class="s">@&quot;@distinctUnionOfObjects.name&quot;</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath</span><span class="p">:</span><span class="s">@&quot;@distinctUnionOfObjects.name&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>还要注意假如数组里面存储的是我们自己的对象多话，这个对象还要实现等通性判断的方法：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span><span class="p">;</span>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nf">hash</span><span class="p">;</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span><span class="p">;</span>
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nf">hash</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>假如不实现等同性判断的话，系统默认的会把两个对象的指针相同才认为是同一个对象，有时候这显然不是我们想要的. 对象等同性具体实现可参考<a href="http://alex1212112.github.io/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/">对象等同性判断</a>。</p>
 
-<h3>参考资料</h3>
+<h3 id="section-6">参考资料</h3>
 
 <ol>
-<li><p><a href="http://beyondvincent.com/blog/2014/01/26/how-to-sort-nsarray-with-custom-objects/">对 NSArray 中自定义的对象进行排序</a></p></li>
-<li><p><a href="http://objccn.io/issue-7-1/">基础集合类</a></p></li>
-<li><p><a href="http://blog.sunnyxx.com/2014/04/30/ios_iterator/">ios中集合遍历方法的比较和技巧</a></p></li>
-<li><p><a href="http://nshipster.cn/nspredicate/">NSPredicate</a></p></li>
-<li><p><a href="http://nshipster.cn/kvc-collection-operators/">KVC Collection Operators</a></p></li>
+  <li>
+    <p><a href="http://beyondvincent.com/blog/2014/01/26/how-to-sort-nsarray-with-custom-objects/">对 NSArray 中自定义的对象进行排序</a></p>
+  </li>
+  <li>
+    <p><a href="http://objccn.io/issue-7-1/">基础集合类</a></p>
+  </li>
+  <li>
+    <p><a href="http://blog.sunnyxx.com/2014/04/30/ios_iterator/">ios中集合遍历方法的比较和技巧</a></p>
+  </li>
+  <li>
+    <p><a href="http://nshipster.cn/nspredicate/">NSPredicate</a></p>
+  </li>
+  <li>
+    <p><a href="http://nshipster.cn/kvc-collection-operators/">KVC Collection Operators</a></p>
+  </li>
 </ol>
 
 </div>
@@ -779,7 +815,14 @@
 
 
 
-<time class='entry-date' datetime='2014-09-02T16:24:18+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>4:24 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2014-09-02T16:24:18+08:00" pubdate data-updated="true"></time>
         
            | <a href="/blog/2014/09/02/kvojian-jie/#disqus_thread"
              data-disqus-identifier="http://alex1212112.github.io/blog/2014/09/02/kvojian-jie/">Comments</a>
@@ -791,7 +834,7 @@
 
   <div class="entry-content"><p><img src="/images/201409021638.png" alt="" /></p>
 
-<h3>目录</h3>
+<h3 id="section">目录</h3>
 
 <p>什么是KVO？</p>
 
@@ -803,160 +846,162 @@
 
 <p>参考资料</p>
 
-<h3>什么是KVO？</h3>
+<h3 id="kvo">什么是KVO？</h3>
 
 <p>KVO提供了一种观察者机制，当指定的对象的属性发生变化的时候，观察者就会收到通知，我们可以根据通知来进行UI更新等操作。它能降低代码之间的藕合度，显著减少开发者编写的代码量。KVO 是 Cocoa 的一项特性，我们可以在 Foundation 的框架里找到它。</p>
 
-<h3>KVO使用流程</h3>
+<h3 id="kvo-1">KVO使用流程</h3>
 
 <ul>
-<li>添加观察者（注册KVO),一般在观察者对象初始化的时候，添加观察者</li>
+  <li>添加观察者（注册KVO),一般在观察者对象初始化的时候，添加观察者</li>
 </ul>
 
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">addObserver:</span><span class="p">(</span><span class="bp">NSObject</span> <span class="o">*</span><span class="p">)</span><span class="nv">observer</span> <span class="nf">forKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">options:</span><span class="p">(</span><span class="n">NSKeyValueObservingOptions</span><span class="p">)</span><span class="nv">options</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span><span class="p">;</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">addObserver:</span><span class="p">(</span><span class="bp">NSObject</span> <span class="o">*</span><span class="p">)</span><span class="nv">observer</span> <span class="nf">forKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">options:</span><span class="p">(</span><span class="n">NSKeyValueObservingOptions</span><span class="p">)</span><span class="nv">options</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <ul>
-<li>属性变化时的回调</li>
+  <li>属性变化时的回调</li>
 </ul>
 
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">observeValueForKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">ofObject:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span> <span class="nf">change:</span><span class="p">(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nv">change</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span><span class="p">;</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">observeValueForKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">ofObject:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span> <span class="nf">change:</span><span class="p">(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nv">change</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <ul>
-<li>移除观察者（注销KVO),一般在观察者对象释放的时候移除，比如在dealloc中移除</li>
+  <li>移除观察者（注销KVO),一般在观察者对象释放的时候移除，比如在dealloc中移除</li>
 </ul>
 
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">removeObserver:</span><span class="p">(</span><span class="bp">NSObject</span> <span class="o">*</span><span class="p">)</span><span class="nv">observer</span> <span class="nf">forKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">removeObserver:</span><span class="p">(</span><span class="bp">NSObject</span> <span class="o">*</span><span class="p">)</span><span class="nv">observer</span> <span class="nf">forKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<h3>KVO实例</h3>
+<h3 id="kvo-2">KVO实例</h3>
 
 <p>这里举一个例子，比如我有一个Person的对象如下：</p>
 
 <p>Person.h</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="nc">Person</span> : <span class="bp">NSObject</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@end</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="k">@interface</span> <span class="nc">Person</span> : <span class="bp">NSObject</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@end</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>我们的viewController中会引用到该person对象，并在viewController的 - (void)viewWillAppear:(BOOL)animated 方法中注册KVO：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="p">[[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">]</span> <span class="nl">addObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;name&quot;</span> <span class="nl">options</span><span class="p">:</span><span class="n">NSKeyValueObservingOptionInitial</span> <span class="nl">context</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">];</span>
-</span><span class='line'> <span class="p">[[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">]</span> <span class="nl">addObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;age&quot;</span> <span class="nl">options</span><span class="p">:</span><span class="n">NSKeyValueObservingOptionInitial</span> <span class="nl">context</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"> <span class="p">[[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">]</span> <span class="nl">addObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;name&quot;</span> <span class="nl">options</span><span class="p">:</span><span class="n">NSKeyValueObservingOptionInitial</span> <span class="nl">context</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">];</span>
+</span><span class="line"> <span class="p">[[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">]</span> <span class="nl">addObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;age&quot;</span> <span class="nl">options</span><span class="p">:</span><span class="n">NSKeyValueObservingOptionInitial</span> <span class="nl">context</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>当person的属性name或age变化的时候，viewController就会调用</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">addObserver:</span><span class="p">(</span><span class="bp">NSObject</span> <span class="o">*</span><span class="p">)</span><span class="nv">anObserver</span>
-</span><span class='line'>         <span class="nf">forKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span>
-</span><span class='line'>            <span class="nf">options:</span><span class="p">(</span><span class="n">NSKeyValueObservingOptions</span><span class="p">)</span><span class="nv">options</span>
-</span><span class='line'>            <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">addObserver:</span><span class="p">(</span><span class="bp">NSObject</span> <span class="o">*</span><span class="p">)</span><span class="nv">anObserver</span>
+</span><span class="line">         <span class="nf">forKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span>
+</span><span class="line">            <span class="nf">options:</span><span class="p">(</span><span class="n">NSKeyValueObservingOptions</span><span class="p">)</span><span class="nv">options</span>
+</span><span class="line">            <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>我们实现该方法如下：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">observeValueForKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">ofObject:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span> <span class="nf">change:</span><span class="p">(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nv">change</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">((</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">context</span> <span class="o">==</span> <span class="nb">self</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">([</span><span class="n">keyPath</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">])</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="nb">self</span><span class="p">.</span><span class="n">nameLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">].</span><span class="n">name</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">([</span><span class="n">keyPath</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="s">@&quot;age&quot;</span><span class="p">])</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="nb">self</span><span class="p">.</span><span class="n">ageLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">].</span><span class="n">age</span> <span class="n">stringValue</span><span class="p">];</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="p">[</span><span class="nb">super</span> <span class="nl">observeValueForKeyPath</span><span class="p">:</span><span class="n">keyPath</span> <span class="nl">ofObject</span><span class="p">:</span><span class="n">object</span> <span class="nl">change</span><span class="p">:</span><span class="n">change</span> <span class="nl">context</span><span class="p">:</span><span class="n">context</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">observeValueForKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">ofObject:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span> <span class="nf">change:</span><span class="p">(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nv">change</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">((</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">context</span> <span class="o">==</span> <span class="nb">self</span><span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="k">if</span> <span class="p">([</span><span class="n">keyPath</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">])</span>
+</span><span class="line">        <span class="p">{</span>
+</span><span class="line">            <span class="nb">self</span><span class="p">.</span><span class="n">nameLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">].</span><span class="n">name</span><span class="p">;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">        <span class="k">if</span> <span class="p">([</span><span class="n">keyPath</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="s">@&quot;age&quot;</span><span class="p">])</span>
+</span><span class="line">        <span class="p">{</span>
+</span><span class="line">            <span class="nb">self</span><span class="p">.</span><span class="n">ageLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">].</span><span class="n">age</span> <span class="n">stringValue</span><span class="p">];</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">else</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="p">[</span><span class="nb">super</span> <span class="nl">observeValueForKeyPath</span><span class="p">:</span><span class="n">keyPath</span> <span class="nl">ofObject</span><span class="p">:</span><span class="n">object</span> <span class="nl">change</span><span class="p">:</span><span class="n">change</span> <span class="nl">context</span><span class="p">:</span><span class="n">context</span><span class="p">];</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>这样当person属性变化的时候，viewController就会更新nameLabel 和 ageLabel.</p>
 
 <p>不要忘了最后要移除KVO，因为我们是在 - (void)viewWillAppear:(BOOL)animated 中添加的KVO，所以我们要在 - (void)viewWillDisappear:(BOOL)animated 中移除KVO，假如添加了KVO 而在观察者释放的时候没有移除KVO，那么对象会因为向已经释放的观察者发送消息而crash.让然移除的时候也不要移除没有添加到观察者的 keyPath，同样会导致程序crash.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="nb">self</span> <span class="nl">removeObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;name&quot;</span> <span class="nl">context</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">[</span><span class="nb">self</span> <span class="nl">removeObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;age&quot;</span> <span class="nl">context</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">[</span><span class="nb">self</span> <span class="nl">removeObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;name&quot;</span> <span class="nl">context</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line"><span class="p">[</span><span class="nb">self</span> <span class="nl">removeObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;age&quot;</span> <span class="nl">context</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>这样，一个实现KVO的简单例子就完成了.  <a href="https://github.com/alex1212112/KVODemo">Demo</a>.</p>
 
-<h3>相关技巧与说明</h3>
+<h3 id="section-1">相关技巧与说明</h3>
 
 <ol>
-<li><p>有时候需要在第一次运行代码的时候更新一次 UI。我们可以设置KVO的选项   NSKeyValueObservingOptionInitial 的选项。这将会让 KVO 通知在调用 -addObserver:forKeyPath:&hellip; 的时候也被触发。</p></li>
-<li><p>KVO 能降低代码的藕合度，是因为Model对象在改变的时候，所有观察者能自动的去处理相关逻辑，这样我们就不用在模型对象里去编写专门的代码去通知观察者了，从而保持了模型类的简洁性。</p></li>
-<li><p>有时候你可能想在第一次更新UI的时候去检查Model的属性是否为空，如果为空，就通过一些方法（比如方法A）去获取这个属性的值，再重新触发KVO，来更新获取到的新值，不过这里要注意方法A里假如也全是在主线程运行的话，第二次KVO就不会触发，因为KVO是同步运行在主线程上的，这样做可能是为了防止出现死循环吧，这时候就要在方法A里通过后台线程去获取属性的值，然后在主线程里把值赋给Model的属性，这样就能触发KVO了。</p></li>
+  <li>
+    <p>有时候需要在第一次运行代码的时候更新一次 UI。我们可以设置KVO的选项   NSKeyValueObservingOptionInitial 的选项。这将会让 KVO 通知在调用 -addObserver:forKeyPath:… 的时候也被触发。</p>
+  </li>
+  <li>
+    <p>KVO 能降低代码的藕合度，是因为Model对象在改变的时候，所有观察者能自动的去处理相关逻辑，这样我们就不用在模型对象里去编写专门的代码去通知观察者了，从而保持了模型类的简洁性。</p>
+  </li>
+  <li>
+    <p>有时候你可能想在第一次更新UI的时候去检查Model的属性是否为空，如果为空，就通过一些方法（比如方法A）去获取这个属性的值，再重新触发KVO，来更新获取到的新值，不过这里要注意方法A里假如也全是在主线程运行的话，第二次KVO就不会触发，因为KVO是同步运行在主线程上的，这样做可能是为了防止出现死循环吧，这时候就要在方法A里通过后台线程去获取属性的值，然后在主线程里把值赋给Model的属性，这样就能触发KVO了。</p>
+  </li>
 </ol>
 
-
-<h3>参考资料</h3>
+<h3 id="section-2">参考资料</h3>
 
 <ol>
-<li><p><a href="http://objccn.io/issue-7-3/">KVC 和 KVO</a>;</p></li>
-<li><p><a href="http://nshipster.com/key-value-observing/">Key-Value Observing</a>;</p></li>
-<li><p><a href="http://blog.csdn.net/kesalin/article/details/8194240">[深入浅出Cocoa]详解键值观察（KVO）及其实现机理</a>;</p></li>
-<li><p><a href="https://developer.apple.com/library/ios/documentation/cocoa/conceptual/KeyValueCoding/Articles/KeyValueCoding.html#//apple_ref/doc/uid/10000107-SW1">Key-Value Coding Programming Guide</a>;</p></li>
-<li><p><a href="http://blog.riaproject.com/objective-c/2147/%E4%BA%86%E8%A7%A3-objective-c-%E4%B8%8A%E7%9A%84-kvokey-value-observing-%E6%A9%9F%E5%88%B6.html">了解 Objective-C 上的 KVO(Key-Value Observing) 機制</a>;</p></li>
-<li><p><a href="http://yulingtianxia.com/blog/2014/05/12/objective-czhong-de-kvche-kvo/">Objective-C中的KVC和KVO</a></p></li>
-<li><a href="http://beyondvincent.com/blog/2013/05/05/18/">iOS设计模式(01):观察者</a>；</li>
+  <li>
+    <p><a href="http://objccn.io/issue-7-3/">KVC 和 KVO</a>;</p>
+  </li>
+  <li>
+    <p><a href="http://nshipster.com/key-value-observing/">Key-Value Observing</a>;</p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/kesalin/article/details/8194240">[深入浅出Cocoa]详解键值观察（KVO）及其实现机理</a>;</p>
+  </li>
+  <li>
+    <p><a href="https://developer.apple.com/library/ios/documentation/cocoa/conceptual/KeyValueCoding/Articles/KeyValueCoding.html#//apple_ref/doc/uid/10000107-SW1">Key-Value Coding Programming Guide</a>;</p>
+  </li>
+  <li>
+    <p><a href="http://blog.riaproject.com/objective-c/2147/%E4%BA%86%E8%A7%A3-objective-c-%E4%B8%8A%E7%9A%84-kvokey-value-observing-%E6%A9%9F%E5%88%B6.html">了解 Objective-C 上的 KVO(Key-Value Observing) 機制</a>;</p>
+  </li>
+  <li><a href="http://yulingtianxia.com/blog/2014/05/12/objective-czhong-de-kvche-kvo/">Objective-C中的KVC和KVO</a></li>
+  <li><a href="http://beyondvincent.com/blog/2013/05/05/18/">iOS设计模式(01):观察者</a>；</li>
 </ol>
 
 </div>
@@ -980,7 +1025,14 @@
 
 
 
-<time class='entry-date' datetime='2014-08-12T12:07:08+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:07 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2014-08-12T12:07:08+08:00" pubdate data-updated="true"></time>
         
            | <a href="/blog/2014/08/12/ioszhong-de-zi-jie-xu/#disqus_thread"
              data-disqus-identifier="http://alex1212112.github.io/blog/2014/08/12/ioszhong-de-zi-jie-xu/">Comments</a>
@@ -992,80 +1044,99 @@
 
   <div class="entry-content"><p><img src="/images/b8c60f715c7d7ad3736a3efde8f56eae65d9d45810251-ck6IkC_fw658.png" alt="" /></p>
 
-<h4>起因</h4>
+<h4 id="section">起因</h4>
 
 <p>最近在做 iOS 蓝牙开发的时候，将多字节数据从APP端发到蓝牙设备端的时候，发现字节顺序都是反的，比如发送一个 0x0500 的数据给蓝牙设备端，设备端收到以后就变成了0x0005,研究发现这就是字节序不对导致的问题。</p>
 
-<h4>什么是字节序</h4>
+<h4 id="section-1">什么是字节序</h4>
 
 <p>采用维基百科的解释如下：</p>
 
-<blockquote><p>在几乎所有的机器上，多字节对象都被存储为连续的字节序列。例如在C语言中，一个类型为int的变量x地址为0x100，那么其对应地址表达式&amp;x的值为0x100。且x的四个字节将被存储在存储器的0x100, 0x101, 0x102, 0x103位置。</p>
+<blockquote>
+  <p>在几乎所有的机器上，多字节对象都被存储为连续的字节序列。例如在C语言中，一个类型为int的变量x地址为0x100，那么其对应地址表达式&amp;x的值为0x100。且x的四个字节将被存储在存储器的0x100, 0x101, 0x102, 0x103位置。</p>
+</blockquote>
 
-<p>而存储地址内的排列则有两个通用规则。一个多位的整数将按照其存储地址的最低或最高字节排列。如果最低有效字节在最高有效字节的前面，则称小端序；反之则称大端序。在网络应用中，字节序是一个必须被考虑的因素，因为不同机器类型可能采用不同标准的字节序，所以均按照网络标准转化。</p>
+<blockquote>
+  <p>而存储地址内的排列则有两个通用规则。一个多位的整数将按照其存储地址的最低或最高字节排列。如果最低有效字节在最高有效字节的前面，则称小端序；反之则称大端序。在网络应用中，字节序是一个必须被考虑的因素，因为不同机器类型可能采用不同标准的字节序，所以均按照网络标准转化。</p>
+</blockquote>
 
-<p>例如假设上述变量x类型为int，位于地址0x100处，它的十六进制为0x01234567，地址范围为0x100~0x103字节，其内部排列顺序依赖于机器的类型。大端法从首位开始将是：0x100: 01, 0x101: 23,..。而小端法将是：0x100: 67, 0x101: 45,..</p></blockquote>
+<blockquote>
+  <p>例如假设上述变量x类型为int，位于地址0x100处，它的十六进制为0x01234567，地址范围为0x100~0x103字节，其内部排列顺序依赖于机器的类型。大端法从首位开始将是：0x100: 01, 0x101: 23,..。而小端法将是：0x100: 67, 0x101: 45,..</p>
+</blockquote>
 
 <p><img src="/images/280px-Big-Endian.svg.png" alt="" /></p>
 
 <p><img src="/images/280px-Little-Endian.svg.png" alt="" /></p>
 
-<h4>相关体系</h4>
+<h4 id="section-2">相关体系</h4>
 
 <ul>
-<li><p>x86，MOS Technology 6502，Z80，VAX，PDP-11等处理器为Little endian。</p></li>
-<li><p>Motorola 6800，Motorola 68000，PowerPC 970，System/370，SPARC（除V9外）等处理器为Big endian</p></li>
-<li><p>ARM, PowerPC (除PowerPC 970外), DEC Alpha, SPARC V9, MIPS, PA-RISC and IA64的字节序是可配置的。</p></li>
-<li><p>网络传输一般采用大端序，也被称之为网络字节序，或网络序。IP协议中定义大端序为网络字节序。伯克利socket API定义了一组转换函数，用于16和32bit整数在网络序和本机字节序之间的转换。htonl，htons用于本机序转换到网络序；ntohl，ntohs用于网络序转换到本机序。</p></li>
+  <li>
+    <p>x86，MOS Technology 6502，Z80，VAX，PDP-11等处理器为Little endian。</p>
+  </li>
+  <li>
+    <p>Motorola 6800，Motorola 68000，PowerPC 970，System/370，SPARC（除V9外）等处理器为Big endian</p>
+  </li>
+  <li>
+    <p>ARM, PowerPC (除PowerPC 970外), DEC Alpha, SPARC V9, MIPS, PA-RISC and IA64的字节序是可配置的。</p>
+  </li>
+  <li>
+    <p>网络传输一般采用大端序，也被称之为网络字节序，或网络序。IP协议中定义大端序为网络字节序。伯克利socket API定义了一组转换函数，用于16和32bit整数在网络序和本机字节序之间的转换。htonl，htons用于本机序转换到网络序；ntohl，ntohs用于网络序转换到本机序。</p>
+  </li>
 </ul>
 
+<h4 id="ios">iOS中的字节序</h4>
 
-<h4>iOS中的字节序</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">NSHostByteOrder</span><span class="p">()</span> <span class="o">==</span> <span class="n">NS_LittleEndian</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;LittleEndian&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">NSHostByteOrder</span><span class="p">()</span> <span class="o">==</span> <span class="n">NS_BigEndian</span><span class="p">){</span>
-</span><span class='line'>         <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;BigEndian&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>         <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Unknow&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="k">if</span> <span class="p">(</span><span class="n">NSHostByteOrder</span><span class="p">()</span> <span class="o">==</span> <span class="n">NS_LittleEndian</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;LittleEndian&quot;</span><span class="p">);</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">NSHostByteOrder</span><span class="p">()</span> <span class="o">==</span> <span class="n">NS_BigEndian</span><span class="p">){</span>
+</span><span class="line">         <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;BigEndian&quot;</span><span class="p">);</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">         <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Unknow&quot;</span><span class="p">);</span>
+</span><span class="line">    <span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>通过上述代码打印出来的log，可以知道iOS系统目前采用的是小端序。因此在进行socket网络传输之类的工作时，要记得先把字节序进行转换，然后再传输。iOS自身提供了相应的转换方法，如下：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">UInt16</span>  <span class="n">Byte</span> <span class="o">=</span> <span class="mh">0x1234</span><span class="p">;</span>
-</span><span class='line'><span class="n">HTONS</span><span class="p">(</span><span class="n">Byte</span><span class="p">);</span><span class="c1">//转换</span>
-</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Byte == %x&quot;</span><span class="p">,</span><span class="n">Byte</span><span class="p">);</span><span class="c1">//打印出来发现顺序变了</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="kt">UInt16</span>  <span class="n">Byte</span> <span class="o">=</span> <span class="mh">0x1234</span><span class="p">;</span>
+</span><span class="line"><span class="n">HTONS</span><span class="p">(</span><span class="n">Byte</span><span class="p">);</span><span class="c1">//转换</span>
+</span><span class="line"><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Byte == %x&quot;</span><span class="p">,</span><span class="n">Byte</span><span class="p">);</span><span class="c1">//打印出来发现顺序变了</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>上述代码中 HTONS(x) 是对2字节进行转换，如果要对4字节进行转换，就要用 HTONL(x)进行转换了，要对更高字节，比如8字节（64位）进行转换，就要自己写转换的方法了。</p>
 
-<h4>参考资料</h4>
+<h4 id="section-3">参考资料</h4>
 
 <ol>
-<li><p><a href="http://ixhan.com/2009/10/little-about-byte-order/">关于字节序</a>;</p></li>
-<li><p><a href="http://geeklu.com/2012/01/macios-socket/">Mac&amp;iOS Socket</a>;</p></li>
-<li><p><a href="http://blog.csdn.net/ernest201210/article/details/8690686"> 网络字节序与主机字节序 高低位</a>;</p></li>
-<li><p><a href="http://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82%E5%BA%8F">字节序</a>;</p></li>
-<li><p><a href="https://developer.apple.com/library/mac/documentation/corefoundation/Conceptual/CFMemoryMgmt/Concepts/ByteOrdering.html">Byte Ordering</a>;</p></li>
+  <li>
+    <p><a href="http://ixhan.com/2009/10/little-about-byte-order/">关于字节序</a>;</p>
+  </li>
+  <li>
+    <p><a href="http://geeklu.com/2012/01/macios-socket/">Mac&amp;iOS Socket</a>;</p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/ernest201210/article/details/8690686"> 网络字节序与主机字节序 高低位</a>;</p>
+  </li>
+  <li>
+    <p><a href="http://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82%E5%BA%8F">字节序</a>;</p>
+  </li>
+  <li>
+    <p><a href="https://developer.apple.com/library/mac/documentation/corefoundation/Conceptual/CFMemoryMgmt/Concepts/ByteOrdering.html">Byte Ordering</a>;</p>
+  </li>
 </ol>
-
 </div>
   
   
@@ -1087,7 +1158,14 @@
 
 
 
-<time class='entry-date' datetime='2014-07-16T17:25:31+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:25 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2014-07-16T17:25:31+08:00" pubdate data-updated="true"></time>
         
            | <a href="/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan/#disqus_thread"
              data-disqus-identifier="http://alex1212112.github.io/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan/">Comments</a>
@@ -1099,7 +1177,7 @@
 
   <div class="entry-content"><p><img src="/images/201407161730.png" alt="" /></p>
 
-<h4>关键点</h4>
+<h4 id="section">关键点</h4>
 
 <p>实现断点续传的关键是自定义http request的头部的range域属性</p>
 
@@ -1117,26 +1195,25 @@
 
 <p>同时指定几个范围：bytes=500-600,601-999</p>
 
-<h4>基本思想</h4>
+<h4 id="section-1">基本思想</h4>
 
 <p>1、获取已下载文件的大小，用来确定下载的文件从什么地方开始续传(即获取range属性的范围);</p>
 
 <p>2、设置http request请求头文件，要包含range属性;</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSMutableURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableURLRequest</span> <span class="nl">requestWithURL</span><span class="p">:</span><span class="n">url</span> <span class="nl">cachePolicy</span><span class="p">:</span><span class="n">NSURLRequestUseProtocolCachePolicy</span> <span class="nl">timeoutInterval</span><span class="p">:</span><span class="mf">5.0f</span><span class="p">];</span>
-</span><span class='line'>   <span class="c1">// 设置请求头文件</span>
-</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">rangeValue</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;bytes=%llu-&quot;</span><span class="p">,</span> <span class="n">from</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">request</span> <span class="nl">addValue</span><span class="p">:</span><span class="n">rangeValue</span> <span class="nl">forHTTPHeaderField</span><span class="p">:</span><span class="s">@&quot;Range&quot;</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSMutableURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableURLRequest</span> <span class="nl">requestWithURL</span><span class="p">:</span><span class="n">url</span> <span class="nl">cachePolicy</span><span class="p">:</span><span class="n">NSURLRequestUseProtocolCachePolicy</span> <span class="nl">timeoutInterval</span><span class="p">:</span><span class="mf">5.0f</span><span class="p">];</span>
+</span><span class="line">   <span class="c1">// 设置请求头文件</span>
+</span><span class="line"><span class="bp">NSString</span> <span class="o">*</span><span class="n">rangeValue</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;bytes=%llu-&quot;</span><span class="p">,</span> <span class="n">from</span><span class="p">];</span>
+</span><span class="line"><span class="p">[</span><span class="n">request</span> <span class="nl">addValue</span><span class="p">:</span><span class="n">rangeValue</span> <span class="nl">forHTTPHeaderField</span><span class="p">:</span><span class="s">@&quot;Range&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>3、 发起http下载请求;</p>
 
-<h4>具体实现</h4>
+<h4 id="section-2">具体实现</h4>
 
 <p>可以用iOS自带的NSURLConnection，也可以使用第三方如AFNetWorking实现。</p>
 
@@ -1146,7 +1223,7 @@
 
 <p><a href="https://github.com/thibaultCha/TCBlobDownload">TCBlobDownload</a>;</p>
 
-<h4>参考资料</h4>
+<h4 id="section-3">参考资料</h4>
 
 <p>1.<a href="http://blog.csdn.net/sirchenhua/article/details/7286312">ios 实现断点续传 一 nsurlconnection</a>;</p>
 
@@ -1155,6 +1232,7 @@
 <p>3.<a href="http://www.cnblogs.com/liufeng24/p/3555303.html">iOS开发网络编程之断点续传-NSURLConnection</a>;</p>
 
 <p>4.<a href="http://blog.csdn.net/zhaoxy_thu/article/details/21383515">AFNetworking实现程序重新启动时的断点续传</a>；</p>
+
 </div>
   
   
@@ -1176,7 +1254,14 @@
 
 
 
-<time class='entry-date' datetime='2014-07-01T12:35:54+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>12:35 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2014-07-01T12:35:54+08:00" pubdate data-updated="true"></time>
         
            | <a href="/blog/2014/07/01/cggeometry/#disqus_thread"
              data-disqus-identifier="http://alex1212112.github.io/blog/2014/07/01/cggeometry/">Comments</a>
@@ -1190,266 +1275,248 @@
 
 <p>CGGeometry 是一个 Quartz 2D 框架中非常有用且好用的处理几何问题的基本组件，这里列出一些它的方法并简单说明如何使用。</p>
 
-<h3>变换</h3>
+<h3 id="section">变换</h3>
 
-<h4>CGRectOffset</h4>
+<h4 id="cgrectoffset">CGRectOffset</h4>
 
 <p>CGRectOffset: 返回一个原点在源矩形基础上进行了偏移的矩形。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">CGRect</span> <span class="n">CGRectOffset</span><span class="p">(</span>
-</span><span class='line'>  <span class="bp">CGRect</span> <span class="n">rect</span><span class="p">,</span> <span class="c1">//源矩形</span>
-</span><span class='line'>  <span class="n">CGFloat</span> <span class="n">dx</span><span class="p">,</span>  <span class="c1">//x方向偏移距离</span>
-</span><span class='line'>  <span class="n">CGFloat</span> <span class="n">dy</span>   <span class="c1">//y方向偏移距离</span>
-</span><span class='line'><span class="p">)</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">CGRect</span> <span class="n">CGRectOffset</span><span class="p">(</span>
+</span><span class="line">  <span class="bp">CGRect</span> <span class="n">rect</span><span class="p">,</span> <span class="c1">//源矩形</span>
+</span><span class="line">  <span class="n">CGFloat</span> <span class="n">dx</span><span class="p">,</span>  <span class="c1">//x方向偏移距离</span>
+</span><span class="line">  <span class="n">CGFloat</span> <span class="n">dy</span>   <span class="c1">//y方向偏移距离</span>
+</span><span class="line"><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>为什么要用 CGRectOffset ？<a href="http://nshipster.cn/cggeometry/">NSHipster</a>解释如下:</p>
 
-<blockquote><p>它不仅能让你在同时改变水平和垂直位置的时候减少一行代码，更重要的是，它所表示的平移比直接分开操作原点的值更具有几何意义。</p></blockquote>
+<blockquote>
+  <p>它不仅能让你在同时改变水平和垂直位置的时候减少一行代码，更重要的是，它所表示的平移比直接分开操作原点的值更具有几何意义。</p>
+</blockquote>
 
-<h4>CGRectInset</h4>
+<h4 id="cgrectinset">CGRectInset</h4>
 
 <p>CGRectInset: 返回一个与源矩形共中心点的，或大些或小些的新矩形。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">CGRect</span> <span class="n">CGRectInset</span><span class="p">(</span>
-</span><span class='line'>  <span class="bp">CGRect</span> <span class="n">rect</span><span class="p">,</span> <span class="c1">//源矩形</span>
-</span><span class='line'>  <span class="n">CGFloat</span> <span class="n">dx</span><span class="p">,</span>  <span class="c1">// x方向左边减去dx，右边也减去dx（共2dx）</span>
-</span><span class='line'>  <span class="n">CGFloat</span> <span class="n">dy</span>   <span class="c1">// y方向上边减去dy，右边也减去dy（共2dy）</span>
-</span><span class='line'><span class="p">)</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">CGRect</span> <span class="n">CGRectInset</span><span class="p">(</span>
+</span><span class="line">  <span class="bp">CGRect</span> <span class="n">rect</span><span class="p">,</span> <span class="c1">//源矩形</span>
+</span><span class="line">  <span class="n">CGFloat</span> <span class="n">dx</span><span class="p">,</span>  <span class="c1">// x方向左边减去dx，右边也减去dx（共2dx）</span>
+</span><span class="line">  <span class="n">CGFloat</span> <span class="n">dy</span>   <span class="c1">// y方向上边减去dy，右边也减去dy（共2dy）</span>
+</span><span class="line"><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>如果用 CGRectInset 作为缩放矩形的快捷方法，一般通用的做法是嵌套调用CGRectOffset，把CGRectInset的返回值作为CGRectOffset的参数。</p>
 
 <p>如：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">CGRect</span> <span class="n">frame</span> <span class="err">＝</span> <span class="n">CGRectOffset</span><span class="p">(</span><span class="n">CGRectInset</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="mf">10.0f</span><span class="p">,</span> <span class="mf">10.0f</span><span class="p">),</span> <span class="mf">10.0f</span><span class="p">,</span> <span class="mf">10.0f</span><span class="p">);</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">CGRect</span> <span class="n">frame</span> <span class="err">＝</span> <span class="n">CGRectOffset</span><span class="p">(</span><span class="n">CGRectInset</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="mf">10.0f</span><span class="p">,</span> <span class="mf">10.0f</span><span class="p">),</span> <span class="mf">10.0f</span><span class="p">,</span> <span class="mf">10.0f</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>上述代码把源矩形rect的大小缩小了10，然后又向右平移了10，向下平移了10，</p>
 
-<h4>CGRectIntegral</h4>
+<h4 id="cgrectintegral">CGRectIntegral</h4>
 
 <p>CGRectIntegral: 返回包围源矩形的最小整数矩形。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">CGRect</span> <span class="n">CGRectIntegral</span> <span class="p">(</span>
-</span><span class='line'>  <span class="bp">CGRect</span> <span class="n">rect</span>
-</span><span class='line'><span class="p">)</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">CGRect</span> <span class="n">CGRectIntegral</span> <span class="p">(</span>
+</span><span class="line">  <span class="bp">CGRect</span> <span class="n">rect</span>
+</span><span class="line"><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>CGRectIntegral 用来对矩形取整，可以保证矩形对齐到像素边界，在非retina屏幕上能防止像素模糊。</p>
 
-<h3>取值辅助函数</h3>
+<h3 id="section-1">取值辅助函数</h3>
 
-<h4>CGRectGet[Min|Mid|Max][X|Y]</h4>
+<h4 id="cgrectgetminmidmaxxy">CGRectGet[Min|Mid|Max][X|Y]</h4>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMinX</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形x坐标的最小值</span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMinY</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形y坐标的最小值 </span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMidX</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span><span class="c1">//获取矩形x坐标的中间值 </span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMidY</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形y坐标的中间值 </span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMaxX</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">// 获取矩形x坐标的最大值 </span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMaxY</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span><span class="err">）</span> <span class="c1">// 获取矩形y坐标的最大值 </span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="n">CGFloat</span>  <span class="n">CGRectGetMinX</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形x坐标的最小值</span>
+</span><span class="line"><span class="n">CGFloat</span>  <span class="n">CGRectGetMinY</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形y坐标的最小值 </span>
+</span><span class="line"><span class="n">CGFloat</span>  <span class="n">CGRectGetMidX</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span><span class="c1">//获取矩形x坐标的中间值 </span>
+</span><span class="line"><span class="n">CGFloat</span>  <span class="n">CGRectGetMidY</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形y坐标的中间值 </span>
+</span><span class="line"><span class="n">CGFloat</span>  <span class="n">CGRectGetMaxX</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">// 获取矩形x坐标的最大值 </span>
+</span><span class="line"><span class="n">CGFloat</span>  <span class="n">CGRectGetMaxY</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span><span class="err">）</span> <span class="c1">// 获取矩形y坐标的最大值 </span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>引用<a href="http://nshipster.cn/cggeometry/">NSHipster</a>说明如下：</p>
 
-<blockquote><p>用这些函数代替诸如frame.origin.x + frame.size.width之类的代码将更加清晰、语义上更为生动的（特别是用取中间和取最大函数）</p></blockquote>
+<blockquote>
+  <p>用这些函数代替诸如frame.origin.x + frame.size.width之类的代码将更加清晰、语义上更为生动的（特别是用取中间和取最大函数）</p>
+</blockquote>
 
-<h4>CGRectGet[Width|Height]</h4>
+<h4 id="cgrectgetwidthheight">CGRectGet[Width|Height]</h4>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetHeight</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形的高</span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetWidth</span>  <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span>  <span class="c1">//获取矩形的宽</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="n">CGFloat</span>  <span class="n">CGRectGetHeight</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形的高</span>
+</span><span class="line"><span class="n">CGFloat</span>  <span class="n">CGRectGetWidth</span>  <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span>  <span class="c1">//获取矩形的宽</span>
 </span></code></pre></td></tr></table></div></figure>
 
+<h3 id="section-2">常量</h3>
 
-<h3>常量</h3>
+<h4 id="cgrectzero">CGRectZero</h4>
 
-<h4>CGRectZero</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">const</span> <span class="bp">CGRect</span> <span class="n">CGRectZero</span><span class="p">;</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="k">const</span> <span class="bp">CGRect</span> <span class="n">CGRectZero</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>一个原点在(0, 0)，且长宽均为 0 的常数矩形。这个零矩形与 CGRectMake(0.0f, 0.0f, 0.0f, 0.0f) 是等价的。当我们初始化一个视图时，它们的边框通常设置为CGRectZero，把具体的布局放到 -layoutSubviews中。</p>
 
-<h4>CGRectNull</h4>
+<h4 id="cgrectnull">CGRectNull</h4>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">const</span> <span class="bp">CGRect</span> <span class="n">CGRectNull</span><span class="err">；</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="k">const</span> <span class="bp">CGRect</span> <span class="n">CGRectNull</span><span class="err">；</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>空矩形。这个会在，比如说，求两个不相交的矩形的相交部分时返回。注意，空矩形不是零矩形。</p>
 
-<h4>CGRectInfinite</h4>
+<h4 id="cgrectinfinite">CGRectInfinite</h4>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">const</span> <span class="bp">CGRect</span> <span class="n">CGRectInfinite</span><span class="err">；</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="k">const</span> <span class="bp">CGRect</span> <span class="n">CGRectInfinite</span><span class="err">；</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>无穷大矩形,它与所有的点或矩形相交，包含所有矩形，且它与任何矩形的并集等于它自身。可以用 CGRectIsInfinite 来检查一矩形是否为无限大。</p>
 
-<h3>分割矩形</h3>
+<h3 id="section-3">分割矩形</h3>
 
-<h4>CGRectDivide</h4>
+<h4 id="cgrectdivide">CGRectDivide</h4>
 
 <p>CGRectDivide: 将源矩形分为两个子矩形。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">void</span> <span class="n">CGRectDivide</span><span class="p">(</span>
-</span><span class='line'>  <span class="bp">CGRect</span> <span class="n">rect</span><span class="p">,</span>
-</span><span class='line'>  <span class="bp">CGRect</span> <span class="o">*</span><span class="n">slice</span><span class="p">,</span>
-</span><span class='line'>  <span class="bp">CGRect</span> <span class="o">*</span><span class="n">remainder</span><span class="p">,</span>
-</span><span class='line'>  <span class="n">CGFloat</span> <span class="n">amount</span><span class="p">,</span>
-</span><span class='line'>  <span class="bp">CGRectEdge</span> <span class="n">edge</span>
-</span><span class='line'><span class="p">)</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="kt">void</span> <span class="n">CGRectDivide</span><span class="p">(</span>
+</span><span class="line">  <span class="bp">CGRect</span> <span class="n">rect</span><span class="p">,</span>
+</span><span class="line">  <span class="bp">CGRect</span> <span class="o">*</span><span class="n">slice</span><span class="p">,</span>
+</span><span class="line">  <span class="bp">CGRect</span> <span class="o">*</span><span class="n">remainder</span><span class="p">,</span>
+</span><span class="line">  <span class="n">CGFloat</span> <span class="n">amount</span><span class="p">,</span>
+</span><span class="line">  <span class="bp">CGRectEdge</span> <span class="n">edge</span>
+</span><span class="line"><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>CGRectDivide 用以下方式将矩形分割为两部分：</p>
 
 <ul>
-<li><p>传入一个矩形并选择一条边（edge）（上，下，左，右）；</p></li>
-<li><p>平行那个边在矩形里量出amount的长度；</p></li>
-<li><p>从edge 到量出的amount区域都保存到slice 参数中；</p></li>
-<li><p>剩余的部分保存到remainder 参数中。</p></li>
+  <li>
+    <p>传入一个矩形并选择一条边（edge）（上，下，左，右）；</p>
+  </li>
+  <li>
+    <p>平行那个边在矩形里量出amount的长度；</p>
+  </li>
+  <li>
+    <p>从edge 到量出的amount区域都保存到slice 参数中；</p>
+  </li>
+  <li>
+    <p>剩余的部分保存到remainder 参数中。</p>
+  </li>
 </ul>
-
 
 <p>其中 edge 参数是一个CGRectEdge 枚举类型：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">enum</span> <span class="bp">CGRectEdge</span> <span class="p">{</span>
-</span><span class='line'>   <span class="n">CGRectMinXEdge</span><span class="p">,</span> <span class="c1">//矩形的左边</span>
-</span><span class='line'>   <span class="n">CGRectMinYEdge</span><span class="p">,</span> <span class="c1">//矩形的上边</span>
-</span><span class='line'>   <span class="n">CGRectMaxXEdge</span><span class="p">,</span> <span class="c1">//矩形的右边</span>
-</span><span class='line'>   <span class="n">CGRectMaxYEdge</span>  <span class="c1">//矩形的下边</span>
-</span><span class='line'><span class="p">}</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="k">enum</span> <span class="bp">CGRectEdge</span> <span class="p">{</span>
+</span><span class="line">   <span class="n">CGRectMinXEdge</span><span class="p">,</span> <span class="c1">//矩形的左边</span>
+</span><span class="line">   <span class="n">CGRectMinYEdge</span><span class="p">,</span> <span class="c1">//矩形的上边</span>
+</span><span class="line">   <span class="n">CGRectMaxXEdge</span><span class="p">,</span> <span class="c1">//矩形的右边</span>
+</span><span class="line">   <span class="n">CGRectMaxYEdge</span>  <span class="c1">//矩形的下边</span>
+</span><span class="line"><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<h3>比较</h3>
+<h3 id="section-4">比较</h3>
 
 <p>判断两个点是否相等</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGPointEqualToPoint</span> <span class="p">(</span><span class="bp">CGPoint</span> <span class="n">A</span><span class="p">,</span><span class="bp">CGPoint</span> <span class="n">B</span><span class="p">)</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="kt">bool</span>  <span class="n">CGPointEqualToPoint</span> <span class="p">(</span><span class="bp">CGPoint</span> <span class="n">A</span><span class="p">,</span><span class="bp">CGPoint</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
+<p>CGSizeAB是否相等</p>
 
-<p></p>
-
-<p> CGSizeAB是否相等</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGSizeEqualToSize</span> <span class="p">(</span><span class="bp">CGSize</span> <span class="n">A</span><span class="err">，</span><span class="bp">CGSize</span> <span class="n">B</span><span class="p">)</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="kt">bool</span>  <span class="n">CGSizeEqualToSize</span> <span class="p">(</span><span class="bp">CGSize</span> <span class="n">A</span><span class="err">，</span><span class="bp">CGSize</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>矩形AB的位置大小是否相等</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGRectEqualToRect</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="bp">CGRect</span> <span class="n">B</span><span class="p">)</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="kt">bool</span>  <span class="n">CGRectEqualToRect</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="bp">CGRect</span> <span class="n">B</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>矩形AB是否相交</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="kt">bool</span>  <span class="n">CGRectIntersectsRect</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="bp">CGRect</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<p> <br/>
-矩形AB是否相交</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGRectIntersectsRect</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="bp">CGRect</span> <span class="n">B</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>包含关系</h3>
+<h3 id="section-5">包含关系</h3>
 
 <p>检测矩形A是否包含指定的点B</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGRectContainsPoint</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="p">,</span> <span class="bp">CGPoint</span> <span class="n">B</span><span class="p">)</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="kt">bool</span>  <span class="n">CGRectContainsPoint</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="p">,</span> <span class="bp">CGPoint</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
 
 <p>检测矩形A是否包含矩形B</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGRectContainsRect</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="bp">CGRect</span> <span class="n">B</span><span class="p">)</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="kt">bool</span>  <span class="n">CGRectContainsRect</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="bp">CGRect</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<h3>检测矩形是否存在或是无穷大</h3>
+<h3 id="section-6">检测矩形是否存在或是无穷大</h3>
 
 <p>矩形A是否长和宽都是0，或者是个NULL</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGRectIsEmpty</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="p">)</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="kt">bool</span>  <span class="n">CGRectIsEmpty</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>矩形A是否为NULL</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGRectIsNull</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="p">)</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="kt">bool</span>  <span class="n">CGRectIsNull</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>矩形A是否无穷大，没有边界</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGRectIsInfinite</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="p">)</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="kt">bool</span>  <span class="n">CGRectIsInfinite</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<p></p>
-
-<h3>参考资料</h3>
+<h3 id="section-7">参考资料</h3>
 
 <p><a href="http://nshipster.cn/cggeometry/">NSHipster</a>;</p>
 
 <p><a href="http://www.cnblogs.com/xuling/archive/2012/02/09/2343427.html">Objective-c 中CGGeometry几何类常用方法简单整理</a>;</p>
 
 <p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Reference/CGGeometry/Reference/reference.html">CGGeometry Reference</a>;</p>
+
 </div>
   
   
@@ -1471,7 +1538,14 @@
 
 
 
-<time class='entry-date' datetime='2014-06-30T18:50:23+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>6:50 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2014-06-30T18:50:23+08:00" pubdate data-updated="true"></time>
         
            | <a href="/blog/2014/06/30/kvcjian-jie/#disqus_thread"
              data-disqus-identifier="http://alex1212112.github.io/blog/2014/06/30/kvcjian-jie/">Comments</a>
@@ -1483,7 +1557,7 @@
 
   <div class="entry-content"><p><img src="/images/2d7462592d67a98dbffc700f70ae01d4423b1c1256049.png" alt="" /></p>
 
-<h3>目录</h3>
+<h3 id="section">目录</h3>
 
 <p>什么是KVC？</p>
 
@@ -1491,173 +1565,152 @@
 
 <p>KVC用法介绍.</p>
 
-<h3>什么是KVC？</h3>
+<h3 id="kvc">什么是KVC？</h3>
 
 <p>KVC是cocoa的一部分，可以使我们在访问对象属性的时候不需要再调用 setter 和 getter存取器，比如我们可以用 [object valueForKey:property]来访问object对象中的property属性，也能用 [object setValue:value forKey:property]来给object对象中的property属性赋值。为了达到这种目的，对象需要用特定的方式来命名方法，这种命名约定就成为KVC.</p>
 
-<h3>为什么要用KVC</h3>
+<h3 id="kvc-1">为什么要用KVC</h3>
 
 <p>使用KVC能让我们在运行时而非编译时决定访问哪个属性，从而得到更灵活和更易于重用的对象，同时也能帮助我们减少代码量,通过KVC,还能实现cocoa中更为强大的KVO功能。</p>
 
-<h3>KVC用法介绍</h3>
+<h3 id="kvc-2">KVC用法介绍</h3>
 
 <p>我们定义一个对象如下</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="nc">People</span> : <span class="bp">NSObject</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="n">Car</span> <span class="o">*</span><span class="n">car</span><span class="p">;</span>
-</span><span class='line'><span class="k">@end</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="k">@interface</span> <span class="nc">People</span> : <span class="bp">NSObject</span>
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="n">Car</span> <span class="o">*</span><span class="n">car</span><span class="p">;</span>
+</span><span class="line"><span class="k">@end</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<h4>访问对象属性</h4>
+<h4 id="section-1">访问对象属性</h4>
 
 <p>我们在获取people对象的name属性的值的时候，就可以通过KVC来获取：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span> <span class="o">=</span> <span class="p">[</span><span class="n">people</span> <span class="nl">valueForKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span> <span class="o">=</span> <span class="p">[</span><span class="n">people</span> <span class="nl">valueForKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>此代码基本等同于下面代码</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span> <span class="o">=</span> <span class="n">people</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span> <span class="o">=</span> <span class="n">people</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
-<h4>用KVC赋值</h4>
+<p>####用KVC赋值</p>
 
 <p>KVC可以用setValue:forKey:修改可写属性：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">people</span> <span class="nl">setValue</span><span class="p">:</span><span class="s">@&quot;Alex&quot;</span> <span class="nl">forKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">[</span><span class="n">people</span> <span class="nl">setValue</span><span class="p">:</span><span class="s">@&quot;Alex&quot;</span> <span class="nl">forKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>此代码基本等同与下面代码</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">people</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">@&quot;Alex&quot;</span><span class="p">;</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="n">people</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">@&quot;Alex&quot;</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
-<h4>keyPath</h4>
+<p>####keyPath</p>
 
 <p>KVC 方法有 key 和keyPath 两个版本，比如 valueForkey: 和 valueForKeyPath:版本，这两者的区别在于，后者可以包含嵌套关系，用点分开，valueForKeyPath方法可以遍历所有的关系，如下所示：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">carName</span> <span class="o">=</span> <span class="p">[</span><span class="n">people</span> <span class="nl">valueForKayPath</span><span class="p">:</span><span class="s">@&quot;car.name&quot;</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSString</span> <span class="o">*</span><span class="n">carName</span> <span class="o">=</span> <span class="p">[</span><span class="n">people</span> <span class="nl">valueForKayPath</span><span class="p">:</span><span class="s">@&quot;car.name&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>此方法用来获取people对象的车的名称，可以基本等价于下面代码:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">carName</span> <span class="o">=</span> <span class="p">[[</span><span class="n">people</span> <span class="n">car</span><span class="p">]</span> <span class="n">name</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSString</span> <span class="o">*</span><span class="n">carName</span> <span class="o">=</span> <span class="p">[[</span><span class="n">people</span> <span class="n">car</span><span class="p">]</span> <span class="n">name</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>而 key方法不会遍历关系，假如你使用</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">carName</span> <span class="o">=</span> <span class="p">[</span><span class="n">people</span> <span class="nl">valueForKay</span><span class="p">:</span><span class="s">@&quot;car.name&quot;</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSString</span> <span class="o">*</span><span class="n">carName</span> <span class="o">=</span> <span class="p">[</span><span class="n">people</span> <span class="nl">valueForKay</span><span class="p">:</span><span class="s">@&quot;car.name&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>程序会去获取 people对象 的 car.name 属性，很明显，people 没有这样的属性，所以系统会抛出异常。</p>
 
-<h4>KVC和非对象</h4>
+<h4 id="kvc-3">KVC和非对象</h4>
 
 <p>KVC 的 valueForKey:方法总是返回一个id对象，但不是每一个方法都会返回对象，那么对于标量，该方法返回值会自动用NSValue 或 NSNumber 来进行封装。因此我们在通过 KVC 赋值的对象为标量的时候，也应该先用 NSValue 或 NSNumber 进行封装，然后再使用 setValue:forKey:方法。</p>
 
-<h4>高阶消息传递</h4>
+<h4 id="section-2">高阶消息传递</h4>
 
 <p>valueForKey:有很多有用的特例，比如对于 NSArray 或 NSSet 等容器类，使用 valueForKey:方法，实际上该方法会被传递给容器中的每一个对象，而不是对容器本身进行操作，它会对容器中的每个对象来查找这个键值，然后将查询结果打包到另一个容器中并返回给你。这样，我们就很容易用一个容器对象创建另一个容器对象。</p>
 
 <p>比如：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">People</span> <span class="o">*</span><span class="n">developer</span> <span class="o">=</span> <span class="p">[[</span><span class="n">People</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">developer</span> <span class="nl">setValue</span><span class="p">:</span><span class="s">@&quot;Alex&quot;</span> <span class="nl">forKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">People</span> <span class="o">*</span><span class="n">teacher</span> <span class="o">=</span> <span class="p">[[</span><span class="n">People</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">teacher</span> <span class="nl">setValue</span><span class="p">:</span><span class="s">@&quot;Lucy&quot;</span> <span class="nl">forKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
-</span><span class='line'>  
-</span><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="l">@[</span><span class="n">developer</span><span class="p">,</span><span class="n">teacher</span><span class="l">]</span><span class="p">;</span>
-</span><span class='line'>  
-</span><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">nameArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
-</span><span class='line'>  
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="n">People</span> <span class="o">*</span><span class="n">developer</span> <span class="o">=</span> <span class="p">[[</span><span class="n">People</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class="line"><span class="p">[</span><span class="n">developer</span> <span class="nl">setValue</span><span class="p">:</span><span class="s">@&quot;Alex&quot;</span> <span class="nl">forKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line"><span class="n">People</span> <span class="o">*</span><span class="n">teacher</span> <span class="o">=</span> <span class="p">[[</span><span class="n">People</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class="line"><span class="p">[</span><span class="n">teacher</span> <span class="nl">setValue</span><span class="p">:</span><span class="s">@&quot;Lucy&quot;</span> <span class="nl">forKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
+</span><span class="line">	
+</span><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="l">@[</span><span class="n">developer</span><span class="p">,</span><span class="n">teacher</span><span class="l">]</span><span class="p">;</span>
+</span><span class="line">	
+</span><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">nameArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
+</span><span class="line">	
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>name 被传递给array中的每一个元素，并返回一个新的数组，新的数组中的元素是一个姓名的字符串。
 对于 keyPath 使用方法也类似：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">nameLengthArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath</span><span class="p">:</span><span class="s">@&quot;name.length&quot;</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">nameLengthArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath</span><span class="p">:</span><span class="s">@&quot;name.length&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>新的数组中的元素是用 NSNumber 封装的姓名字符串的长度。</p>
 
-<h4>通过KVC创建Model</h4>
+<h4 id="kvcmodel">通过KVC创建Model</h4>
 
 <p>我们经常会遇到需要将一个字典转化成一个对象情况，这时用 KVC 能很好的解决问题， KVC 中有一个setValuesForKeysWithDictionary: 方法，此方法能很好的把字典转换成我们需要的对象。比如我们可以给刚才的 People 类增加一个初始化方法:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithDictionary:</span><span class="p">(</span><span class="bp">NSMutableDictionary</span><span class="o">*</span><span class="p">)</span> <span class="nv">jsonObject</span><span class="p">;</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithDictionary:</span><span class="p">(</span><span class="bp">NSMutableDictionary</span><span class="o">*</span><span class="p">)</span> <span class="nv">jsonObject</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>实现如下：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithDictionary:</span><span class="p">(</span><span class="bp">NSMutableDictionary</span><span class="o">*</span><span class="p">)</span> <span class="nv">jsonObject</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span><span class="p">((</span><span class="nb">self</span> <span class="o">=</span> <span class="p">[</span><span class="nb">super</span> <span class="n">init</span><span class="p">]))</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="p">[</span><span class="nb">self</span> <span class="nl">setValuesForKeysWithDictionary</span><span class="p">:</span><span class="n">jsonObject</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nb">self</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithDictionary:</span><span class="p">(</span><span class="bp">NSMutableDictionary</span><span class="o">*</span><span class="p">)</span> <span class="nv">jsonObject</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="k">if</span><span class="p">((</span><span class="nb">self</span> <span class="o">=</span> <span class="p">[</span><span class="nb">super</span> <span class="n">init</span><span class="p">]))</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="p">[</span><span class="nb">self</span> <span class="nl">setValuesForKeysWithDictionary</span><span class="p">:</span><span class="n">jsonObject</span><span class="p">];</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">return</span> <span class="nb">self</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<h4>一些特殊的用法</h4>
+<h4 id="section-3">一些特殊的用法</h4>
 
 <p>KVC还提供一些特殊的方法，例如获取一组值的平均值或返回这组值的最小值和最大值。例如：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="l">@[</span><span class="n">developer</span><span class="p">,</span><span class="n">teacher</span><span class="l">]</span><span class="p">;</span>
-</span><span class='line'><span class="bp">NSNumber</span> <span class="o">*</span><span class="n">totalLength</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath</span><span class="p">:</span><span class="s">@&quot;name.@sum.length&quot;</span><span class="p">];</span>    
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="l">@[</span><span class="n">developer</span><span class="p">,</span><span class="n">teacher</span><span class="l">]</span><span class="p">;</span>
+</span><span class="line"><span class="bp">NSNumber</span> <span class="o">*</span><span class="n">totalLength</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath</span><span class="p">:</span><span class="s">@&quot;name.@sum.length&quot;</span><span class="p">];</span> 	
 </span></code></pre></td></tr></table></div></figure>
-
-
 <p>@sum是一个操作符，对指定的属性（name.length）求和。</p>
+
 </div>
   
   
@@ -1679,7 +1732,14 @@
 
 
 
-<time class='entry-date' datetime='2014-06-13T13:48:02+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>1:48 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2014-06-13T13:48:02+08:00" pubdate data-updated="true"></time>
         
            | <a href="/blog/2014/06/13/uitableview-xiang-guan/#disqus_thread"
              data-disqus-identifier="http://alex1212112.github.io/blog/2014/06/13/uitableview-xiang-guan/">Comments</a>
@@ -1689,80 +1749,68 @@
   </header>
 
 
-  <div class="entry-content"><p><img src="/images/4902731144446386506.jpg" alt="" /></p>
+  <div class="entry-content"><p><img src="/images/4902731144446386506.jpg" alt="" />
+####问题描述：</p>
 
-<h4>问题描述：</h4>
+<p>UITableView deleteRowsAtIndexPaths:withRowAnimation:在使用的时候，当你删除该行的时候，tableView并不会reload，所以该	行的下一行的indexPath并没有改变，当下一行为最后一行的时候，你的Model里的数据在删除的时候调用[arrayremoveObjectAtIndex:indexPath.row] 时候会报错：数组越界。</p>
 
-<p> UITableView deleteRowsAtIndexPaths:withRowAnimation:在使用的时候，当你删除该行的时候，tableView并不会reload，所以该    行的下一行的indexPath并没有改变，当下一行为最后一行的时候，你的Model里的数据在删除的时候调用[arrayremoveObjectAtIndex:indexPath.row] 时候会报错：数组越界。</p>
-
-<h4>解决办法:</h4>
+<h4 id="section">解决办法:</h4>
 
 <p>假如你直接使用[tableView reloadData]，那么就看不到  tableView的动画效果了，所以不能用[tableView reloadData];代替的方法是使用 reloadSections:withRowAnimation:方法。</p>
 
 <hr />
 
-<h4>问题描述：</h4>
+<h4 id="section-1">问题描述：</h4>
 
 <p>如何设置UITableViewCell accessoryType的颜色？</p>
 
-<h4>解决办法:</h4>
+<h4 id="section-2">解决办法:</h4>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">cell</span><span class="p">.</span><span class="n">tintColor</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">greenColor</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="n">cell</span><span class="p">.</span><span class="n">tintColor</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">greenColor</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>注意：类型为UITableViewCellAccessoryDisclosureIndicator 的不能通过这种方法更改，其颜色只能灰色。</p>
 
 <hr />
 
-<h4>问题描述：</h4>
+<h4 id="section-3">问题描述：</h4>
 
 <p>如何获取UITableViewCell 在TableView中的frame？</p>
 
-<h4>解决办法:</h4>
+<h4 id="section-4">解决办法:</h4>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="bp">CGRect</span> <span class="n">cellFrame</span> <span class="o">=</span> <span class="p">[</span><span class="n">_tableView</span> <span class="nl">rectForRowAtIndexPath</span><span class="p">:[</span><span class="bp">NSIndexPath</span> <span class="nl">indexPathForRow</span><span class="p">:</span><span class="n">index</span> <span class="nl">inSection</span><span class="p">:</span><span class="mi">0</span><span class="p">]];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"> <span class="bp">CGRect</span> <span class="n">cellFrame</span> <span class="o">=</span> <span class="p">[</span><span class="n">_tableView</span> <span class="nl">rectForRowAtIndexPath</span><span class="p">:[</span><span class="bp">NSIndexPath</span> <span class="nl">indexPathForRow</span><span class="p">:</span><span class="n">index</span> <span class="nl">inSection</span><span class="p">:</span><span class="mi">0</span><span class="p">]];</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
 <hr />
 
-<h4>问题描述：</h4>
+<h4 id="section-5">问题描述：</h4>
 
 <p>在使用Grouped UITableView的时候，如何去掉上面默认的空白</p>
 
-<h4>解决办法:</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">_tableView</span><span class="p">.</span><span class="n">tableHeaderView</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="n">_tableView</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="mf">0.01f</span><span class="p">)];</span>
+<h4 id="section-6">解决办法:</h4>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="n">_tableView</span><span class="p">.</span><span class="n">tableHeaderView</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="n">_tableView</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="mf">0.01f</span><span class="p">)];</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
 
 <hr />
 
-<h4>问题描述</h4>
+<h4 id="section-7">问题描述</h4>
 
 <p>iOS8 如何如何使 tableView cell 自适应高度 ？</p>
 
-<h4>解决办法</h4>
+<h4 id="section-8">解决办法</h4>
 
 <p>对自定义的Cell 进行约束布局（Autolayout）,</p>
 
 <p>在<code>viewDidLoad</code>里添加</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'>   <span class="nb">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">rowHeight</span> <span class="o">=</span> <span class="n">UITableViewAutomaticDimension</span><span class="p">;</span>
-</span><span class='line'>   <span class="nb">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">estimatedRowHeight</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line">   <span class="nb">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">rowHeight</span> <span class="o">=</span> <span class="n">UITableViewAutomaticDimension</span><span class="p">;</span>
+</span><span class="line">   <span class="nb">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">estimatedRowHeight</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 
 </div>
   
@@ -1773,56 +1821,26 @@
   
   <div class="pagination">
     
-      <a class="prev" href="/posts/3">&larr; Older</a>
+      <a class="prev" href="3">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
-    <a class="next" href="/index.html">Newer &rarr;</a>
+    <a class="next" href="1">Newer &rarr;</a>
     
   </div>
 </div>
 <aside class="sidebar">
   
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
     
-      <li class="post">
-        <a href="/blog/2015/11/24/dispatch-source/">Dispatch Source</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/21/run-loop/">Run Loop</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/">iOS 中线程同步的一些方法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/">ReactiveCocoa 学习资料</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/">关于 UILocalNotification 的几个问题</a>
-      </li>
-    
-  </ul>
-</section>
-
-
-
-
-
   
 </aside>
 
     </div>
   </div>
-  <footer role="contentinfo">Copyright &copy; 2016
-
-    ghren
-
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - ghren -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
 
 </footer>
   
@@ -1855,6 +1873,7 @@
       document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
     })();
   </script>
+
 
 
 

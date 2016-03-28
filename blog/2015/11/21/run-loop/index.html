@@ -9,12 +9,7 @@
   <meta name="author" content="ghren">
 
   
-  <meta name="description" content="目录 介绍
-用途
-Runloop Mode
-Runloop Mode Item
-Run Loop 运行机制
-自定义 input source 介绍 Run Loop 正如其字面意思一样，表示运行循环，可以理解为一个 do-while 循环。Run Loop 与线程密切相关，每个线程对应着自己的一个 &hellip;">
+  <meta name="description" content="目录 介绍 用途 Runloop Mode Runloop Mode Item Run Loop 运行机制 自定义 input source 介绍 Run Loop 正如其字面意思一样，表示运行循环，可以理解为一个 do-while 循环。Run Loop 与线程密切相关，每个线程对应着自己的一个 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -23,40 +18,34 @@ Run Loop 运行机制
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://alex1212112.github.io/blog/2015/11/21/run-loop/">
+  <link rel="canonical" href="http://alex1212112.github.io/blog/2015/11/21/run-loop">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin" rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Noto+Serif:400,700' rel='stylesheet' type='text/css'>
+
+
+
   
 
 </head>
 
 <body   >
-  <header role="banner">
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="alex1212112.github.io">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main">
-	<li><a href="/">Blog</a></li>
-	<li><a href="/blog/archives">Archives</a></li>
+  <nav id="main-nav" role="navigation">
+<ul class="main-navigation">
+  <li><a href="/" class="nav-link">Blog</a></li>
+  <li><a href="/blog/archives" class="nav-link">Archives</a></li>
+  <li><a href="/atom.xml" class="nav-link">RSS</a></li>
 </ul>
 
 </nav>
+  
   <div id="main">
     <div id="content">
       <div>
@@ -73,7 +62,14 @@ Run Loop 运行机制
 
 
 
-<time class='entry-date' datetime='2015-11-21T21:17:04+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>9:17 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2015-11-21T21:17:04+08:00" pubdate data-updated="true"></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://alex1212112.github.io">Comments</a>
@@ -83,35 +79,32 @@ Run Loop 运行机制
   </header>
 
 
-<div class="entry-content"><h3>目录</h3>
-
+<div class="entry-content"><h3 id="section">目录</h3>
 <ol>
-<li>介绍</li>
-<li>用途</li>
-<li>Runloop Mode</li>
-<li>Runloop Mode Item</li>
-<li>Run Loop 运行机制</li>
-<li>自定义 input source</li>
+  <li>介绍</li>
+  <li>用途</li>
+  <li>Runloop Mode</li>
+  <li>Runloop Mode Item</li>
+  <li>Run Loop 运行机制</li>
+  <li>自定义 input source</li>
 </ol>
 
-
-<h3>介绍</h3>
+<h3 id="section-1">介绍</h3>
 
 <p>Run Loop 正如其字面意思一样，表示运行循环，可以理解为一个 do-while 循环。Run Loop 与线程密切相关，每个线程对应着自己的一个 Run Loop，但是除了主线程的 Run Loop 是默认开启之外，剩下的线程的 Run Loop 一开始是不存在的，需要手动通过 <code>[NSRunLoop currentRunLoop]</code> 或 <code>CFRunLoopGetCurrent()</code> 获取当前线程的 Run Loop，这两个方法分别对应着 Foundation 框架和 Core Foundation 框架，它们的原理为，若当前线程对应的 Run Loop 存在的时候，直接返回该 Run Loop，当该线程当前不存在 Run Loop 时候，就创建当前线程的 Run Loop。 Foundation 框架的方法是对 Core Foundation 框架的方法做了一层封装，另外，NSRunloop 是非线程安全的，而 CFRunloopRef 是线程安全的。</p>
 
-<h3>用途</h3>
+<h3 id="section-2">用途</h3>
 
 <p>Run Loop 主要是用来保持线程常驻，从而接收事件的。比如常见的触摸事件，就是通过主线程的 Run Loop 来接收，然后再分发给相关的处理程序。</p>
 
-<h3>Runloop Mode</h3>
+<h3 id="runloop-mode">Runloop Mode</h3>
 
 <p>每一个 Run Loop 包含着多个 Runloop mode，每次运行的时候，它只会运行在一个特定的 Runloop mode 下，iOS 系统常用的 Runloop Mode 有两个：</p>
 
 <ul>
-<li>kCFRunLoopDefaultMode (NSDefaultRunLoopMode)</li>
-<li>UITrackingRunLoopMode。</li>
+  <li>kCFRunLoopDefaultMode (NSDefaultRunLoopMode)</li>
+  <li>UITrackingRunLoopMode。</li>
 </ul>
-
 
 <p>另外还有一种特殊的commonModes：kCFRunLoopCommonModes(NSRunLoopCommonModes)， 这种情况可以理解为别的 Mode 的集合，假如一个 Run Loop 运行在 UITrackingRunLoopMode 下，那么它不但会接收被标记为 UITrackingRunLoopMode 的事件， 也会接收被标记为 NSRunLoopCommonModes 的事件。我们可能会遇到这种情况，当一个 UIScrollView 在滑动的时候，主线程的 NSTimer 事件就不触发了，这种情况是因为当 UIScrollView 在滑动的时候，主线程的 Run Loop 就处于 UITrackingRunLoopMode 下，只接收被标记为 UITrackingRunLoopMode 和 NSRunLoopCommonModes 的事件， 而 NSTimer 默认被标记为 NSDefaultRunLoopMode 的，所以该 timer 事件就被丢弃了。解决的办法是通过</p>
 
@@ -119,29 +112,25 @@ Run Loop 运行机制
 
 <p>来让此 timer 被标记为 NSRunLoopCommonModes 或 UITrackingRunLoopMode， 最好是被标记为 NSRunLoopCommonModes，这样，不管线程的 Run Loop 运行在什么 Mode 下，都能接收到事件了。</p>
 
-<h3>Runloop Mode Item</h3>
+<h3 id="runloop-mode-item">Runloop Mode Item</h3>
 
 <p>每一个 Runloop Mode 都包含若干 Mode Item，Mode Item 有3种，分别是 Source， Timer 和 Observer。每一个Run Loop 会运行在特定的 Mode 下，这个 Mode 里面必须包含至少一个 Mode Item，如果这个 Mode 里面没有包含任何 Mode Item，那么当前的 Run Loop 会立刻退出。我们可以通过以下方法来添加 Mode Item 到指定的 Mode 中：</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>CFRunLoopAddSource(CFRunLoopRef rl, CFRunLoopSourceRef source, CFStringRef modeName);
-</span><span class='line'>CFRunLoopAddObserver(CFRunLoopRef rl, CFRunLoopObserverRef observer, CFStringRef modeName);
-</span><span class='line'>CFRunLoopAddTimer(CFRunLoopRef rl, CFRunLoopTimerRef timer, CFStringRef mode);</span></code></pre></td></tr></table></div></figure>
-
-
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">CFRunLoopAddSource(CFRunLoopRef rl, CFRunLoopSourceRef source, CFStringRef modeName);
+</span><span class="line">CFRunLoopAddObserver(CFRunLoopRef rl, CFRunLoopObserverRef observer, CFStringRef modeName);
+</span><span class="line">CFRunLoopAddTimer(CFRunLoopRef rl, CFRunLoopTimerRef timer, CFStringRef mode);</span></code></pre></td></tr></table></div></figure>
 <p>通过下面的方法把 Mode Item 从指定 Mode 中移除</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>CFRunLoopRemoveSource(CFRunLoopRef rl, CFRunLoopSourceRef source, CFStringRef modeName);
-</span><span class='line'>CFRunLoopRemoveObserver(CFRunLoopRef rl, CFRunLoopObserverRef observer, CFStringRef modeName);
-</span><span class='line'>CFRunLoopRemoveTimer(CFRunLoopRef rl, CFRunLoopTimerRef timer, CFStringRef mode);</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Source</h4>
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">CFRunLoopRemoveSource(CFRunLoopRef rl, CFRunLoopSourceRef source, CFStringRef modeName);
+</span><span class="line">CFRunLoopRemoveObserver(CFRunLoopRef rl, CFRunLoopObserverRef observer, CFStringRef modeName);
+</span><span class="line">CFRunLoopRemoveTimer(CFRunLoopRef rl, CFRunLoopTimerRef timer, CFStringRef mode);</span></code></pre></td></tr></table></div></figure>
+<p>####Source</p>
 
 <p>Source（CFRunLoopSourceRef） 用来产生事件的，它有两个版本 Source0 和 Source1。</p>
 
@@ -149,261 +138,243 @@ Run Loop 运行机制
 
 <p>Source1 被称为基于 Port 的 source （Port based source）; 它主要用来进行线程间的通信，能主动唤醒线程的 Run Loop。</p>
 
-<h4>Timer</h4>
+<h4 id="timer">Timer</h4>
 
 <p>Timer 就是我们平时使用的 NSTimer，它实际上是对 CFRunLoopTimerRef 进行了封装，当我们将其加入 RunLoop 时，RunLoop会注册对应的时间点，当时间点到时，RunLoop会被唤醒以执行对应的回调函数。</p>
 
 <p>假如 Timer 被设置为只触发一次，其触发后会从Run Loop中移除，假如 Timer 被设置为循环触发时，会一直保存在当前Run Loop中，直到调用invalidated方法。</p>
 
-<h4>Observer</h4>
+<h4 id="observer">Observer</h4>
 
 <p>Run Loop 的 Observer(CFRunLoopObserverRef) 会观察 Run Loop 的运行状态，对于不同的状态执行不同的回调函数，Run Loop 的状态有以下几种:</p>
 
 <ul>
-<li>Run Loop 进入的时候</li>
-<li>Run Loop 即将处理一个Timer的时候</li>
-<li>Run Loop 即将处理一个Input Source的时候</li>
-<li>Run Loop 即将进入休眠的时候</li>
-<li>Run Loop 刚从休眠中被被唤醒的时候</li>
-<li>Run Loop 即将退出的时候</li>
+  <li>Run Loop 进入的时候</li>
+  <li>Run Loop 即将处理一个Timer的时候</li>
+  <li>Run Loop 即将处理一个Input Source的时候</li>
+  <li>Run Loop 即将进入休眠的时候</li>
+  <li>Run Loop 刚从休眠中被被唤醒的时候</li>
+  <li>Run Loop 即将退出的时候</li>
 </ul>
-
 
 <p>Observer 同 Timer 类似，在被设置为只触发一次，其触发后会从Run Loop中移除，假如被设置为循环触发时，会一直保存在当前Run Loop中。</p>
 
-<h3>Run Loop 运行机制</h3>
+<h3 id="run-loop-">Run Loop 运行机制</h3>
 
 <p>Run Loop 是用来接收事件的一个循环，其生命周期如下：</p>
 
 <ol>
-<li>通知观察者 Run Loop已经启动</li>
-<li>通知观察者 Timer即将被触发</li>
-<li>通知观察者即将触发 Source0 事件</li>
-<li>启动 Source0 事件</li>
-<li>如果 Source1 准备好并处于等待状态，立即处理，并进入步骤9。</li>
-<li>通知观察者线程进入休眠</li>
-<li>将线程置于休眠直到任一下面的事件发生：
-
-<ul>
-<li>某一事件到达基于 Port 的 Source</li>
-<li>定时器启动</li>
-<li>Run Loop设置的时间已经超时</li>
-<li>Run Loop被显式唤醒</li>
-</ul>
-</li>
-<li>通知观察者线程将被唤醒。</li>
-<li>处理未处理的事件:
-
-<ul>
-<li>如果用户定义的定时器启动，处理定时器事,进入步骤2</li>
-<li>如果 Source1 启动，传递相应的消息</li>
-<li>如果 Run Loop 被显式唤醒而且时间还没超时,进入步骤2</li>
-</ul>
-</li>
-<li>通知观察者 Run Loop 结束。</li>
+  <li>通知观察者 Run Loop已经启动</li>
+  <li>通知观察者 Timer即将被触发</li>
+  <li>通知观察者即将触发 Source0 事件</li>
+  <li>启动 Source0 事件</li>
+  <li>如果 Source1 准备好并处于等待状态，立即处理，并进入步骤9。</li>
+  <li>通知观察者线程进入休眠</li>
+  <li>将线程置于休眠直到任一下面的事件发生：
+    <ul>
+      <li>某一事件到达基于 Port 的 Source</li>
+      <li>定时器启动</li>
+      <li>Run Loop设置的时间已经超时</li>
+      <li>Run Loop被显式唤醒</li>
+    </ul>
+  </li>
+  <li>通知观察者线程将被唤醒。</li>
+  <li>处理未处理的事件:
+    <ul>
+      <li>如果用户定义的定时器启动，处理定时器事,进入步骤2</li>
+      <li>如果 Source1 启动，传递相应的消息</li>
+      <li>如果 Run Loop 被显式唤醒而且时间还没超时,进入步骤2</li>
+    </ul>
+  </li>
+  <li>通知观察者 Run Loop 结束。</li>
 </ol>
-
 
 <p>上述步骤中，2-9 处于一个 while 循环中。</p>
 
-<h3>自定义 input source</h3>
+<h3 id="input-source">自定义 input source</h3>
 
-<h4>Source0</h4>
+<h4 id="source0">Source0</h4>
 
 <p>我们首先定义一个 Source：</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>CFRunLoopSourceContext context = {0,(__bridge void *)(self), NULL, NULL, NULL, NULL, NULL, NULL, NULL, &runLoopSourceFired};
-</span><span class='line'>    
-</span><span class='line'>self.inputSource = CFRunLoopSourceCreate(kCFAllocatorDefault, 0, &context);</span></code></pre></td></tr></table></div></figure>
-
-
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">CFRunLoopSourceContext context = {0,(__bridge void *)(self), NULL, NULL, NULL, NULL, NULL, NULL, NULL, &amp;runLoopSourceFired};
+</span><span class="line">    
+</span><span class="line">self.inputSource = CFRunLoopSourceCreate(kCFAllocatorDefault, 0, &amp;context);</span></code></pre></td></tr></table></div></figure>
 <p>其中 context 里面的最后一个参数表示 source 触发时候的回调函数:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>void runLoopSourceFired(void *info)
-</span><span class='line'>{
-</span><span class='line'>    NSLog(@"source0 Fired");
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">void runLoopSourceFired(void *info)
+</span><span class="line">{
+</span><span class="line">    NSLog(@"source0 Fired");
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure>
 
 <p>之后我们建立并开启一个线程：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(p_threadWillEnter) object:nil];
-</span><span class='line'>[self.thread start];</span></code></pre></td></tr></table></div></figure>
-
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(p_threadWillEnter) object:nil];
+</span><span class="line">[self.thread start];</span></code></pre></td></tr></table></div></figure>
 
 <p>在这个线程里我们执行如下方法：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)p_threadWillEnter{
-</span><span class='line'>
-</span><span class='line'>    @autoreleasepool {
-</span><span class='line'>     
-</span><span class='line'>        CFRunLoopRef currentRunloop = CFRunLoopGetCurrent();
-</span><span class='line'>        
-</span><span class='line'>        self.backgroundRunloop = currentRunloop;
-</span><span class='line'>        
-</span><span class='line'>        CFRunLoopAddSource(currentRunloop, self.inputSource, kCFRunLoopDefaultMode);//添加 source0 到当前线程的 Run Loop 里
-</span><span class='line'>        
-</span><span class='line'>        do {
-</span><span class='line'>            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];//开启 Run Loop
-</span><span class='line'>        } while (YES);
-</span><span class='line'>    }
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">- (void)p_threadWillEnter{
+</span><span class="line">
+</span><span class="line">    @autoreleasepool {
+</span><span class="line">     
+</span><span class="line">        CFRunLoopRef currentRunloop = CFRunLoopGetCurrent();
+</span><span class="line">        
+</span><span class="line">        self.backgroundRunloop = currentRunloop;
+</span><span class="line">        
+</span><span class="line">        CFRunLoopAddSource(currentRunloop, self.inputSource, kCFRunLoopDefaultMode);//添加 source0 到当前线程的 Run Loop 里
+</span><span class="line">        
+</span><span class="line">        do {
+</span><span class="line">            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];//开启 Run Loop
+</span><span class="line">        } while (YES);
+</span><span class="line">    }
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure>
 
 <p>之后假如有事件发生，我们需要通知辅助线程，执行 source0 回调:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>- (IBAction)buttonDidClicked:(id)sender {
-</span><span class='line'>    
-</span><span class='line'>    CFRunLoopSourceSignal(self.inputSource); //将该 source 标记为待处理
-</span><span class='line'>    
-</span><span class='line'>    CFRunLoopWakeUp(self.backgroundRunloop); //唤醒辅助线程
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">- (IBAction)buttonDidClicked:(id)sender {
+</span><span class="line">    
+</span><span class="line">    CFRunLoopSourceSignal(self.inputSource); //将该 source 标记为待处理
+</span><span class="line">    
+</span><span class="line">    CFRunLoopWakeUp(self.backgroundRunloop); //唤醒辅助线程
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure>
 
 <p>这样，每按一下按钮，我们就会看到后台线程被唤醒，并执行了 source0 的回调，打印出了 “source0 Fired”。</p>
 
-<h4>Source1 (Port-based Source)</h4>
+<h4 id="source1-port-based-source">Source1 (Port-based Source)</h4>
 
 <p>首先定义一个 NSPort</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>  self.mainThreadPort = [NSPort port];</span></code></pre></td></tr></table></div></figure>
-
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  self.mainThreadPort = [NSPort port];</span></code></pre></td></tr></table></div></figure>
 
 <p>之后设置处理该 port 接收事件的 delegate</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>   self.mainThreadPort.delegate = self;</span></code></pre></td></tr></table></div></figure>
-
-
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">   self.mainThreadPort.delegate = self;</span></code></pre></td></tr></table></div></figure>
 <p>把该 port 加入到 Run Loop 里,并开启 Run Loop</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[[NSRunLoop currentRunLoop] addPort:self.mainThreadPort forMode:NSDefaultRunLoopMode];
-</span><span class='line'>[[NSRunLoop currentRunLoop] run];</span></code></pre></td></tr></table></div></figure>
-
-
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[[NSRunLoop currentRunLoop] addPort:self.mainThreadPort forMode:NSDefaultRunLoopMode];
+</span><span class="line">[[NSRunLoop currentRunLoop] run];</span></code></pre></td></tr></table></div></figure>
 <p>实现 port 的 delegate 方法：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)handlePortMessage:(NSPortMessage *)message{
-</span><span class='line'>
-</span><span class='line'>    UInt32 msid = [message msgid];
-</span><span class='line'>    
-</span><span class='line'>    NSLog(@"msid == %d",msid);
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">- (void)handlePortMessage:(NSPortMessage *)message{
+</span><span class="line">
+</span><span class="line">    UInt32 msid = [message msgid];
+</span><span class="line">    
+</span><span class="line">    NSLog(@"msid == %d",msid);
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure>
 
 <p>创建新的线程和该线程的 Port</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>self.backgroundThread = [[NSThread alloc] initWithTarget:self selector:@selector(p_threadWillEnter) object:nil];
-</span><span class='line'>self.backgroundThreadPort = [NSPort port];
-</span><span class='line'>self.backgroundThreadPort.delegate = self;</span></code></pre></td></tr></table></div></figure>
-
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">self.backgroundThread = [[NSThread alloc] initWithTarget:self selector:@selector(p_threadWillEnter) object:nil];
+</span><span class="line">self.backgroundThreadPort = [NSPort port];
+</span><span class="line">self.backgroundThreadPort.delegate = self;</span></code></pre></td></tr></table></div></figure>
 
 <p>开启该线程的 Run Loop</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)p_threadWillEnter{
-</span><span class='line'>    
-</span><span class='line'>    @autoreleasepool {
-</span><span class='line'>        
-</span><span class='line'>        NSRunLoop *runloop = [NSRunLoop currentRunLoop];
-</span><span class='line'>        
-</span><span class='line'>        [runloop addPort:self.backgroundThreadPort forMode:NSDefaultRunLoopMode];
-</span><span class='line'>        
-</span><span class='line'>        do{
-</span><span class='line'>            [runloop runMode:NSDefaultRunLoopMode
-</span><span class='line'>                  beforeDate:[NSDate distantFuture]];
-</span><span class='line'>        }while (YES);
-</span><span class='line'>    }
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">- (void)p_threadWillEnter{
+</span><span class="line">    
+</span><span class="line">    @autoreleasepool {
+</span><span class="line">        
+</span><span class="line">        NSRunLoop *runloop = [NSRunLoop currentRunLoop];
+</span><span class="line">        
+</span><span class="line">        [runloop addPort:self.backgroundThreadPort forMode:NSDefaultRunLoopMode];
+</span><span class="line">        
+</span><span class="line">        do{
+</span><span class="line">            [runloop runMode:NSDefaultRunLoopMode
+</span><span class="line">                  beforeDate:[NSDate distantFuture]];
+</span><span class="line">        }while (YES);
+</span><span class="line">    }
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure>
 
 <p>从 backgroundThread 向 mainThread 发送信息</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>- (IBAction)buttonClicked:(id)sender {
-</span><span class='line'>    
-</span><span class='line'>    NSPortMessage* messageObj = [[NSPortMessage alloc] initWithSendPort:self.mainThreadPort
-</span><span class='line'>                                                            receivePort:self.backgroundThreadPort components:nil];
-</span><span class='line'>    if (messageObj){
-</span><span class='line'>        [messageObj setMsgid:150];
-</span><span class='line'>        [messageObj sendBeforeDate:[NSDate date]];
-</span><span class='line'>    }
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
+<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">- (IBAction)buttonClicked:(id)sender {
+</span><span class="line">    
+</span><span class="line">    NSPortMessage* messageObj = [[NSPortMessage alloc] initWithSendPort:self.mainThreadPort
+</span><span class="line">                                                            receivePort:self.backgroundThreadPort components:nil];
+</span><span class="line">    if (messageObj){
+</span><span class="line">        [messageObj setMsgid:150];
+</span><span class="line">        [messageObj sendBeforeDate:[NSDate date]];
+</span><span class="line">    }
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure>
 
 <p>这样每次按按钮，就会看到 <code>- (void)handlePortMessage:(NSPortMessage *)message</code> 回调方法被执行了，实现了线程间基于 Port 的通信。注意这个代码时运行在 OS X 上的，因为 iOS 里面 没有 <code>NSPortMessage</code>。</p>
 
-<h3>参考资料</h3>
+<h3 id="section-3">参考资料</h3>
 
 <ol>
-<li><p><a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html">Run Loops</a></p></li>
-<li><p><a href="http://blog.ibireme.com/2015/05/18/runloop/">深入理解 RunLoop</a></p></li>
-<li><p><a href="http://chun.tips/blog/2014/10/20/zou-jin-run-loopde-shi-jie-%5B%3F%5D-:shi-yao-shi-run-loop%3F/">走进Run Loop的世界 (一)</a></p></li>
-<li><p><a href="http://chun.tips/blog/2014/10/20/zou-jin-run-loopde-shi-jie-er-:ru-he-pei-zhi-run-loop-sources/">走进Run Loop的世界 (二)</a></p></li>
-<li><p><a href="http://www.dreamingwish.com/article/ios-multithread-program-runloop-the.html">iOS多线程编程指南（三）Run Loop</a></p></li>
+  <li>
+    <p><a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html">Run Loops</a></p>
+  </li>
+  <li>
+    <p><a href="http://blog.ibireme.com/2015/05/18/runloop/">深入理解 RunLoop</a></p>
+  </li>
+  <li>
+    <p><a href="http://chun.tips/blog/2014/10/20/zou-jin-run-loopde-shi-jie-%5B%3F%5D-:shi-yao-shi-run-loop%3F/">走进Run Loop的世界 (一)</a></p>
+  </li>
+  <li>
+    <p><a href="http://chun.tips/blog/2014/10/20/zou-jin-run-loopde-shi-jie-er-:ru-he-pei-zhi-run-loop-sources/">走进Run Loop的世界 (二)</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.dreamingwish.com/article/ios-multithread-program-runloop-the.html">iOS多线程编程指南（三）Run Loop</a></p>
+  </li>
 </ol>
 
 </div>
@@ -421,7 +392,14 @@ Run Loop 运行机制
 
 
 
-<time class='entry-date' datetime='2015-11-21T21:17:04+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>9:17 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2015-11-21T21:17:04+08:00" pubdate data-updated="true"></time>
       
 
 
@@ -457,47 +435,17 @@ Run Loop 运行机制
 
 <aside class="sidebar">
   
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
     
-      <li class="post">
-        <a href="/blog/2015/11/24/dispatch-source/">Dispatch Source</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/21/run-loop/">Run Loop</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/">iOS 中线程同步的一些方法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/">ReactiveCocoa 学习资料</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/">关于 UILocalNotification 的几个问题</a>
-      </li>
-    
-  </ul>
-</section>
-
-
-
-
-
   
 </aside>
 
 
     </div>
   </div>
-  <footer role="contentinfo">Copyright &copy; 2016
-
-    ghren
-
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - ghren -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
 
 </footer>
   
@@ -533,6 +481,7 @@ Run Loop 运行机制
       document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
     })();
   </script>
+
 
 
 

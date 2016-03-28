@@ -18,40 +18,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://alex1212112.github.io/blog/2015/03/23/cikernel-de-xue-xi/">
+  <link rel="canonical" href="http://alex1212112.github.io/blog/2015/03/23/cikernel-de-xue-xi">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin" rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Noto+Serif:400,700' rel='stylesheet' type='text/css'>
+
+
+
   
 
 </head>
 
 <body   >
-  <header role="banner">
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="alex1212112.github.io">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main">
-	<li><a href="/">Blog</a></li>
-	<li><a href="/blog/archives">Archives</a></li>
+  <nav id="main-nav" role="navigation">
+<ul class="main-navigation">
+  <li><a href="/" class="nav-link">Blog</a></li>
+  <li><a href="/blog/archives" class="nav-link">Archives</a></li>
+  <li><a href="/atom.xml" class="nav-link">RSS</a></li>
 </ul>
 
 </nav>
+  
   <div id="main">
     <div id="content">
       <div>
@@ -68,7 +62,14 @@
 
 
 
-<time class='entry-date' datetime='2015-03-23T21:39:36+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>9:39 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2015-03-23T21:39:36+08:00" pubdate data-updated="true"></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://alex1212112.github.io">Comments</a>
@@ -82,130 +83,137 @@
 
 <p>在使用 Core Image 的时候，Apple 提供的效果有时候无法满足我们的需求，我们希望能实现自己的滤镜，这个时候我们可以用 CIKernel。CIKernel 是 iOS8 的时候出现的，它是一种类似于 OpenGL 着色器的处理程序。苹果提供了一系列的函数和数据类型供我们使用它。具体参见<a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Reference/CIKernelLangRef/ci_gslang_ext.html">Core Image Kernel Language</a>。</p>
 
-<h3>子类</h3>
+<h3 id="section">子类</h3>
 
 <p>CIKernel 有两个子类：<code>CIColorKernel</code>和<code>CIWarpKernel</code>。</p>
 
-<h3>初始化</h3>
+<h3 id="section-1">初始化</h3>
 
 <p>我们通过一个 <code>NSString</code> 来初始化一个 <code>CIKernel</code>；</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'>   <span class="bp">NSString</span> <span class="o">*</span><span class="n">kernelString</span> <span class="o">=</span>
-</span><span class='line'>    <span class="s">@&quot;kernel vec4 moveUpTwoPixels (sampler image) {</span><span class="se">\n</span><span class="s">&quot;</span>
-</span><span class='line'>    <span class="s">@&quot;  vec2 dc = destCoord();</span><span class="se">\n</span><span class="s">&quot;</span>
-</span><span class='line'>    <span class="s">@&quot;  vec2 offset = vec2(0.0, 2.0);</span><span class="se">\n</span><span class="s">&quot;</span>
-</span><span class='line'>    <span class="s">@&quot;  return sample (image, samplerTransform (image, dc + offset));</span><span class="se">\n</span><span class="s">&quot;</span>
-</span><span class='line'>    <span class="s">@&quot;}&quot;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">CIKernel</span> <span class="o">*</span><span class="n">kernel</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIKernel</span> <span class="nl">kernelWithString</span><span class="p">:</span><span class="n">kernelString</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line">   <span class="bp">NSString</span> <span class="o">*</span><span class="n">kernelString</span> <span class="o">=</span>
+</span><span class="line">    <span class="s">@&quot;kernel vec4 moveUpTwoPixels (sampler image) {</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class="line">    <span class="s">@&quot;  vec2 dc = destCoord();</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class="line">    <span class="s">@&quot;  vec2 offset = vec2(0.0, 2.0);</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class="line">    <span class="s">@&quot;  return sample (image, samplerTransform (image, dc + offset));</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class="line">    <span class="s">@&quot;}&quot;</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">CIKernel</span> <span class="o">*</span><span class="n">kernel</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIKernel</span> <span class="nl">kernelWithString</span><span class="p">:</span><span class="n">kernelString</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<h3>使用</h3>
+<h3 id="section-2">使用</h3>
 
 <p>使用的时候可以这么用：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;flower&quot;</span><span class="p">];</span>
-</span><span class='line'><span class="bp">CIImage</span> <span class="o">*</span><span class="n">inputImage</span> <span class="o">=</span> <span class="p">[</span><span class="bp">CIImage</span> <span class="nl">imageWithCGImage</span><span class="p">:</span><span class="n">image</span><span class="p">.</span><span class="bp">CGImage</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="bp">CIImage</span> <span class="o">*</span><span class="n">outImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">kernel</span> <span class="nl">applyWithExtent</span><span class="p">:</span><span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span> <span class="nl">roiCallback</span><span class="p">:</span><span class="o">^</span><span class="bp">CGRect</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span> <span class="nl">arguments</span><span class="p">:</span><span class="l">@[</span><span class="n">inputImage</span><span class="l">]</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;flower&quot;</span><span class="p">];</span>
+</span><span class="line"><span class="bp">CIImage</span> <span class="o">*</span><span class="n">inputImage</span> <span class="o">=</span> <span class="p">[</span><span class="bp">CIImage</span> <span class="nl">imageWithCGImage</span><span class="p">:</span><span class="n">image</span><span class="p">.</span><span class="bp">CGImage</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line"><span class="bp">CIImage</span> <span class="o">*</span><span class="n">outImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">kernel</span> <span class="nl">applyWithExtent</span><span class="p">:</span><span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span> <span class="nl">roiCallback</span><span class="p">:</span><span class="o">^</span><span class="bp">CGRect</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">}</span> <span class="nl">arguments</span><span class="p">:</span><span class="l">@[</span><span class="n">inputImage</span><span class="l">]</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>我们可以看到，核心代码为：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">kernel</span> <span class="n">vec4</span> <span class="nf">moveUpTwoPixels</span> <span class="p">(</span><span class="n">sampler</span> <span class="n">image</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">vec2</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">destCoord</span><span class="p">();</span>
-</span><span class='line'>    <span class="n">vec2</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">vec2</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">sample</span> <span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">samplerTransform</span> <span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dc</span> <span class="o">+</span> <span class="n">offset</span><span class="p">));</span>
-</span><span class='line'><span class="p">}</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="n">kernel</span> <span class="n">vec4</span> <span class="nf">moveUpTwoPixels</span> <span class="p">(</span><span class="n">sampler</span> <span class="n">image</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">vec2</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">destCoord</span><span class="p">();</span>
+</span><span class="line">    <span class="n">vec2</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">vec2</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">);</span>
+</span><span class="line">    <span class="k">return</span> <span class="n">sample</span> <span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">samplerTransform</span> <span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dc</span> <span class="o">+</span> <span class="n">offset</span><span class="p">));</span>
+</span><span class="line"><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>这是一个 函数，其中返回值 vec4 是一个 由 float 构成的向量，苹果在文档里说这个函数的返回值必须是这种类型。函数的名称 叫 <code>moveUpTwoPixels</code>,函数的参数为一个 sampler 类型，对于我们的程序来说，这个参数要求我们传递一个CIImage，这里的参数也可以有多个，对应着</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">CIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">applyWithExtent:</span><span class="p">(</span><span class="bp">CGRect</span><span class="p">)</span><span class="nv">extent</span>
-</span><span class='line'>                   <span class="nf">arguments:</span><span class="p">(</span><span class="bp">NSArray</span><span class="o">*</span><span class="p">)</span><span class="nv">args</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="bp">CIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">applyWithExtent:</span><span class="p">(</span><span class="bp">CGRect</span><span class="p">)</span><span class="nv">extent</span>
+</span><span class="line">                   <span class="nf">arguments:</span><span class="p">(</span><span class="bp">NSArray</span><span class="o">*</span><span class="p">)</span><span class="nv">args</span>
 </span></code></pre></td></tr></table></div></figure>
+<p>方法里的 args 的参数。</p>
 
-
-<p> 方法里的 args 的参数。</p>
-
-<h3>CIColorKernel</h3>
+<h3 id="cicolorkernel">CIColorKernel</h3>
 
 <p>我们也可以创建一个CIColorKernel:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">kernelString</span> <span class="o">=</span>
-</span><span class='line'>    <span class="s">@&quot;kernel vec4 chromaKey( __sample s, __color c, float threshold ) { </span><span class="se">\n</span><span class="s">&quot;</span>
-</span><span class='line'>    <span class="s">@&quot;  vec4 diff = s.rgba - c;</span><span class="se">\n</span><span class="s">&quot;</span>
-</span><span class='line'>    <span class="s">@&quot;  float distance = length( diff );</span><span class="se">\n</span><span class="s">&quot;</span>
-</span><span class='line'>    <span class="s">@&quot;  float alpha = compare( distance - threshold, 0.0, 0.5 );</span><span class="se">\n</span><span class="s">&quot;</span>
-</span><span class='line'>    <span class="s">@&quot;  return vec4( s.rgb, alpha ); </span><span class="se">\n</span><span class="s">&quot;</span>
-</span><span class='line'>    <span class="s">@&quot;}&quot;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">CIColorKernel</span> <span class="o">*</span><span class="n">kernel</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIColorKernel</span> <span class="nl">kernelWithString</span><span class="p">:</span><span class="n">kernelString</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSString</span> <span class="o">*</span><span class="n">kernelString</span> <span class="o">=</span>
+</span><span class="line">    <span class="s">@&quot;kernel vec4 chromaKey( __sample s, __color c, float threshold ) { </span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class="line">    <span class="s">@&quot;  vec4 diff = s.rgba - c;</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class="line">    <span class="s">@&quot;  float distance = length( diff );</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class="line">    <span class="s">@&quot;  float alpha = compare( distance - threshold, 0.0, 0.5 );</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class="line">    <span class="s">@&quot;  return vec4( s.rgb, alpha ); </span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class="line">    <span class="s">@&quot;}&quot;</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="n">CIColorKernel</span> <span class="o">*</span><span class="n">kernel</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIColorKernel</span> <span class="nl">kernelWithString</span><span class="p">:</span><span class="n">kernelString</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>使用的时候:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;flower&quot;</span><span class="p">];</span>
-</span><span class='line'><span class="bp">CIImage</span> <span class="o">*</span><span class="n">inputImage</span> <span class="o">=</span> <span class="p">[</span><span class="bp">CIImage</span> <span class="nl">imageWithCGImage</span><span class="p">:</span><span class="n">image</span><span class="p">.</span><span class="bp">CGImage</span><span class="p">];</span>
-</span><span class='line'><span class="bp">CIImage</span> <span class="o">*</span><span class="n">outImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">kernel</span> <span class="nl">applyWithExtent</span><span class="p">:</span><span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span> <span class="nl">arguments</span><span class="p">:</span><span class="l">@[</span><span class="n">inputImage</span><span class="p">,[</span><span class="bp">CIColor</span> <span class="nl">colorWithRed</span><span class="p">:</span><span class="mf">0.0f</span> <span class="nl">green</span><span class="p">:</span><span class="mf">1.0f</span> <span class="nl">blue</span><span class="p">:</span><span class="mf">0.0f</span><span class="p">],</span><span class="mf">@0.0f</span><span class="l">]</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;flower&quot;</span><span class="p">];</span>
+</span><span class="line"><span class="bp">CIImage</span> <span class="o">*</span><span class="n">inputImage</span> <span class="o">=</span> <span class="p">[</span><span class="bp">CIImage</span> <span class="nl">imageWithCGImage</span><span class="p">:</span><span class="n">image</span><span class="p">.</span><span class="bp">CGImage</span><span class="p">];</span>
+</span><span class="line"><span class="bp">CIImage</span> <span class="o">*</span><span class="n">outImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">kernel</span> <span class="nl">applyWithExtent</span><span class="p">:</span><span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span> <span class="nl">arguments</span><span class="p">:</span><span class="l">@[</span><span class="n">inputImage</span><span class="p">,[</span><span class="bp">CIColor</span> <span class="nl">colorWithRed</span><span class="p">:</span><span class="mf">0.0f</span> <span class="nl">green</span><span class="p">:</span><span class="mf">1.0f</span> <span class="nl">blue</span><span class="p">:</span><span class="mf">0.0f</span><span class="p">],</span><span class="mf">@0.0f</span><span class="l">]</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
+<h3 id="section-3">更多</h3>
 
-<h3>更多</h3>
+<p>进一步学习中。。。</p>
 
-<p> 进一步学习中。。。</p>
-
-<h3>参考资料</h3>
+<h3 id="section-4">参考资料</h3>
 
 <ol>
-<li><p><a href="http://www.shinobicontrols.com/blog/posts/2014/08/19/ios8-day-by-day-day-19-coreimage-kernels">iOS8 Day-by-Day :: Day 19 :: CoreImage Kernels</a></p></li>
-<li><p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Reference/CIKernelLangRef/ci_gslang_ext.html#//apple_ref/doc/uid/TP40004397-CH206-TPXREF101">Core Image Kernel Language</a></p></li>
-<li><p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_intro/ci_intro.html#//apple_ref/doc/uid/TP30001185">About Core Image</a></p></li>
-<li><p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_advanced_concepts/ci.advanced_concepts.html#//apple_ref/doc/uid/TP30001185-CH9-SW1">What You Need to Know Before Writing a Custom Filter</a></p></li>
-<li><p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_custom_filters/ci_custom_filters.html#//apple_ref/doc/uid/TP30001185-CH6-TPXREF101">Creating Custom Filters</a></p></li>
-<li><p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_image_units/ci_image_units.html#//apple_ref/doc/uid/TP30001185-CH7-SW12">Packaging and Loading Image Units</a></p></li>
-<li><p><a href="http://www.cocoachina.com/b/?p=174#more-174">如何制作Core Image滤镜插件</a></p></li>
+  <li>
+    <p><a href="http://www.shinobicontrols.com/blog/posts/2014/08/19/ios8-day-by-day-day-19-coreimage-kernels">iOS8 Day-by-Day :: Day 19 :: CoreImage Kernels</a></p>
+  </li>
+  <li>
+    <p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Reference/CIKernelLangRef/ci_gslang_ext.html#//apple_ref/doc/uid/TP40004397-CH206-TPXREF101">Core Image Kernel Language</a></p>
+  </li>
+  <li>
+    <p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_intro/ci_intro.html#//apple_ref/doc/uid/TP30001185">About Core Image</a></p>
+  </li>
+  <li>
+    <p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_advanced_concepts/ci.advanced_concepts.html#//apple_ref/doc/uid/TP30001185-CH9-SW1">What You Need to Know Before Writing a Custom Filter</a></p>
+  </li>
+  <li>
+    <p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_custom_filters/ci_custom_filters.html#//apple_ref/doc/uid/TP30001185-CH6-TPXREF101">Creating Custom Filters</a></p>
+  </li>
+  <li>
+    <p><a href="https://developer.apple.com/library/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_image_units/ci_image_units.html#//apple_ref/doc/uid/TP30001185-CH7-SW12">Packaging and Loading Image Units</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.cocoachina.com/b/?p=174#more-174">如何制作Core Image滤镜插件</a></p>
+  </li>
 </ol>
 
 </div>
@@ -223,7 +231,14 @@
 
 
 
-<time class='entry-date' datetime='2015-03-23T21:39:36+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>9:39 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2015-03-23T21:39:36+08:00" pubdate data-updated="true"></time>
       
 
 
@@ -259,47 +274,17 @@
 
 <aside class="sidebar">
   
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
     
-      <li class="post">
-        <a href="/blog/2015/11/24/dispatch-source/">Dispatch Source</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/21/run-loop/">Run Loop</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/">iOS 中线程同步的一些方法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/">ReactiveCocoa 学习资料</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/">关于 UILocalNotification 的几个问题</a>
-      </li>
-    
-  </ul>
-</section>
-
-
-
-
-
   
 </aside>
 
 
     </div>
   </div>
-  <footer role="contentinfo">Copyright &copy; 2016
-
-    ghren
-
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - ghren -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
 
 </footer>
   
@@ -335,6 +320,7 @@
       document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
     })();
   </script>
+
 
 
 

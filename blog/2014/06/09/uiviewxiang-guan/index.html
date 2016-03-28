@@ -21,40 +21,34 @@ subView.center = CGPointMake(view.frame.size. &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://alex1212112.github.io/blog/2014/06/09/uiviewxiang-guan/">
+  <link rel="canonical" href="http://alex1212112.github.io/blog/2014/06/09/uiviewxiang-guan">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin" rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Noto+Serif:400,700' rel='stylesheet' type='text/css'>
+
+
+
   
 
 </head>
 
 <body   >
-  <header role="banner">
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="alex1212112.github.io">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main">
-	<li><a href="/">Blog</a></li>
-	<li><a href="/blog/archives">Archives</a></li>
+  <nav id="main-nav" role="navigation">
+<ul class="main-navigation">
+  <li><a href="/" class="nav-link">Blog</a></li>
+  <li><a href="/blog/archives" class="nav-link">Archives</a></li>
+  <li><a href="/atom.xml" class="nav-link">RSS</a></li>
 </ul>
 
 </nav>
+  
   <div id="main">
     <div id="content">
       <div>
@@ -71,7 +65,14 @@ subView.center = CGPointMake(view.frame.size. &hellip;">
 
 
 
-<time class='entry-date' datetime='2014-06-09T10:21:49+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:21 am</span></time>
+
+
+
+
+  
+
+
+<time datetime="2014-06-09T10:21:49+08:00" pubdate data-updated="true"></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://alex1212112.github.io">Comments</a>
@@ -83,41 +84,35 @@ subView.center = CGPointMake(view.frame.size. &hellip;">
 
 <div class="entry-content"><p><img src="http://ww3.sinaimg.cn/large/8bcaa2dfjw1ec8pxpionej20dw07sdgj.jpg" alt="" /></p>
 
-<h4>问题描述:</h4>
+<h4 id="section">问题描述:</h4>
 
 <p>有时候设置subView的center如下：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">subView</span><span class="p">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">view</span><span class="p">.</span><span class="n">center</span><span class="p">;</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="n">subView</span><span class="p">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">view</span><span class="p">.</span><span class="n">center</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
 
 <p>但实际显示出来发现subView的位置不对，该如何处理？</p>
 
-<h4>解决办法:</h4>
+<h4 id="section-1">解决办法:</h4>
 
-<p> 改为</p>
+<p>改为</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">subView</span><span class="p">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">CGPointMake</span><span class="p">(</span><span class="n">view</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-</span><span class='line'><span class="n">view</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="n">subView</span><span class="p">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">CGPointMake</span><span class="p">(</span><span class="n">view</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+</span><span class="line"><span class="n">view</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
 
 <p>不要使用view.center,除非view和subView共用同一个superView,center这个属性指的是子view的中心点在父view中的位置,是以父view的坐标系为参考的；</p>
 
 <hr />
 
-<h4>问题描述:</h4>
+<h4 id="section-2">问题描述:</h4>
 
 <p>UIView在自己实现draw方法时候，为什么整个view的背景都变成黑色？</p>
 
-<h4>解决办法:</h4>
+<h4 id="section-3">解决办法:</h4>
 
 <p>设置下view的backgroundColor就OK了。</p>
 
@@ -125,22 +120,22 @@ subView.center = CGPointMake(view.frame.size. &hellip;">
 
 <hr />
 
-<h4>问题描述:</h4>
+<h4 id="section-4">问题描述:</h4>
 
 <p>UIView 通过layer 的 shadowColor、shadowOpacity、shadowOffset、shadowRadius 几个属性可以很方便的为 UIView 添加阴影效果。但是在添加了阴影后，会出现动画卡顿的现象，如何解决？</p>
 
-<h4>解决办法:</h4>
+<h4 id="section-5">解决办法:</h4>
 
 <p>为阴影指定路径，即设置 layer 的 shadowPath 属性。如下：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">view</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">shadowPath</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIBezierPath</span>  <span class="nl">bezierPathWithRect</span><span class="p">:</span><span class="n">view</span><span class="p">.</span><span class="n">bounds</span><span class="p">].</span><span class="bp">CGPath</span><span class="p">;</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="n">view</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">shadowPath</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIBezierPath</span>  <span class="nl">bezierPathWithRect</span><span class="p">:</span><span class="n">view</span><span class="p">.</span><span class="n">bounds</span><span class="p">].</span><span class="bp">CGPath</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>说明：不指定阴影路径时，绘制阴影会产生大量的 Offscreen-Rendered 。而 Offscreen-Rendered（离屏渲染）和 Blending（混合）是 iOS 绘图中对性能影响比较大的两方面。</p>
 
 <p>参考：<a href="http://blog.devdlh.com/blog/2013/03/18/performance-problerm-caused-by-shadowpath/">绘制阴影引发的 iOS 绘图性能问题总结</a></p>
+
 </div>
 
 
@@ -156,7 +151,14 @@ subView.center = CGPointMake(view.frame.size. &hellip;">
 
 
 
-<time class='entry-date' datetime='2014-06-09T10:21:49+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:21 am</span></time>
+
+
+
+
+  
+
+
+<time datetime="2014-06-09T10:21:49+08:00" pubdate data-updated="true"></time>
       
 
 
@@ -192,47 +194,17 @@ subView.center = CGPointMake(view.frame.size. &hellip;">
 
 <aside class="sidebar">
   
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
     
-      <li class="post">
-        <a href="/blog/2015/11/24/dispatch-source/">Dispatch Source</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/21/run-loop/">Run Loop</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/">iOS 中线程同步的一些方法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/">ReactiveCocoa 学习资料</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/">关于 UILocalNotification 的几个问题</a>
-      </li>
-    
-  </ul>
-</section>
-
-
-
-
-
   
 </aside>
 
 
     </div>
   </div>
-  <footer role="contentinfo">Copyright &copy; 2016
-
-    ghren
-
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - ghren -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
 
 </footer>
   
@@ -268,6 +240,7 @@ subView.center = CGPointMake(view.frame.size. &hellip;">
       document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
     })();
   </script>
+
 
 
 

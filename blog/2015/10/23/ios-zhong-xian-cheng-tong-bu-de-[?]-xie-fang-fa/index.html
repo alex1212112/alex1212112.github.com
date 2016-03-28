@@ -9,10 +9,8 @@
   <meta name="author" content="ghren">
 
   
-  <meta name="description" content="目录 使用串行队列
-使用 dispatch_group
-使用 dispatch_barrier
-使用 dispatch_semaphore 串行队列 使用串行队列，对于一个资源，同一时刻只有一个任务（线程）访问，这样就避免了资源竞争，实现了资源的同步。我们可以通过 NSOperationQueue &hellip;">
+  <meta name="description" content="目录 使用串行队列 使用 dispatch_group 使用 dispatch_barrier 使用 dispatch_semaphore 串行队列
+使用串行队列，对于一个资源，同一时刻只有一个任务（线程）访问，这样就避免了资源竞争，实现了资源的同步。我们可以通过 NSOperationQueue &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,40 +19,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://alex1212112.github.io/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/">
+  <link rel="canonical" href="http://alex1212112.github.io/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin" rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Noto+Serif:400,700' rel='stylesheet' type='text/css'>
+
+
+
   
 
 </head>
 
 <body   >
-  <header role="banner">
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="alex1212112.github.io">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main">
-	<li><a href="/">Blog</a></li>
-	<li><a href="/blog/archives">Archives</a></li>
+  <nav id="main-nav" role="navigation">
+<ul class="main-navigation">
+  <li><a href="/" class="nav-link">Blog</a></li>
+  <li><a href="/blog/archives" class="nav-link">Archives</a></li>
+  <li><a href="/atom.xml" class="nav-link">RSS</a></li>
 </ul>
 
 </nav>
+  
   <div id="main">
     <div id="content">
       <div>
@@ -71,7 +63,14 @@
 
 
 
-<time class='entry-date' datetime='2015-10-23T15:21:04+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>3:21 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2015-10-23T15:21:04+08:00" pubdate data-updated="true"></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://alex1212112.github.io">Comments</a>
@@ -81,213 +80,205 @@
   </header>
 
 
-<div class="entry-content"><h3>目录</h3>
-
+<div class="entry-content"><h3 id="section">目录</h3>
 <ol>
-<li>使用串行队列</li>
-<li>使用 dispatch_group</li>
-<li>使用 dispatch_barrier</li>
-<li>使用 dispatch_semaphore</li>
+  <li>使用串行队列</li>
+  <li>使用 dispatch_group</li>
+  <li>使用 dispatch_barrier</li>
+  <li>使用 dispatch_semaphore</li>
 </ol>
 
-
-<h3>串行队列</h3>
-
+<h3 id="section-1">串行队列</h3>
 <p>使用串行队列，对于一个资源，同一时刻只有一个任务（线程）访问，这样就避免了资源竞争，实现了资源的同步。我们可以通过 NSOperationQueue 或 dispatch queue来实现串行队列。</p>
 
 <ul>
-<li><p>NSOperationQueue</p>
+  <li>
+    <p>NSOperationQueue</p>
 
-<p> 创建一个    NSOperationQueue 队列，然后将该队列的最大并发数设置为 1，就是一个串行队列。</p></li>
+    <p>创建一个	NSOperationQueue 队列，然后将该队列的最大并发数设置为 1，就是一个串行队列。</p>
+  </li>
 </ul>
 
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSOperationQueue</span> <span class="o">*</span> <span class="n">queue</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSOperationQueue</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">queue</span><span class="p">.</span><span class="n">maxConcurrentOperationCount</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//每次只执行一个任务</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">queue</span> <span class="nl">addOperation</span><span class="p">:</span> <span class="p">[</span><span class="bp">NSBlockOperation</span> <span class="nl">blockOperationWithBlock</span><span class="p">:</span><span class="o">^</span><span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span> <span class="p">]];</span>
-</span><span class='line'><span class="p">}</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSOperationQueue</span> <span class="o">*</span> <span class="n">queue</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSOperationQueue</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line"><span class="n">queue</span><span class="p">.</span><span class="n">maxConcurrentOperationCount</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//每次只执行一个任务</span>
+</span><span class="line">
+</span><span class="line"><span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">[</span><span class="n">queue</span> <span class="nl">addOperation</span><span class="p">:</span> <span class="p">[</span><span class="bp">NSBlockOperation</span> <span class="nl">blockOperationWithBlock</span><span class="p">:</span><span class="o">^</span><span class="p">{</span>
+</span><span class="line">
+</span><span class="line">        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span><span class="p">);</span>
+</span><span class="line">    <span class="p">}</span> <span class="p">]];</span>
+</span><span class="line"><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
 <ul>
-<li>dispatch queue
+  <li>dispatch queue
 dispatch queue 也分串行队列和并发队列，我们这里需要创建一个串行队列。</li>
 </ul>
 
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">dispatch_queue_t</span> <span class="n">serialQueue</span> <span class="o">=</span> <span class="n">dispatch_queue_create</span><span class="p">(</span><span class="s">&quot;com.ghren.MultiThread.test&quot;</span><span class="p">,</span> <span class="n">DISPATCH_QUEUE_SERIAL</span><span class="p">);</span> <span class="c1">//生成一个串行队列</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">serialQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">});</span><span class="c1">//向该串行队列中添加任务</span>
-</span><span class='line'><span class="p">}</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="kt">dispatch_queue_t</span> <span class="n">serialQueue</span> <span class="o">=</span> <span class="n">dispatch_queue_create</span><span class="p">(</span><span class="s">&quot;com.ghren.MultiThread.test&quot;</span><span class="p">,</span> <span class="n">DISPATCH_QUEUE_SERIAL</span><span class="p">);</span> <span class="c1">//生成一个串行队列</span>
+</span><span class="line">
+</span><span class="line"><span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">serialQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class="line">
+</span><span class="line">        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span><span class="p">);</span>
+</span><span class="line">    <span class="p">});</span><span class="c1">//向该串行队列中添加任务</span>
+</span><span class="line"><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<h3>使用 dispatch_group</h3>
+<h3 id="dispatchgroup">使用 dispatch_group</h3>
 
 <p>dispatch_group 可以把很多个任务加入到一个组中，然后等组中所有的任务都执行完毕，再去执行新的任务，同步的操作就在这新的任务中实现。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'>  <span class="kt">dispatch_group_t</span> <span class="n">group</span> <span class="o">=</span> <span class="n">dispatch_group_create</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kt">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">dispatch_group_async</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">});</span><span class="c1">//把任务添加到组中</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">dispatch_group_wait</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">DISPATCH_TIME_FOREVER</span><span class="p">);</span><span class="c1">//阻塞当前线程，一直到组中任务完成</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;done&quot;</span><span class="p">);</span> <span class="c1">//数据同步点</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line">  <span class="kt">dispatch_group_t</span> <span class="n">group</span> <span class="o">=</span> <span class="n">dispatch_group_create</span><span class="p">();</span>
+</span><span class="line">
+</span><span class="line">    <span class="kt">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">        <span class="n">dispatch_group_async</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class="line">
+</span><span class="line">            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span><span class="p">);</span>
+</span><span class="line">        <span class="p">});</span><span class="c1">//把任务添加到组中</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">dispatch_group_wait</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">DISPATCH_TIME_FOREVER</span><span class="p">);</span><span class="c1">//阻塞当前线程，一直到组中任务完成</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;done&quot;</span><span class="p">);</span> <span class="c1">//数据同步点</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<h3>使用 dispatch_barrier</h3>
+<h3 id="dispatchbarrier">使用 dispatch_barrier</h3>
 
 <p>假如有这样一个情况，先要执行一组并发的任务，然后在执行一个基于这组并发任务的任务，然后再执行另外一组基于这个任务的并发任务，这种情况虽然也可以通过 dispatch_group 来实现， 但是 GCD 提供了另外一个很优雅的方法，就是 dispatch_barrier,要注意的是对于串行队列使用 dispatch_barrier 意义并不大，因为所有的任务本来就是串行执行的，对于全局的并发队列 <code>dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)</code> , dispatch_barrier 也不会生效，所以 dispatch_barrier 一般使用在 自定义的全局并发队列里</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="kt">dispatch_queue_t</span> <span class="n">concurrentQueue</span> <span class="o">=</span> <span class="n">dispatch_queue_create</span><span class="p">(</span><span class="s">&quot;com.ghren.MultiThread.concurrent&quot;</span><span class="p">,</span> <span class="n">DISPATCH_QUEUE_CONCURRENT</span><span class="p">);</span> <span class="c1">//生成一个并发队列, dispatch_barrier 对于全局并发队列并不起作用，所以要用在自己创建的并发队列里</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">dispatch_async</span><span class="p">(</span><span class="n">concurrentQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">});</span>
-</span><span class='line'>    <span class="p">}</span> <span class="c1">// 向并发队列里添加任务</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">dispatch_barrier_async</span><span class="p">(</span><span class="n">concurrentQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;do something&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">});</span><span class="c1">//同步点</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">dispatch_async</span><span class="p">(</span><span class="n">concurrentQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span> <span class="o">+</span> <span class="mi">3</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">});</span>
-</span><span class='line'>    <span class="p">}</span><span class="c1">//向并发队列里添加新的任务</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"> <span class="kt">dispatch_queue_t</span> <span class="n">concurrentQueue</span> <span class="o">=</span> <span class="n">dispatch_queue_create</span><span class="p">(</span><span class="s">&quot;com.ghren.MultiThread.concurrent&quot;</span><span class="p">,</span> <span class="n">DISPATCH_QUEUE_CONCURRENT</span><span class="p">);</span> <span class="c1">//生成一个并发队列, dispatch_barrier 对于全局并发队列并不起作用，所以要用在自己创建的并发队列里</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">        <span class="n">dispatch_async</span><span class="p">(</span><span class="n">concurrentQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class="line">
+</span><span class="line">            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span><span class="p">);</span>
+</span><span class="line">        <span class="p">});</span>
+</span><span class="line">    <span class="p">}</span> <span class="c1">// 向并发队列里添加任务</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line">    <span class="n">dispatch_barrier_async</span><span class="p">(</span><span class="n">concurrentQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class="line">
+</span><span class="line">        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;do something&quot;</span><span class="p">);</span>
+</span><span class="line">    <span class="p">});</span><span class="c1">//同步点</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line">    <span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">        <span class="n">dispatch_async</span><span class="p">(</span><span class="n">concurrentQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class="line">
+</span><span class="line">            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span> <span class="o">+</span> <span class="mi">3</span><span class="p">);</span>
+</span><span class="line">        <span class="p">});</span>
+</span><span class="line">    <span class="p">}</span><span class="c1">//向并发队列里添加新的任务</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<h3>使用 dispatch_semaphore</h3>
+<h3 id="dispatchsemaphore">使用 dispatch_semaphore</h3>
 
 <p>dispatch_semaphore 就是传说中的信号量。其基本原理是，我们可以创建一个信号量，这个信号量有一个值，来表示目前信号量总数有多少，比如我们可以创建一个初始值为 2 的信号量，然后当我们执行一个任务的时候，就消耗一个信号量，信号量总数会减 1 ，当信号量为 0 的时候，即将执行的任务将会被阻塞，然后一直等到超时或信号量又大于0 为止，当我们在一个任务执行完毕的时候，可以为信号量的总量加 1 ，当信号量从 0 变成 1 的时候，等待信号量的任务就会执行下去，通过这个机制，我们可以实现数据的同步。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">dispatch_semaphore_t</span> <span class="n">semaphore</span> <span class="o">=</span> <span class="n">dispatch_semaphore_create</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">dispatch_time_t</span> <span class="n">time</span> <span class="o">=</span> <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span><span class="n">NSEC_PER_SEC</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;task will begin&quot;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">dispatch_after</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;task is done&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">dispatch_semaphore_signal</span><span class="p">(</span><span class="n">semaphore</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">});</span><span class="c1">//3 秒之后在全局并发队列里添加一个任务，任务执行完毕之后，增加一个信号量</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">dispatch_semaphore_wait</span><span class="p">(</span><span class="n">semaphore</span><span class="p">,</span> <span class="n">DISPATCH_TIME_FOREVER</span><span class="p">);</span><span class="c1">//当前线程处于阻塞状态，直到信号量不为0</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;start another task&quot;</span><span class="p">);</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="kt">dispatch_semaphore_t</span> <span class="n">semaphore</span> <span class="o">=</span> <span class="n">dispatch_semaphore_create</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="kt">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="kt">dispatch_time_t</span> <span class="n">time</span> <span class="o">=</span> <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span><span class="n">NSEC_PER_SEC</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;task will begin&quot;</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="n">dispatch_after</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;task is done&quot;</span><span class="p">);</span>
+</span><span class="line">    <span class="n">dispatch_semaphore_signal</span><span class="p">(</span><span class="n">semaphore</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="p">});</span><span class="c1">//3 秒之后在全局并发队列里添加一个任务，任务执行完毕之后，增加一个信号量</span>
+</span><span class="line">
+</span><span class="line"><span class="n">dispatch_semaphore_wait</span><span class="p">(</span><span class="n">semaphore</span><span class="p">,</span> <span class="n">DISPATCH_TIME_FOREVER</span><span class="p">);</span><span class="c1">//当前线程处于阻塞状态，直到信号量不为0</span>
+</span><span class="line">
+</span><span class="line"><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;start another task&quot;</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure>
-
 </div>
 
 
@@ -303,7 +294,14 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 
 
 
-<time class='entry-date' datetime='2015-10-23T15:21:04+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>3:21 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2015-10-23T15:21:04+08:00" pubdate data-updated="true"></time>
       
 
 
@@ -339,47 +337,17 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 
 <aside class="sidebar">
   
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
     
-      <li class="post">
-        <a href="/blog/2015/11/24/dispatch-source/">Dispatch Source</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/21/run-loop/">Run Loop</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/">iOS 中线程同步的一些方法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/">ReactiveCocoa 学习资料</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/">关于 UILocalNotification 的几个问题</a>
-      </li>
-    
-  </ul>
-</section>
-
-
-
-
-
   
 </aside>
 
 
     </div>
   </div>
-  <footer role="contentinfo">Copyright &copy; 2016
-
-    ghren
-
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - ghren -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
 
 </footer>
   
@@ -415,6 +383,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
       document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
     })();
   </script>
+
 
 
 

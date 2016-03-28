@@ -18,40 +18,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://alex1212112.github.io/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan/">
+  <link rel="canonical" href="http://alex1212112.github.io/blog/2014/07/16/ioszhong-de-duan-dian-xu-chuan">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin" rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Noto+Serif:400,700' rel='stylesheet' type='text/css'>
+
+
+
   
 
 </head>
 
 <body   >
-  <header role="banner">
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="alex1212112.github.io">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main">
-	<li><a href="/">Blog</a></li>
-	<li><a href="/blog/archives">Archives</a></li>
+  <nav id="main-nav" role="navigation">
+<ul class="main-navigation">
+  <li><a href="/" class="nav-link">Blog</a></li>
+  <li><a href="/blog/archives" class="nav-link">Archives</a></li>
+  <li><a href="/atom.xml" class="nav-link">RSS</a></li>
 </ul>
 
 </nav>
+  
   <div id="main">
     <div id="content">
       <div>
@@ -68,7 +62,14 @@
 
 
 
-<time class='entry-date' datetime='2014-07-16T17:25:31+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:25 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2014-07-16T17:25:31+08:00" pubdate data-updated="true"></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://alex1212112.github.io">Comments</a>
@@ -80,7 +81,7 @@
 
 <div class="entry-content"><p><img src="/images/201407161730.png" alt="" /></p>
 
-<h4>关键点</h4>
+<h4 id="section">关键点</h4>
 
 <p>实现断点续传的关键是自定义http request的头部的range域属性</p>
 
@@ -98,26 +99,25 @@
 
 <p>同时指定几个范围：bytes=500-600,601-999</p>
 
-<h4>基本思想</h4>
+<h4 id="section-1">基本思想</h4>
 
 <p>1、获取已下载文件的大小，用来确定下载的文件从什么地方开始续传(即获取range属性的范围);</p>
 
 <p>2、设置http request请求头文件，要包含range属性;</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSMutableURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableURLRequest</span> <span class="nl">requestWithURL</span><span class="p">:</span><span class="n">url</span> <span class="nl">cachePolicy</span><span class="p">:</span><span class="n">NSURLRequestUseProtocolCachePolicy</span> <span class="nl">timeoutInterval</span><span class="p">:</span><span class="mf">5.0f</span><span class="p">];</span>
-</span><span class='line'>   <span class="c1">// 设置请求头文件</span>
-</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">rangeValue</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;bytes=%llu-&quot;</span><span class="p">,</span> <span class="n">from</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">request</span> <span class="nl">addValue</span><span class="p">:</span><span class="n">rangeValue</span> <span class="nl">forHTTPHeaderField</span><span class="p">:</span><span class="s">@&quot;Range&quot;</span><span class="p">];</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSMutableURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableURLRequest</span> <span class="nl">requestWithURL</span><span class="p">:</span><span class="n">url</span> <span class="nl">cachePolicy</span><span class="p">:</span><span class="n">NSURLRequestUseProtocolCachePolicy</span> <span class="nl">timeoutInterval</span><span class="p">:</span><span class="mf">5.0f</span><span class="p">];</span>
+</span><span class="line">   <span class="c1">// 设置请求头文件</span>
+</span><span class="line"><span class="bp">NSString</span> <span class="o">*</span><span class="n">rangeValue</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;bytes=%llu-&quot;</span><span class="p">,</span> <span class="n">from</span><span class="p">];</span>
+</span><span class="line"><span class="p">[</span><span class="n">request</span> <span class="nl">addValue</span><span class="p">:</span><span class="n">rangeValue</span> <span class="nl">forHTTPHeaderField</span><span class="p">:</span><span class="s">@&quot;Range&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
-
 
 <p>3、 发起http下载请求;</p>
 
-<h4>具体实现</h4>
+<h4 id="section-2">具体实现</h4>
 
 <p>可以用iOS自带的NSURLConnection，也可以使用第三方如AFNetWorking实现。</p>
 
@@ -127,7 +127,7 @@
 
 <p><a href="https://github.com/thibaultCha/TCBlobDownload">TCBlobDownload</a>;</p>
 
-<h4>参考资料</h4>
+<h4 id="section-3">参考资料</h4>
 
 <p>1.<a href="http://blog.csdn.net/sirchenhua/article/details/7286312">ios 实现断点续传 一 nsurlconnection</a>;</p>
 
@@ -136,6 +136,7 @@
 <p>3.<a href="http://www.cnblogs.com/liufeng24/p/3555303.html">iOS开发网络编程之断点续传-NSURLConnection</a>;</p>
 
 <p>4.<a href="http://blog.csdn.net/zhaoxy_thu/article/details/21383515">AFNetworking实现程序重新启动时的断点续传</a>；</p>
+
 </div>
 
 
@@ -151,7 +152,14 @@
 
 
 
-<time class='entry-date' datetime='2014-07-16T17:25:31+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:25 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2014-07-16T17:25:31+08:00" pubdate data-updated="true"></time>
       
 
 
@@ -187,47 +195,17 @@
 
 <aside class="sidebar">
   
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
     
-      <li class="post">
-        <a href="/blog/2015/11/24/dispatch-source/">Dispatch Source</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/21/run-loop/">Run Loop</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/">iOS 中线程同步的一些方法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/">ReactiveCocoa 学习资料</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/">关于 UILocalNotification 的几个问题</a>
-      </li>
-    
-  </ul>
-</section>
-
-
-
-
-
   
 </aside>
 
 
     </div>
   </div>
-  <footer role="contentinfo">Copyright &copy; 2016
-
-    ghren
-
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - ghren -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
 
 </footer>
   
@@ -263,6 +241,7 @@
       document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
     })();
   </script>
+
 
 
 
