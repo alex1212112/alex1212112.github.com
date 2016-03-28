@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
   <link href="http://alex1212112.github.io/"/>
-  <updated>2016-03-28T00:18:19+08:00</updated>
+  <updated>2016-03-28T11:55:26+08:00</updated>
   <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -573,13 +573,13 @@
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSOperationQueue</span> <span class="o">*</span> <span class="n">queue</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSOperationQueue</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSOperationQueue</span> <span class="o">*</span> <span class="n">queue</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSOperationQueue</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'><span class="n">queue</span><span class="p">.</span><span class="n">maxConcurrentOperationCount</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//每次只执行一个任务</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">queue</span> <span class="nl">addOperation:</span> <span class="p">[</span><span class="n">NSBlockOperation</span> <span class="nl">blockOperationWithBlock:</span><span class="o">^</span><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">queue</span> <span class="nl">addOperation</span><span class="p">:</span> <span class="p">[</span><span class="bp">NSBlockOperation</span> <span class="nl">blockOperationWithBlock</span><span class="p">:</span><span class="o">^</span><span class="p">{</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span><span class="p">);</span>
 </span><span class='line'>    <span class="p">}</span> <span class="p">]];</span>
@@ -602,9 +602,9 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">dispatch_queue_t</span> <span class="n">serialQueue</span> <span class="o">=</span> <span class="n">dispatch_queue_create</span><span class="p">(</span><span class="s">&quot;com.ghren.MultiThread.test&quot;</span><span class="p">,</span> <span class="n">DISPATCH_QUEUE_SERIAL</span><span class="p">);</span> <span class="c1">//生成一个串行队列</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">dispatch_queue_t</span> <span class="n">serialQueue</span> <span class="o">=</span> <span class="n">dispatch_queue_create</span><span class="p">(</span><span class="s">&quot;com.ghren.MultiThread.test&quot;</span><span class="p">,</span> <span class="n">DISPATCH_QUEUE_SERIAL</span><span class="p">);</span> <span class="c1">//生成一个串行队列</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">serialQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>
@@ -633,11 +633,11 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'>  <span class="n">dispatch_group_t</span> <span class="n">group</span> <span class="o">=</span> <span class="n">dispatch_group_create</span><span class="p">();</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'>  <span class="kt">dispatch_group_t</span> <span class="n">group</span> <span class="o">=</span> <span class="n">dispatch_group_create</span><span class="p">();</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="kt">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="n">dispatch_group_async</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>
@@ -679,9 +679,9 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>22</span>
 <span class='line-number'>23</span>
 <span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="n">dispatch_queue_t</span> <span class="n">concurrentQueue</span> <span class="o">=</span> <span class="n">dispatch_queue_create</span><span class="p">(</span><span class="s">&quot;com.ghren.MultiThread.concurrent&quot;</span><span class="p">,</span> <span class="n">DISPATCH_QUEUE_CONCURRENT</span><span class="p">);</span> <span class="c1">//生成一个并发队列, dispatch_barrier 对于全局并发队列并不起作用，所以要用在自己创建的并发队列里</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="kt">dispatch_queue_t</span> <span class="n">concurrentQueue</span> <span class="o">=</span> <span class="n">dispatch_queue_create</span><span class="p">(</span><span class="s">&quot;com.ghren.MultiThread.concurrent&quot;</span><span class="p">,</span> <span class="n">DISPATCH_QUEUE_CONCURRENT</span><span class="p">);</span> <span class="c1">//生成一个并发队列, dispatch_barrier 对于全局并发队列并不起作用，所以要用在自己创建的并发队列里</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="n">dispatch_async</span><span class="p">(</span><span class="n">concurrentQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>
@@ -696,7 +696,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 </span><span class='line'>    <span class="p">});</span><span class="c1">//同步点</span>
 </span><span class='line'>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="n">dispatch_async</span><span class="p">(</span><span class="n">concurrentQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>
@@ -728,11 +728,11 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">dispatch_semaphore_t</span> <span class="n">semaphore</span> <span class="o">=</span> <span class="n">dispatch_semaphore_create</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">dispatch_semaphore_t</span> <span class="n">semaphore</span> <span class="o">=</span> <span class="n">dispatch_semaphore_create</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="kt">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">dispatch_time_t</span> <span class="n">time</span> <span class="o">=</span> <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span><span class="n">NSEC_PER_SEC</span><span class="p">);</span>
+</span><span class='line'><span class="kt">dispatch_time_t</span> <span class="n">time</span> <span class="o">=</span> <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span><span class="n">NSEC_PER_SEC</span><span class="p">);</span>
 </span><span class='line'>
 </span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;task will begin&quot;</span><span class="p">);</span>
 </span><span class='line'>
@@ -768,7 +768,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <li><p><a href="http://benbeng.leanote.com/post/ReactiveCocoaTutorial-part1">ReactiveCocoa入门教程——第一部分</a></p></li>
 <li><p><a href="http://benbeng.leanote.com/post/ReactiveCocoaTutorial-part2">ReactiveCocoa入门教程——第二部分</a></p></li>
 <li><p><a href="http://southpeak.github.io/blog/2014/09/21/zai-reactivecocoazhong-jiang-%5B%3F%5D-ge-viewmodelbang-ding-dao-uitableviewshang/">在ReactiveCocoa中将一个ViewModel绑定到UITableView上</a></p></li>
-<li><p><a href="http://blog.devtang.com/blog/2014/02/11/reactivecocoa-introduction/">ReactiveCocoa &ndash; iOS开发的新框架</a></p></li>
+<li><p><a href="http://blog.devtang.com/blog/2014/02/11/reactivecocoa-introduction/">ReactiveCocoa - iOS开发的新框架</a></p></li>
 <li><p><a href="http://blog.sunnyxx.com/2014/03/06/rac_0_overview/">Reactive Cocoa Tutorial [0] = Overview</a></p></li>
 <li><p><a href="http://blog.sunnyxx.com/2014/03/06/rac_1_macros/">Reactive Cocoa Tutorial [1] = 神奇的Macros</a></p></li>
 <li><p><a href="http://blog.sunnyxx.com/2014/03/06/rac_2_racstream/">Reactive Cocoa Tutorial [2] = 百变RACStream</a>;</p></li>
@@ -805,7 +805,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">].</span><span class="n">scheduledLocalNotifications</span> <span class="o">=</span> <span class="nb">nil</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">].</span><span class="n">scheduledLocalNotifications</span> <span class="o">=</span> <span class="nb">nil</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -817,11 +817,11 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">cancelAllLocalNotifications</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">cancelAllLocalNotifications</span><span class="p">];</span>
 </span><span class='line'>    <span class="kt">long</span> <span class="n">count</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">((</span><span class="n">count</span> <span class="o">=</span> <span class="p">[[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">scheduledLocalNotifications</span><span class="p">]</span> <span class="n">count</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">((</span><span class="n">count</span> <span class="o">=</span> <span class="p">[[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">scheduledLocalNotifications</span><span class="p">]</span> <span class="n">count</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Remaining notificaitons to cancel: %lu&quot;</span><span class="p">,(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">count</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">[</span><span class="n">NSThread</span> <span class="nl">sleepForTimeInterval:</span><span class="mf">.01f</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">[</span><span class="bp">NSThread</span> <span class="nl">sleepForTimeInterval</span><span class="p">:</span><span class="mf">.01f</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -906,42 +906,42 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>36</span>
 <span class='line-number'>37</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//初始化一个 UIVisualEffect，UIBlurEffect 是 UIVisualEffect 的子类</span>
-</span><span class='line'><span class="n">UIBlurEffect</span> <span class="o">*</span><span class="n">blurEffect</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIBlurEffect</span> <span class="nl">effectWithStyle:</span><span class="n">UIBlurEffectStyleExtraLight</span><span class="p">];</span>
+</span><span class='line'><span class="n">UIBlurEffect</span> <span class="o">*</span><span class="n">blurEffect</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIBlurEffect</span> <span class="nl">effectWithStyle</span><span class="p">:</span><span class="n">UIBlurEffectStyleExtraLight</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">//初始化 模糊效果的 UIVisualEffectView</span>
-</span><span class='line'><span class="n">UIVisualEffectView</span> <span class="o">*</span> <span class="n">blurEffectView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIVisualEffectView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithEffect:</span><span class="n">blurEffect</span><span class="p">];</span>
+</span><span class='line'><span class="n">UIVisualEffectView</span> <span class="o">*</span> <span class="n">blurEffectView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIVisualEffectView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithEffect</span><span class="p">:</span><span class="n">blurEffect</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">//设置 blurEffectView 的 frame</span>
-</span><span class='line'><span class="n">blurEffectView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">bounds</span><span class="p">;</span>
+</span><span class='line'><span class="n">blurEffectView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">bounds</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">//添加 blurEffectView 到 self.View 上,如果只是做模糊效果，那么到这一步已经完了</span>
-</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">view</span> <span class="nl">addSubview:</span><span class="n">blurEffectView</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">view</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">blurEffectView</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">//初始化 Vibrancy 类型的 UIVisualEffect，vibrancyEffect 也是UIVisualEffect 的子类，而且初始化这个 Effect 需要用到 blurEffect，我们就还用上面的好了，假如重新初始化一个 blurEffect，要注意这个新的 blurEffect 的 style 要和上面的保持一致，不然就实现不了 Vibrancy效果</span>
-</span><span class='line'><span class="n">UIVibrancyEffect</span> <span class="o">*</span><span class="n">vibrancyEffect</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIVibrancyEffect</span> <span class="nl">effectForBlurEffect:</span><span class="n">blurEffect</span><span class="p">];</span>
+</span><span class='line'><span class="n">UIVibrancyEffect</span> <span class="o">*</span><span class="n">vibrancyEffect</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIVibrancyEffect</span> <span class="nl">effectForBlurEffect</span><span class="p">:</span><span class="n">blurEffect</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">//初始化 Vibrancy 效果的 UIVisualEffectView</span>
-</span><span class='line'><span class="n">UIVisualEffectView</span> <span class="o">*</span><span class="n">vibrancyEffectView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIVisualEffectView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithEffect:</span><span class="n">vibrancyEffect</span><span class="p">];</span>
+</span><span class='line'><span class="n">UIVisualEffectView</span> <span class="o">*</span><span class="n">vibrancyEffectView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIVisualEffectView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithEffect</span><span class="p">:</span><span class="n">vibrancyEffect</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">//设置 vibrancyEffectView 的frame</span>
 </span><span class='line'><span class="n">vibrancyEffectView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">blurEffectView</span><span class="p">.</span><span class="n">bounds</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'>
 </span><span class='line'><span class="c1">//注意是 blurEffectView.contentView. 苹果官方注释说了  Do not add subviews directly to UIVisualEffectView, use this view instead</span>
-</span><span class='line'><span class="p">[</span><span class="n">blurEffectView</span><span class="p">.</span><span class="n">contentView</span> <span class="nl">addSubview:</span><span class="n">vibrancyEffectView</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">blurEffectView</span><span class="p">.</span><span class="n">contentView</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">vibrancyEffectView</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>
 </span><span class='line'><span class="c1">//初始化一个 label</span>
-</span><span class='line'><span class="n">UILabel</span> <span class="o">*</span><span class="n">label</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UILabel</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">vibrancyEffectView</span><span class="p">.</span><span class="n">bounds</span><span class="p">];</span>
+</span><span class='line'><span class="bp">UILabel</span> <span class="o">*</span><span class="n">label</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UILabel</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="n">vibrancyEffectView</span><span class="p">.</span><span class="n">bounds</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'><span class="n">label</span><span class="p">.</span><span class="n">textAlignment</span> <span class="o">=</span> <span class="n">NSTextAlignmentCenter</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="n">label</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">@&quot;Live long and Prosper&quot;</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">label</span><span class="p">.</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIFont</span> <span class="nl">fontWithName:</span><span class="s">@&quot;SnellRoundhand-Black&quot;</span> <span class="nl">size:</span><span class="mf">29.0f</span><span class="p">];</span>
+</span><span class='line'><span class="n">label</span><span class="p">.</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIFont</span> <span class="nl">fontWithName</span><span class="p">:</span><span class="s">@&quot;SnellRoundhand-Black&quot;</span> <span class="nl">size</span><span class="p">:</span><span class="mf">29.0f</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">//添加 label</span>
-</span><span class='line'><span class="p">[</span><span class="n">vibrancyEffectView</span><span class="p">.</span><span class="n">contentView</span> <span class="nl">addSubview:</span><span class="n">label</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">vibrancyEffectView</span><span class="p">.</span><span class="n">contentView</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">label</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1029,7 +1029,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <p>CALayer 有一个 id 类型的contents的属性，这个 contents 负责显示具体的内容，比如一张图片等，这里要注意假如要为 contents 设置一张图片的话，不能用UIImage，用UIImage的话，显示出来的图层上面什么都没有。要用 CGImageRef 类型的值，但 CGImageRef 不是Cocoa 对象，而是一个Core Foundation类型，所以要通过 toll-free bridging 来转换一下，比如</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">layer</span><span class="p">.</span><span class="n">contents</span> <span class="o">=</span> <span class="p">(</span><span class="n">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">image</span><span class="p">.</span><span class="n">CGImage</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">layer</span><span class="p">.</span><span class="n">contents</span> <span class="o">=</span> <span class="p">(</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">image</span><span class="p">.</span><span class="bp">CGImage</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1073,7 +1073,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <p>contentsScale 主要用来告诉系统在绘制 contents 的时候一个点绘制几个像素，比如以前的非 Retina 屏幕的时候，就是1，现在的 Phone6 plus 是3，别的 Retina 屏幕就是2，因此当我们是 Retina 屏幕的时候在设置 图层的 contents 的时候不要忘了加上</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">layer</span><span class="p">.</span><span class="n">contentsScale</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIScreen</span> <span class="n">mainScreen</span><span class="p">]</span> <span class="n">scale</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">layer</span><span class="p">.</span><span class="n">contentsScale</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIScreen</span> <span class="n">mainScreen</span><span class="p">]</span> <span class="n">scale</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1140,14 +1140,14 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'>   <span class="n">NSString</span> <span class="o">*</span><span class="n">kernelString</span> <span class="o">=</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'>   <span class="bp">NSString</span> <span class="o">*</span><span class="n">kernelString</span> <span class="o">=</span>
 </span><span class='line'>    <span class="s">@&quot;kernel vec4 moveUpTwoPixels (sampler image) {</span><span class="se">\n</span><span class="s">&quot;</span>
 </span><span class='line'>    <span class="s">@&quot;  vec2 dc = destCoord();</span><span class="se">\n</span><span class="s">&quot;</span>
 </span><span class='line'>    <span class="s">@&quot;  vec2 offset = vec2(0.0, 2.0);</span><span class="se">\n</span><span class="s">&quot;</span>
 </span><span class='line'>    <span class="s">@&quot;  return sample (image, samplerTransform (image, dc + offset));</span><span class="se">\n</span><span class="s">&quot;</span>
 </span><span class='line'>    <span class="s">@&quot;}&quot;</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">CIKernel</span> <span class="o">*</span><span class="n">kernel</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIKernel</span> <span class="nl">kernelWithString:</span><span class="n">kernelString</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">CIKernel</span> <span class="o">*</span><span class="n">kernel</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIKernel</span> <span class="nl">kernelWithString</span><span class="p">:</span><span class="n">kernelString</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1162,13 +1162,13 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;flower&quot;</span><span class="p">];</span>
-</span><span class='line'><span class="n">CIImage</span> <span class="o">*</span><span class="n">inputImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIImage</span> <span class="nl">imageWithCGImage:</span><span class="n">image</span><span class="p">.</span><span class="n">CGImage</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;flower&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="bp">CIImage</span> <span class="o">*</span><span class="n">inputImage</span> <span class="o">=</span> <span class="p">[</span><span class="bp">CIImage</span> <span class="nl">imageWithCGImage</span><span class="p">:</span><span class="n">image</span><span class="p">.</span><span class="bp">CGImage</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">CIImage</span> <span class="o">*</span><span class="n">outImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">kernel</span> <span class="nl">applyWithExtent:</span><span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span> <span class="nl">roiCallback:</span><span class="o">^</span><span class="n">CGRect</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="bp">CIImage</span> <span class="o">*</span><span class="n">outImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">kernel</span> <span class="nl">applyWithExtent</span><span class="p">:</span><span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span> <span class="nl">roiCallback</span><span class="p">:</span><span class="o">^</span><span class="bp">CGRect</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="k">return</span> <span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="p">}</span> <span class="nl">arguments:</span><span class="err">@</span><span class="p">[</span><span class="n">inputImage</span><span class="p">]];</span>
+</span><span class='line'>    <span class="p">}</span> <span class="nl">arguments</span><span class="p">:</span><span class="l">@[</span><span class="n">inputImage</span><span class="l">]</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1191,8 +1191,8 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">CIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">applyWithExtent:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">extent</span>
-</span><span class='line'>                   <span class="nf">arguments:</span><span class="p">(</span><span class="n">NSArray</span><span class="o">*</span><span class="p">)</span><span class="nv">args</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">CIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">applyWithExtent:</span><span class="p">(</span><span class="bp">CGRect</span><span class="p">)</span><span class="nv">extent</span>
+</span><span class='line'>                   <span class="nf">arguments:</span><span class="p">(</span><span class="bp">NSArray</span><span class="o">*</span><span class="p">)</span><span class="nv">args</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1211,7 +1211,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">kernelString</span> <span class="o">=</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">kernelString</span> <span class="o">=</span>
 </span><span class='line'>    <span class="s">@&quot;kernel vec4 chromaKey( __sample s, __color c, float threshold ) { </span><span class="se">\n</span><span class="s">&quot;</span>
 </span><span class='line'>    <span class="s">@&quot;  vec4 diff = s.rgba - c;</span><span class="se">\n</span><span class="s">&quot;</span>
 </span><span class='line'>    <span class="s">@&quot;  float distance = length( diff );</span><span class="se">\n</span><span class="s">&quot;</span>
@@ -1219,7 +1219,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 </span><span class='line'>    <span class="s">@&quot;  return vec4( s.rgb, alpha ); </span><span class="se">\n</span><span class="s">&quot;</span>
 </span><span class='line'>    <span class="s">@&quot;}&quot;</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">CIColorKernel</span> <span class="o">*</span><span class="n">kernel</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIColorKernel</span> <span class="nl">kernelWithString:</span><span class="n">kernelString</span><span class="p">];</span>
+</span><span class='line'><span class="n">CIColorKernel</span> <span class="o">*</span><span class="n">kernel</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIColorKernel</span> <span class="nl">kernelWithString</span><span class="p">:</span><span class="n">kernelString</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1228,9 +1228,9 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;flower&quot;</span><span class="p">];</span>
-</span><span class='line'><span class="n">CIImage</span> <span class="o">*</span><span class="n">inputImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIImage</span> <span class="nl">imageWithCGImage:</span><span class="n">image</span><span class="p">.</span><span class="n">CGImage</span><span class="p">];</span>
-</span><span class='line'><span class="n">CIImage</span> <span class="o">*</span><span class="n">outImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">kernel</span> <span class="nl">applyWithExtent:</span><span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span> <span class="nl">arguments:</span><span class="err">@</span><span class="p">[</span><span class="n">inputImage</span><span class="p">,[</span><span class="n">CIColor</span> <span class="nl">colorWithRed:</span><span class="mf">0.0f</span> <span class="nl">green:</span><span class="mf">1.0f</span> <span class="nl">blue:</span><span class="mf">0.0f</span><span class="p">],</span><span class="err">@</span><span class="mf">0.0f</span><span class="p">]];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;flower&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="bp">CIImage</span> <span class="o">*</span><span class="n">inputImage</span> <span class="o">=</span> <span class="p">[</span><span class="bp">CIImage</span> <span class="nl">imageWithCGImage</span><span class="p">:</span><span class="n">image</span><span class="p">.</span><span class="bp">CGImage</span><span class="p">];</span>
+</span><span class='line'><span class="bp">CIImage</span> <span class="o">*</span><span class="n">outImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">kernel</span> <span class="nl">applyWithExtent</span><span class="p">:</span><span class="n">inputImage</span><span class="p">.</span><span class="n">extent</span> <span class="nl">arguments</span><span class="p">:</span><span class="l">@[</span><span class="n">inputImage</span><span class="p">,[</span><span class="bp">CIColor</span> <span class="nl">colorWithRed</span><span class="p">:</span><span class="mf">0.0f</span> <span class="nl">green</span><span class="p">:</span><span class="mf">1.0f</span> <span class="nl">blue</span><span class="p">:</span><span class="mf">0.0f</span><span class="p">],</span><span class="mf">@0.0f</span><span class="l">]</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1314,14 +1314,14 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">canEvaluatePolicy</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">canEvaluatePolicy</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="n">LAContext</span> <span class="o">*</span><span class="n">context</span> <span class="o">=</span> <span class="p">[[</span><span class="n">LAContext</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>    <span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
 </span><span class='line'>    <span class="kt">BOOL</span> <span class="n">success</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// test if we can evaluate the policy, this test will tell us if Touch ID is available and enrolled</span>
-</span><span class='line'>    <span class="n">success</span> <span class="o">=</span> <span class="p">[</span><span class="n">context</span> <span class="nl">canEvaluatePolicy:</span> <span class="n">LAPolicyDeviceOwnerAuthenticationWithBiometrics</span> <span class="nl">error:</span><span class="o">&amp;</span><span class="n">error</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">success</span> <span class="o">=</span> <span class="p">[</span><span class="n">context</span> <span class="nl">canEvaluatePolicy</span><span class="p">:</span> <span class="n">LAPolicyDeviceOwnerAuthenticationWithBiometrics</span> <span class="nl">error</span><span class="p">:</span><span class="o">&amp;</span><span class="n">error</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="k">return</span> <span class="n">success</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
@@ -1354,14 +1354,14 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>20</span>
 <span class='line-number'>21</span>
 <span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">evaluatePolicyWithTitle:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">title</span> <span class="nf">successHandler:</span><span class="p">(</span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="p">)())</span><span class="nv">successHandler</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">evaluatePolicyWithTitle:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">title</span> <span class="nf">successHandler:</span><span class="p">(</span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="p">)())</span><span class="nv">successHandler</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="n">LAContext</span> <span class="o">*</span><span class="n">context</span> <span class="o">=</span> <span class="p">[[</span><span class="n">LAContext</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// show the authentication UI with our reason string</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">context</span> <span class="nl">evaluatePolicy:</span><span class="n">LAPolicyDeviceOwnerAuthenticationWithBiometrics</span> <span class="nl">localizedReason:</span><span class="n">title</span> <span class="nl">reply:</span>
-</span><span class='line'>     <span class="o">^</span><span class="p">(</span><span class="kt">BOOL</span> <span class="n">success</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">authenticationError</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">context</span> <span class="nl">evaluatePolicy</span><span class="p">:</span><span class="n">LAPolicyDeviceOwnerAuthenticationWithBiometrics</span> <span class="nl">localizedReason</span><span class="p">:</span><span class="n">title</span> <span class="nl">reply</span><span class="p">:</span>
+</span><span class='line'>     <span class="o">^</span><span class="p">(</span><span class="kt">BOOL</span> <span class="n">success</span><span class="p">,</span> <span class="bp">NSError</span> <span class="o">*</span><span class="n">authenticationError</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>
 </span><span class='line'>         <span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>
@@ -1386,10 +1386,10 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="p">[</span><span class="n">self</span> <span class="nl">evaluatePolicyWithTitle:</span><span class="n">NSLocalizedString</span><span class="p">(</span><span class="s">@&quot;Unlock APP&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">)</span> <span class="nl">successHandler:</span><span class="o">^</span><span class="p">{</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="p">[</span><span class="nb">self</span> <span class="nl">evaluatePolicyWithTitle</span><span class="p">:</span><span class="n">NSLocalizedString</span><span class="p">(</span><span class="s">@&quot;Unlock APP&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">)</span> <span class="nl">successHandler</span><span class="p">:</span><span class="o">^</span><span class="p">{</span>
 </span><span class='line'>
-</span><span class='line'>                    <span class="n">self</span><span class="p">.</span><span class="n">pwdTextField</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nl">passwordFromKeychainWithUsername:</span><span class="n">_userNameTextField</span><span class="p">.</span><span class="n">text</span><span class="p">];</span>
-</span><span class='line'>                    <span class="p">[</span><span class="n">self</span> <span class="n">login</span><span class="p">];</span>
+</span><span class='line'>                    <span class="nb">self</span><span class="p">.</span><span class="n">pwdTextField</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">passwordFromKeychainWithUsername</span><span class="p">:</span><span class="n">_userNameTextField</span><span class="p">.</span><span class="n">text</span><span class="p">];</span>
+</span><span class='line'>                    <span class="p">[</span><span class="nb">self</span> <span class="n">login</span><span class="p">];</span>
 </span><span class='line'>                <span class="p">}];</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -1418,14 +1418,14 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">saveToKeyChainWithUsername:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">username</span> <span class="nf">password:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">password</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">saveToKeyChainWithUsername:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">username</span> <span class="nf">password:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">password</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="n">SGKeychainItem</span> <span class="o">*</span><span class="n">item</span> <span class="o">=</span> <span class="p">[[</span><span class="n">SGKeychainItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
 </span><span class='line'>    <span class="n">item</span><span class="p">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">username</span><span class="p">;</span>
 </span><span class='line'>    <span class="n">item</span><span class="p">.</span><span class="n">service</span> <span class="o">=</span> <span class="s">@&quot;APP&quot;</span><span class="p">;</span>
 </span><span class='line'>    <span class="n">item</span><span class="p">.</span><span class="n">secret</span> <span class="o">=</span> <span class="n">password</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="p">[</span><span class="n">SGKeychain</span> <span class="nl">storeKeychainItem:</span><span class="n">item</span> <span class="nl">completionHandler:</span><span class="o">^</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">SGKeychain</span> <span class="nl">storeKeychainItem</span><span class="p">:</span><span class="n">item</span> <span class="nl">completionHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">error</span><span class="p">)</span>
 </span><span class='line'>        <span class="p">{</span>
 </span><span class='line'>            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Password successfully created&quot;</span><span class="p">);</span>
@@ -1457,14 +1457,14 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">passwordFromKeychainWithUsername:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">username</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">passwordFromKeychainWithUsername:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">username</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="n">SGKeychainItem</span> <span class="o">*</span><span class="n">item</span> <span class="o">=</span> <span class="p">[[</span><span class="n">SGKeychainItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
 </span><span class='line'>    <span class="n">item</span><span class="p">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">username</span><span class="p">;</span>
 </span><span class='line'>    <span class="n">item</span><span class="p">.</span><span class="n">service</span> <span class="o">=</span> <span class="s">@&quot;APP&quot;</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// Fetch the password</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">SGKeychain</span> <span class="nl">populatePasswordForItem:</span><span class="n">item</span> <span class="nl">completionHandler:</span><span class="o">^</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">){</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">SGKeychain</span> <span class="nl">populatePasswordForItem</span><span class="p">:</span><span class="n">item</span> <span class="nl">completionHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">){</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;error == %@&quot;</span><span class="p">,</span><span class="n">error</span><span class="p">.</span><span class="n">description</span><span class="p">);</span>
 </span><span class='line'>    <span class="p">}];</span>
@@ -1545,28 +1545,28 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;UIAlertView+GHSwizzling.h&quot;</span>
 </span><span class='line'><span class="cp">#import &lt;objc/runtime.h&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">@implementation</span> <span class="nc">UIAlertView</span> <span class="nl">(GHSwizzling)</span>
+</span><span class='line'><span class="k">@implementation</span> <span class="bp">UIAlertView</span> <span class="nl">(GHSwizzling)</span>
 </span><span class='line'>
 </span><span class='line'>
-</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">load</span>
+</span><span class='line'><span class="p">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">load</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">static</span> <span class="n">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">static</span> <span class="kt">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
 </span><span class='line'>    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="kt">SEL</span> <span class="n">show</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">show</span><span class="p">);</span>
 </span><span class='line'>        <span class="kt">SEL</span> <span class="n">replaceSHow</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">_gh_show</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="n">Method</span> <span class="n">existingMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">show</span><span class="p">);</span>
-</span><span class='line'>        <span class="n">Method</span> <span class="n">newMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">replaceSHow</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Method</span> <span class="n">existingMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">show</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Method</span> <span class="n">newMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">replaceSHow</span><span class="p">);</span>
 </span><span class='line'>        <span class="n">method_exchangeImplementations</span><span class="p">(</span><span class="n">existingMethod</span><span class="p">,</span> <span class="n">newMethod</span><span class="p">);</span><span class="c1">//交换两个方法</span>
 </span><span class='line'>    <span class="p">});</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">_gh_show</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">_gh_show</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="n">_gh_show</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="n">_gh_show</span><span class="p">];</span>
 </span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;alert show!&quot;</span><span class="p">);</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'><span class="k">@end</span>
@@ -1589,7 +1589,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <ol>
 <li><p>方法混写最好在类的 category 中的 <code>+load</code> 方法中进行方法交换.</p></li>
 <li><p>方法混写的代码最好在 dispatch_once 中实现。</p></li>
-<li><p>要注意给自己实现的方法加上命名空间，以防止出现重复命名的问题，比如上述中的&#8221;<em>gh</em>&ldquo;前缀.</p></li>
+<li><p>要注意给自己实现的方法加上命名空间，以防止出现重复命名的问题，比如上述中的"<em>gh</em>&ldquo;前缀.</p></li>
 <li><p>不要滥用这个方法,该方法被称之为 Objective-C 中的黑魔法，滥用会导致难以调试的bug.</p></li>
 <li><p>只要在 <code>+load</code> 中实现了 <code>method_exchangeImplementations()</code>, 那么该类的这个方法在整个应用的生命周期以内都被 Swizzling 了，要想调用原来正常的方法，就只能通过调用自己实现的方法名了。</p></li>
 </ol>
@@ -1659,7 +1659,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 </span><span class='line'>
 </span><span class='line'><span class="k">@interface</span> <span class="nc">GHPerson</span> <span class="nl">(GHAssociatedObject)</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">NSNumber</span> <span class="o">*</span><span class="n">weight</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">weight</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">@end</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -1694,15 +1694,15 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 </span><span class='line'><span class="k">@implementation</span> <span class="nc">GHPerson</span> <span class="nl">(GHAssociatedObject)</span>
 </span><span class='line'><span class="k">@dynamic</span> <span class="n">weight</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setWeight:</span><span class="p">(</span><span class="n">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nv">weight</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setWeight:</span><span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nv">weight</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">objc_setAssociatedObject</span> <span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="o">&amp;</span><span class="n">weightKey</span><span class="p">,</span><span class="n">weight</span><span class="p">,</span><span class="n">OBJC_ASSOCIATION_RETAIN</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">objc_setAssociatedObject</span> <span class="p">(</span><span class="nb">self</span><span class="p">,</span><span class="o">&amp;</span><span class="n">weightKey</span><span class="p">,</span><span class="n">weight</span><span class="p">,</span><span class="n">OBJC_ASSOCIATION_RETAIN</span><span class="p">);</span>
 </span><span class='line'>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nf">weight</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nf">weight</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>   <span class="k">return</span> <span class="p">(</span><span class="n">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="n">objc_getAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">weightKey</span><span class="p">);</span>
+</span><span class='line'>   <span class="k">return</span> <span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="n">objc_getAssociatedObject</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">weightKey</span><span class="p">);</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'><span class="k">@end</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -1750,8 +1750,8 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nf">hash</span><span class="p">;</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nf">hash</span><span class="p">;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1765,10 +1765,10 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="nc">Person</span> : <span class="nc">NSObject</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="nc">Person</span> : <span class="bp">NSObject</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">NSNumber</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">@end</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -1820,39 +1820,39 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>34</span>
 <span class='line-number'>35</span>
 <span class='line-number'>36</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqualToPerson:</span><span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="nv">person</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqualToPerson:</span><span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="nv">person</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">self</span> <span class="o">==</span> <span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span> <span class="o">==</span> <span class="n">person</span><span class="p">)</span>
 </span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
 </span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">([</span><span class="n">_name</span> <span class="nl">isEqualToString:</span><span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">]</span> <span class="o">||</span> <span class="n">_name</span> <span class="o">==</span> <span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">))</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">([</span><span class="n">_name</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">]</span> <span class="o">||</span> <span class="n">_name</span> <span class="o">==</span> <span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">))</span>
 </span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">NO</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">([</span><span class="n">_age</span> <span class="nl">isEqualToNumber:</span><span class="n">person</span><span class="p">.</span><span class="n">age</span><span class="p">]</span> <span class="o">||</span> <span class="n">_age</span> <span class="o">==</span> <span class="n">person</span><span class="p">.</span><span class="n">age</span><span class="p">))</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">NO</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">([</span><span class="n">_age</span> <span class="nl">isEqualToNumber</span><span class="p">:</span><span class="n">person</span><span class="p">.</span><span class="n">age</span><span class="p">]</span> <span class="o">||</span> <span class="n">_age</span> <span class="o">==</span> <span class="n">person</span><span class="p">.</span><span class="n">age</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">([</span><span class="n">self</span> <span class="n">class</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="n">object</span> <span class="n">class</span><span class="p">])</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">([</span><span class="nb">self</span> <span class="k">class</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="n">object</span> <span class="k">class</span><span class="p">])</span>
 </span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="p">[</span><span class="n">self</span> <span class="nl">isEqualToPerson:</span> <span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="n">object</span><span class="p">];</span>
+</span><span class='line'>        <span class="k">return</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">isEqualToPerson</span><span class="p">:</span> <span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="n">object</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>    <span class="k">else</span>
 </span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="p">[</span><span class="n">super</span> <span class="nl">isEqual:</span><span class="n">object</span><span class="p">];</span>
+</span><span class='line'>        <span class="k">return</span> <span class="p">[</span><span class="nb">super</span> <span class="nl">isEqual</span><span class="p">:</span><span class="n">object</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nf">hash</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nf">hash</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">_name</span> <span class="n">hash</span><span class="p">]</span> <span class="o">^</span> <span class="p">[</span><span class="n">_age</span> <span class="n">hash</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
@@ -1896,7 +1896,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="p">[</span><span class="n">array</span> <span class="n">count</span><span class="p">];</span> <span class="n">n</span> <span class="o">++</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="p">[</span><span class="n">array</span> <span class="n">count</span><span class="p">];</span> <span class="n">n</span> <span class="o">++</span><span class="p">)</span>
 </span><span class='line'>    <span class="p">{</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="p">}</span>
@@ -1925,7 +1925,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsUsingBlock:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="n">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsUsingBlock</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="p">}];</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -1938,7 +1938,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsWithOptions:</span><span class="n">NSEnumerationConcurrent</span> <span class="nl">usingBlock:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="n">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsWithOptions</span><span class="p">:</span><span class="n">NSEnumerationConcurrent</span> <span class="nl">usingBlock</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="p">}];</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -1951,7 +1951,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsWithOptions:</span><span class="n">NSEnumerationReverse</span> <span class="nl">usingBlock:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="n">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsWithOptions</span><span class="p">:</span><span class="n">NSEnumerationReverse</span> <span class="nl">usingBlock</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="p">}];</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -1967,10 +1967,10 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="nc">User</span> : <span class="nc">NSObject</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="nc">User</span> : <span class="bp">NSObject</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">copy</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">copy</span><span class="p">)</span> <span class="n">NSNumber</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">@end</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -1983,9 +1983,9 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">sortDescriptors</span> <span class="o">=</span> <span class="err">@</span><span class="p">[[</span><span class="n">NSSortDescriptor</span> <span class="nl">sortDescriptorWithKey:</span><span class="s">@&quot;age&quot;</span> <span class="nl">ascending:</span><span class="n">YES</span><span class="p">],[</span><span class="n">NSSortDescriptor</span> <span class="nl">sortDescriptorWithKey:</span><span class="s">@&quot;name&quot;</span> <span class="nl">ascending:</span><span class="n">YES</span><span class="p">]];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortDescriptors</span> <span class="o">=</span> <span class="l">@[</span><span class="p">[</span><span class="bp">NSSortDescriptor</span> <span class="nl">sortDescriptorWithKey</span><span class="p">:</span><span class="s">@&quot;age&quot;</span> <span class="nl">ascending</span><span class="p">:</span><span class="nb">YES</span><span class="p">],[</span><span class="bp">NSSortDescriptor</span> <span class="nl">sortDescriptorWithKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span> <span class="nl">ascending</span><span class="p">:</span><span class="nb">YES</span><span class="p">]</span><span class="l">]</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span>  <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingDescriptors:</span><span class="n">sortDescriptors</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span>  <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingDescriptors</span><span class="p">:</span><span class="n">sortDescriptors</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1996,9 +1996,9 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingComparator:</span><span class="o">^</span><span class="n">NSComparisonResult</span><span class="p">(</span><span class="n">User</span> <span class="o">*</span><span class="n">user1</span><span class="p">,</span> <span class="n">User</span> <span class="o">*</span><span class="n">user2</span><span class="p">){</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingComparator</span><span class="p">:</span><span class="o">^</span><span class="n">NSComparisonResult</span><span class="p">(</span><span class="n">User</span> <span class="o">*</span><span class="n">user1</span><span class="p">,</span> <span class="n">User</span> <span class="o">*</span><span class="n">user2</span><span class="p">){</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">user1</span><span class="p">.</span><span class="n">age</span> <span class="nl">compare:</span><span class="n">user2</span><span class="p">.</span><span class="n">age</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">user1</span><span class="p">.</span><span class="n">age</span> <span class="nl">compare</span><span class="p">:</span><span class="n">user2</span><span class="p">.</span><span class="n">age</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'><span class="p">}];</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -2007,7 +2007,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <h4>使用selctor</h4>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">compare:</span><span class="p">)];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">compare</span><span class="p">:)];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2017,9 +2017,9 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSComparisonResult</span><span class="p">)</span><span class="nf">compare:</span><span class="p">(</span><span class="n">User</span> <span class="o">*</span><span class="p">)</span><span class="nv">otherUser</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="n">NSComparisonResult</span><span class="p">)</span><span class="nf">compare:</span><span class="p">(</span><span class="n">User</span> <span class="o">*</span><span class="p">)</span><span class="nv">otherUser</span> <span class="p">{</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">age</span> <span class="nl">compare:</span><span class="n">otherUser</span><span class="p">.</span><span class="n">age</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">age</span> <span class="nl">compare</span><span class="p">:</span><span class="n">otherUser</span><span class="p">.</span><span class="n">age</span><span class="p">];</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -2031,9 +2031,9 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSPredicate</span> <span class="o">*</span><span class="n">predicate</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSPredicate</span> <span class="nl">predicateWithFormat:</span><span class="s">@&quot;((age &gt;= %@) AND (age &lt; %@))&quot;</span><span class="p">,</span><span class="err">@</span><span class="mi">20</span><span class="p">,</span><span class="err">@</span><span class="mi">30</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSPredicate</span> <span class="o">*</span><span class="n">predicate</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSPredicate</span> <span class="nl">predicateWithFormat</span><span class="p">:</span><span class="s">@&quot;((age &gt;= %@) AND (age &lt; %@))&quot;</span><span class="p">,</span><span class="mi">@20</span><span class="p">,</span><span class="mi">@30</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">filteredArrayUsingPredicate:</span><span class="n">predicate</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">filteredArrayUsingPredicate</span><span class="p">:</span><span class="n">predicate</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2048,13 +2048,13 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSPredicate</span> <span class="o">*</span><span class="n">predicate</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSPredicate</span> <span class="nl">predicateWithBlock:</span><span class="o">^</span><span class="kt">BOOL</span><span class="p">(</span><span class="kt">id</span> <span class="n">evaluatedObject</span><span class="p">,</span> <span class="n">NSDictionary</span> <span class="o">*</span><span class="n">bindings</span><span class="p">)</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSPredicate</span> <span class="o">*</span><span class="n">predicate</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSPredicate</span> <span class="nl">predicateWithBlock</span><span class="p">:</span><span class="o">^</span><span class="kt">BOOL</span><span class="p">(</span><span class="kt">id</span> <span class="n">evaluatedObject</span><span class="p">,</span> <span class="bp">NSDictionary</span> <span class="o">*</span><span class="n">bindings</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="k">return</span>  <span class="p">((</span><span class="n">User</span> <span class="o">*</span><span class="p">)</span><span class="n">evaluatedObject</span><span class="p">).</span><span class="n">age</span> <span class="o">&gt;=</span> <span class="mi">20</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="n">User</span> <span class="o">*</span><span class="p">)</span><span class="n">evaluatedObject</span><span class="p">).</span><span class="n">age</span> <span class="o">&lt;=</span> <span class="mi">30</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="p">}];</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">filteredArrayUsingPredicate:</span><span class="n">predicate</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">filteredArrayUsingPredicate</span><span class="p">:</span><span class="n">predicate</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2065,14 +2065,14 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <p>有一个优雅的KVC用法</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath:</span><span class="s">@&quot;@distinctUnionOfObjects.self&quot;</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath</span><span class="p">:</span><span class="s">@&quot;@distinctUnionOfObjects.self&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>别忘了前面 distinctUnionOfObjects 前面的 @ 符号,假如只想返回一个由user数组中的姓名组成的不重复的新数组，可以</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath:</span><span class="s">@&quot;@distinctUnionOfObjects.name&quot;</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath</span><span class="p">:</span><span class="s">@&quot;@distinctUnionOfObjects.name&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2080,8 +2080,8 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span><span class="p">;</span>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nf">hash</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span><span class="p">;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nf">hash</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2131,7 +2131,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">addObserver:</span><span class="p">(</span><span class="n">NSObject</span> <span class="o">*</span><span class="p">)</span><span class="nv">observer</span> <span class="nf">forKeyPath:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">options:</span><span class="p">(</span><span class="n">NSKeyValueObservingOptions</span><span class="p">)</span><span class="nv">options</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">addObserver:</span><span class="p">(</span><span class="bp">NSObject</span> <span class="o">*</span><span class="p">)</span><span class="nv">observer</span> <span class="nf">forKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">options:</span><span class="p">(</span><span class="n">NSKeyValueObservingOptions</span><span class="p">)</span><span class="nv">options</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2141,7 +2141,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">observeValueForKeyPath:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">ofObject:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span> <span class="nf">change:</span><span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nv">change</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">observeValueForKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">ofObject:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span> <span class="nf">change:</span><span class="p">(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nv">change</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2151,7 +2151,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">removeObserver:</span><span class="p">(</span><span class="n">NSObject</span> <span class="o">*</span><span class="p">)</span><span class="nv">observer</span> <span class="nf">forKeyPath:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">removeObserver:</span><span class="p">(</span><span class="bp">NSObject</span> <span class="o">*</span><span class="p">)</span><span class="nv">observer</span> <span class="nf">forKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2167,21 +2167,21 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="nc">Person</span> : <span class="nc">NSObject</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="nc">Person</span> : <span class="bp">NSObject</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">NSNumber</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">@end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>我们的viewController中会引用到该person对象，并在viewController的 &ndash; (void)viewWillAppear:(BOOL)animated 方法中注册KVO：</p>
+<p>我们的viewController中会引用到该person对象，并在viewController的 - (void)viewWillAppear:(BOOL)animated 方法中注册KVO：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="p">[[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">]</span> <span class="nl">addObserver:</span><span class="n">self</span> <span class="nl">forKeyPath:</span><span class="s">@&quot;name&quot;</span> <span class="nl">options:</span><span class="n">NSKeyValueObservingOptionInitial</span> <span class="nl">context:</span><span class="p">(</span><span class="n">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">self</span><span class="p">];</span>
-</span><span class='line'> <span class="p">[[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">]</span> <span class="nl">addObserver:</span><span class="n">self</span> <span class="nl">forKeyPath:</span><span class="s">@&quot;age&quot;</span> <span class="nl">options:</span><span class="n">NSKeyValueObservingOptionInitial</span> <span class="nl">context:</span><span class="p">(</span><span class="n">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">self</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="p">[[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">]</span> <span class="nl">addObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;name&quot;</span> <span class="nl">options</span><span class="p">:</span><span class="n">NSKeyValueObservingOptionInitial</span> <span class="nl">context</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">];</span>
+</span><span class='line'> <span class="p">[[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">]</span> <span class="nl">addObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;age&quot;</span> <span class="nl">options</span><span class="p">:</span><span class="n">NSKeyValueObservingOptionInitial</span> <span class="nl">context</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2191,8 +2191,8 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">addObserver:</span><span class="p">(</span><span class="n">NSObject</span> <span class="o">*</span><span class="p">)</span><span class="nv">anObserver</span>
-</span><span class='line'>         <span class="nf">forKeyPath:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">addObserver:</span><span class="p">(</span><span class="bp">NSObject</span> <span class="o">*</span><span class="p">)</span><span class="nv">anObserver</span>
+</span><span class='line'>         <span class="nf">forKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span>
 </span><span class='line'>            <span class="nf">options:</span><span class="p">(</span><span class="n">NSKeyValueObservingOptions</span><span class="p">)</span><span class="nv">options</span>
 </span><span class='line'>            <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -2218,22 +2218,22 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">observeValueForKeyPath:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">ofObject:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span> <span class="nf">change:</span><span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nv">change</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">observeValueForKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">ofObject:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span> <span class="nf">change:</span><span class="p">(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nv">change</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">((</span><span class="n">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">context</span> <span class="o">==</span> <span class="n">self</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">((</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">context</span> <span class="o">==</span> <span class="nb">self</span><span class="p">)</span>
 </span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">([</span><span class="n">keyPath</span> <span class="nl">isEqualToString:</span><span class="s">@&quot;name&quot;</span><span class="p">])</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">([</span><span class="n">keyPath</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">])</span>
 </span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="n">self</span><span class="p">.</span><span class="n">nameLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">].</span><span class="n">name</span><span class="p">;</span>
+</span><span class='line'>            <span class="nb">self</span><span class="p">.</span><span class="n">nameLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">].</span><span class="n">name</span><span class="p">;</span>
 </span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">([</span><span class="n">keyPath</span> <span class="nl">isEqualToString:</span><span class="s">@&quot;age&quot;</span><span class="p">])</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">([</span><span class="n">keyPath</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="s">@&quot;age&quot;</span><span class="p">])</span>
 </span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="n">self</span><span class="p">.</span><span class="n">ageLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">].</span><span class="n">age</span> <span class="n">stringValue</span><span class="p">];</span>
+</span><span class='line'>            <span class="nb">self</span><span class="p">.</span><span class="n">ageLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">].</span><span class="n">age</span> <span class="n">stringValue</span><span class="p">];</span>
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>    <span class="k">else</span>
 </span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="p">[</span><span class="n">super</span> <span class="nl">observeValueForKeyPath:</span><span class="n">keyPath</span> <span class="nl">ofObject:</span><span class="n">object</span> <span class="nl">change:</span><span class="n">change</span> <span class="nl">context:</span><span class="n">context</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">[</span><span class="nb">super</span> <span class="nl">observeValueForKeyPath</span><span class="p">:</span><span class="n">keyPath</span> <span class="nl">ofObject</span><span class="p">:</span><span class="n">object</span> <span class="nl">change</span><span class="p">:</span><span class="n">change</span> <span class="nl">context</span><span class="p">:</span><span class="n">context</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -2241,14 +2241,14 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 
 <p>这样当person属性变化的时候，viewController就会更新nameLabel 和 ageLabel.</p>
 
-<p>不要忘了最后要移除KVO，因为我们是在 &ndash; (void)viewWillAppear:(BOOL)animated 中添加的KVO，所以我们要在 &ndash; (void)viewWillDisappear:(BOOL)animated 中移除KVO，假如添加了KVO 而在观察者释放的时候没有移除KVO，那么对象会因为向已经释放的观察者发送消息而crash.让然移除的时候也不要移除没有添加到观察者的 keyPath，同样会导致程序crash.</p>
+<p>不要忘了最后要移除KVO，因为我们是在 - (void)viewWillAppear:(BOOL)animated 中添加的KVO，所以我们要在 - (void)viewWillDisappear:(BOOL)animated 中移除KVO，假如添加了KVO 而在观察者释放的时候没有移除KVO，那么对象会因为向已经释放的观察者发送消息而crash.让然移除的时候也不要移除没有添加到观察者的 keyPath，同样会导致程序crash.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">self</span> <span class="nl">removeObserver:</span><span class="n">self</span> <span class="nl">forKeyPath:</span><span class="s">@&quot;name&quot;</span> <span class="nl">context:</span><span class="p">(</span><span class="n">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">self</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="nb">self</span> <span class="nl">removeObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;name&quot;</span> <span class="nl">context</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'><span class="p">[</span><span class="n">self</span> <span class="nl">removeObserver:</span><span class="n">self</span> <span class="nl">forKeyPath:</span><span class="s">@&quot;age&quot;</span> <span class="nl">context:</span><span class="p">(</span><span class="n">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">self</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span> <span class="nl">removeObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;age&quot;</span> <span class="nl">context</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2341,7 +2341,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">UInt16</span>  <span class="n">Byte</span> <span class="o">=</span> <span class="mh">0x1234</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">UInt16</span>  <span class="n">Byte</span> <span class="o">=</span> <span class="mh">0x1234</span><span class="p">;</span>
 </span><span class='line'><span class="n">HTONS</span><span class="p">(</span><span class="n">Byte</span><span class="p">);</span><span class="c1">//转换</span>
 </span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Byte == %x&quot;</span><span class="p">,</span><span class="n">Byte</span><span class="p">);</span><span class="c1">//打印出来发现顺序变了</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -2397,10 +2397,10 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSMutableURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableURLRequest</span> <span class="nl">requestWithURL:</span><span class="n">url</span> <span class="nl">cachePolicy:</span><span class="n">NSURLRequestUseProtocolCachePolicy</span> <span class="nl">timeoutInterval:</span><span class="mf">5.0f</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSMutableURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableURLRequest</span> <span class="nl">requestWithURL</span><span class="p">:</span><span class="n">url</span> <span class="nl">cachePolicy</span><span class="p">:</span><span class="n">NSURLRequestUseProtocolCachePolicy</span> <span class="nl">timeoutInterval</span><span class="p">:</span><span class="mf">5.0f</span><span class="p">];</span>
 </span><span class='line'>   <span class="c1">// 设置请求头文件</span>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">rangeValue</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;bytes=%llu-&quot;</span><span class="p">,</span> <span class="n">from</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">request</span> <span class="nl">addValue:</span><span class="n">rangeValue</span> <span class="nl">forHTTPHeaderField:</span><span class="s">@&quot;Range&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">rangeValue</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;bytes=%llu-&quot;</span><span class="p">,</span> <span class="n">from</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">request</span> <span class="nl">addValue</span><span class="p">:</span><span class="n">rangeValue</span> <span class="nl">forHTTPHeaderField</span><span class="p">:</span><span class="s">@&quot;Range&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2448,8 +2448,8 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">CGRect</span> <span class="n">CGRectOffset</span><span class="p">(</span>
-</span><span class='line'>  <span class="n">CGRect</span> <span class="n">rect</span><span class="p">,</span> <span class="c1">//源矩形</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">CGRect</span> <span class="n">CGRectOffset</span><span class="p">(</span>
+</span><span class='line'>  <span class="bp">CGRect</span> <span class="n">rect</span><span class="p">,</span> <span class="c1">//源矩形</span>
 </span><span class='line'>  <span class="n">CGFloat</span> <span class="n">dx</span><span class="p">,</span>  <span class="c1">//x方向偏移距离</span>
 </span><span class='line'>  <span class="n">CGFloat</span> <span class="n">dy</span>   <span class="c1">//y方向偏移距离</span>
 </span><span class='line'><span class="p">)</span>
@@ -2469,8 +2469,8 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">CGRect</span> <span class="n">CGRectInset</span><span class="p">(</span>
-</span><span class='line'>  <span class="n">CGRect</span> <span class="n">rect</span><span class="p">,</span> <span class="c1">//源矩形</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">CGRect</span> <span class="n">CGRectInset</span><span class="p">(</span>
+</span><span class='line'>  <span class="bp">CGRect</span> <span class="n">rect</span><span class="p">,</span> <span class="c1">//源矩形</span>
 </span><span class='line'>  <span class="n">CGFloat</span> <span class="n">dx</span><span class="p">,</span>  <span class="c1">// x方向左边减去dx，右边也减去dx（共2dx）</span>
 </span><span class='line'>  <span class="n">CGFloat</span> <span class="n">dy</span>   <span class="c1">// y方向上边减去dy，右边也减去dy（共2dy）</span>
 </span><span class='line'><span class="p">)</span>
@@ -2482,7 +2482,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <p>如：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">CGRect</span> <span class="n">frame</span> <span class="err">＝</span> <span class="n">CGRectOffset</span><span class="p">(</span><span class="n">CGRectInset</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="mf">10.0f</span><span class="p">,</span> <span class="mf">10.0f</span><span class="p">),</span> <span class="mf">10.0f</span><span class="p">,</span> <span class="mf">10.0f</span><span class="p">);</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">CGRect</span> <span class="n">frame</span> <span class="err">＝</span> <span class="n">CGRectOffset</span><span class="p">(</span><span class="n">CGRectInset</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="mf">10.0f</span><span class="p">,</span> <span class="mf">10.0f</span><span class="p">),</span> <span class="mf">10.0f</span><span class="p">,</span> <span class="mf">10.0f</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2495,8 +2495,8 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">CGRect</span> <span class="n">CGRectIntegral</span> <span class="p">(</span>
-</span><span class='line'>  <span class="n">CGRect</span> <span class="n">rect</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">CGRect</span> <span class="n">CGRectIntegral</span> <span class="p">(</span>
+</span><span class='line'>  <span class="bp">CGRect</span> <span class="n">rect</span>
 </span><span class='line'><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -2513,12 +2513,12 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMinX</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形x坐标的最小值</span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMinY</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形y坐标的最小值 </span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMidX</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span><span class="c1">//获取矩形x坐标的中间值 </span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMidY</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形y坐标的中间值 </span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMaxX</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">// 获取矩形x坐标的最大值 </span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMaxY</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span><span class="err">）</span> <span class="c1">// 获取矩形y坐标的最大值 </span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMinX</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形x坐标的最小值</span>
+</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMinY</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形y坐标的最小值 </span>
+</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMidX</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span><span class="c1">//获取矩形x坐标的中间值 </span>
+</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMidY</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形y坐标的中间值 </span>
+</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMaxX</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">// 获取矩形x坐标的最大值 </span>
+</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetMaxY</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span><span class="err">）</span> <span class="c1">// 获取矩形y坐标的最大值 </span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2530,8 +2530,8 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetHeight</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形的高</span>
-</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetWidth</span>  <span class="p">(</span><span class="n">CGRect</span> <span class="n">rect</span><span class="p">)</span>  <span class="c1">//获取矩形的宽</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetHeight</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span> <span class="c1">//获取矩形的高</span>
+</span><span class='line'><span class="n">CGFloat</span>  <span class="n">CGRectGetWidth</span>  <span class="p">(</span><span class="bp">CGRect</span> <span class="n">rect</span><span class="p">)</span>  <span class="c1">//获取矩形的宽</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2540,7 +2540,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <h4>CGRectZero</h4>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">const</span> <span class="n">CGRect</span> <span class="n">CGRectZero</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">const</span> <span class="bp">CGRect</span> <span class="n">CGRectZero</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2549,7 +2549,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <h4>CGRectNull</h4>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">const</span> <span class="n">CGRect</span> <span class="n">CGRectNull</span><span class="err">；</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">const</span> <span class="bp">CGRect</span> <span class="n">CGRectNull</span><span class="err">；</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2558,7 +2558,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <h4>CGRectInfinite</h4>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">const</span> <span class="n">CGRect</span> <span class="n">CGRectInfinite</span><span class="err">；</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">const</span> <span class="bp">CGRect</span> <span class="n">CGRectInfinite</span><span class="err">；</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2578,11 +2578,11 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">void</span> <span class="n">CGRectDivide</span><span class="p">(</span>
-</span><span class='line'>  <span class="n">CGRect</span> <span class="n">rect</span><span class="p">,</span>
-</span><span class='line'>  <span class="n">CGRect</span> <span class="o">*</span><span class="n">slice</span><span class="p">,</span>
-</span><span class='line'>  <span class="n">CGRect</span> <span class="o">*</span><span class="n">remainder</span><span class="p">,</span>
+</span><span class='line'>  <span class="bp">CGRect</span> <span class="n">rect</span><span class="p">,</span>
+</span><span class='line'>  <span class="bp">CGRect</span> <span class="o">*</span><span class="n">slice</span><span class="p">,</span>
+</span><span class='line'>  <span class="bp">CGRect</span> <span class="o">*</span><span class="n">remainder</span><span class="p">,</span>
 </span><span class='line'>  <span class="n">CGFloat</span> <span class="n">amount</span><span class="p">,</span>
-</span><span class='line'>  <span class="n">CGRectEdge</span> <span class="n">edge</span>
+</span><span class='line'>  <span class="bp">CGRectEdge</span> <span class="n">edge</span>
 </span><span class='line'><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -2605,7 +2605,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">enum</span> <span class="n">CGRectEdge</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">enum</span> <span class="bp">CGRectEdge</span> <span class="p">{</span>
 </span><span class='line'>   <span class="n">CGRectMinXEdge</span><span class="p">,</span> <span class="c1">//矩形的左边</span>
 </span><span class='line'>   <span class="n">CGRectMinYEdge</span><span class="p">,</span> <span class="c1">//矩形的上边</span>
 </span><span class='line'>   <span class="n">CGRectMaxXEdge</span><span class="p">,</span> <span class="c1">//矩形的右边</span>
@@ -2619,7 +2619,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <p>判断两个点是否相等</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGPointEqualToPoint</span> <span class="p">(</span><span class="n">CGPoint</span> <span class="n">A</span><span class="p">,</span><span class="n">CGPoint</span> <span class="n">B</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGPointEqualToPoint</span> <span class="p">(</span><span class="bp">CGPoint</span> <span class="n">A</span><span class="p">,</span><span class="bp">CGPoint</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2628,14 +2628,14 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <p> CGSizeAB是否相等</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGSizeEqualToSize</span> <span class="p">(</span><span class="n">CGSize</span> <span class="n">A</span><span class="err">，</span><span class="n">CGSize</span> <span class="n">B</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGSizeEqualToSize</span> <span class="p">(</span><span class="bp">CGSize</span> <span class="n">A</span><span class="err">，</span><span class="bp">CGSize</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>矩形AB的位置大小是否相等</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectEqualToRect</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="n">CGRect</span> <span class="n">B</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGRectEqualToRect</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="bp">CGRect</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2643,7 +2643,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 矩形AB是否相交</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectIntersectsRect</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="n">CGRect</span> <span class="n">B</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGRectIntersectsRect</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="bp">CGRect</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2652,7 +2652,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <p>检测矩形A是否包含指定的点B</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectContainsPoint</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">A</span><span class="p">,</span> <span class="n">CGPoint</span> <span class="n">B</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGRectContainsPoint</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="p">,</span> <span class="bp">CGPoint</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2661,7 +2661,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <p>检测矩形A是否包含矩形B</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectContainsRect</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="n">CGRect</span> <span class="n">B</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGRectContainsRect</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="err">，</span><span class="bp">CGRect</span> <span class="n">B</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2670,21 +2670,21 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <p>矩形A是否长和宽都是0，或者是个NULL</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectIsEmpty</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">A</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGRectIsEmpty</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>矩形A是否为NULL</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectIsNull</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">A</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGRectIsNull</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>矩形A是否无穷大，没有边界</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">bool</span>  <span class="n">CGRectIsInfinite</span> <span class="p">(</span><span class="n">CGRect</span> <span class="n">A</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">bool</span>  <span class="n">CGRectIsInfinite</span> <span class="p">(</span><span class="bp">CGRect</span> <span class="n">A</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2732,10 +2732,10 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="nc">People</span> : <span class="nc">NSObject</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">Car</span> <span class="o">*</span><span class="n">car</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="nc">People</span> : <span class="bp">NSObject</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="n">Car</span> <span class="o">*</span><span class="n">car</span><span class="p">;</span>
 </span><span class='line'><span class="k">@end</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -2745,14 +2745,14 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <p>我们在获取people对象的name属性的值的时候，就可以通过KVC来获取：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="n">NSString</span> <span class="o">*</span><span class="n">name</span> <span class="o">=</span> <span class="p">[</span><span class="n">people</span> <span class="nl">valueForKey:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span> <span class="o">=</span> <span class="p">[</span><span class="n">people</span> <span class="nl">valueForKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>此代码基本等同于下面代码</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">name</span> <span class="o">=</span> <span class="n">people</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span> <span class="o">=</span> <span class="n">people</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2761,7 +2761,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <p>KVC可以用setValue:forKey:修改可写属性：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">people</span> <span class="nl">setValue:</span><span class="s">@&quot;Alex&quot;</span> <span class="nl">forKey:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">people</span> <span class="nl">setValue</span><span class="p">:</span><span class="s">@&quot;Alex&quot;</span> <span class="nl">forKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2777,21 +2777,21 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <p>KVC 方法有 key 和keyPath 两个版本，比如 valueForkey: 和 valueForKeyPath:版本，这两者的区别在于，后者可以包含嵌套关系，用点分开，valueForKeyPath方法可以遍历所有的关系，如下所示：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">carName</span> <span class="o">=</span> <span class="p">[</span><span class="n">people</span> <span class="nl">valueForKayPath:</span><span class="s">@&quot;car.name&quot;</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">carName</span> <span class="o">=</span> <span class="p">[</span><span class="n">people</span> <span class="nl">valueForKayPath</span><span class="p">:</span><span class="s">@&quot;car.name&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>此方法用来获取people对象的车的名称，可以基本等价于下面代码:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">carName</span> <span class="o">=</span> <span class="p">[[</span><span class="n">people</span> <span class="n">car</span><span class="p">]</span> <span class="n">name</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">carName</span> <span class="o">=</span> <span class="p">[[</span><span class="n">people</span> <span class="n">car</span><span class="p">]</span> <span class="n">name</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>而 key方法不会遍历关系，假如你使用</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">carName</span> <span class="o">=</span> <span class="p">[</span><span class="n">people</span> <span class="nl">valueForKay:</span><span class="s">@&quot;car.name&quot;</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">carName</span> <span class="o">=</span> <span class="p">[</span><span class="n">people</span> <span class="nl">valueForKay</span><span class="p">:</span><span class="s">@&quot;car.name&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2818,14 +2818,14 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">People</span> <span class="o">*</span><span class="n">developer</span> <span class="o">=</span> <span class="p">[[</span><span class="n">People</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">developer</span> <span class="nl">setValue:</span><span class="s">@&quot;Alex&quot;</span> <span class="nl">forKey:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">developer</span> <span class="nl">setValue</span><span class="p">:</span><span class="s">@&quot;Alex&quot;</span> <span class="nl">forKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'><span class="n">People</span> <span class="o">*</span><span class="n">teacher</span> <span class="o">=</span> <span class="p">[[</span><span class="n">People</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">teacher</span> <span class="nl">setValue:</span><span class="s">@&quot;Lucy&quot;</span> <span class="nl">forKey:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">teacher</span> <span class="nl">setValue</span><span class="p">:</span><span class="s">@&quot;Lucy&quot;</span> <span class="nl">forKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
 </span><span class='line'>  
-</span><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="err">@</span><span class="p">[</span><span class="n">developer</span><span class="p">,</span><span class="n">teacher</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="l">@[</span><span class="n">developer</span><span class="p">,</span><span class="n">teacher</span><span class="l">]</span><span class="p">;</span>
 </span><span class='line'>  
-</span><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">nameArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKey:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">nameArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">];</span>
 </span><span class='line'>  
 </span></code></pre></td></tr></table></div></figure>
 
@@ -2834,7 +2834,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 对于 keyPath 使用方法也类似：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">nameLengthArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath:</span><span class="s">@&quot;name.length&quot;</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">nameLengthArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath</span><span class="p">:</span><span class="s">@&quot;name.length&quot;</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2845,7 +2845,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <p>我们经常会遇到需要将一个字典转化成一个对象情况，这时用 KVC 能很好的解决问题， KVC 中有一个setValuesForKeysWithDictionary: 方法，此方法能很好的把字典转换成我们需要的对象。比如我们可以给刚才的 People 类增加一个初始化方法:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithDictionary:</span><span class="p">(</span><span class="n">NSMutableDictionary</span><span class="o">*</span><span class="p">)</span> <span class="n">jsonObject</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithDictionary:</span><span class="p">(</span><span class="bp">NSMutableDictionary</span><span class="o">*</span><span class="p">)</span> <span class="nv">jsonObject</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2859,13 +2859,13 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithDictionary:</span><span class="p">(</span><span class="n">NSMutableDictionary</span><span class="o">*</span><span class="p">)</span> <span class="n">jsonObject</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithDictionary:</span><span class="p">(</span><span class="bp">NSMutableDictionary</span><span class="o">*</span><span class="p">)</span> <span class="nv">jsonObject</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span><span class="p">((</span><span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">init</span><span class="p">]))</span>
+</span><span class='line'>    <span class="k">if</span><span class="p">((</span><span class="nb">self</span> <span class="o">=</span> <span class="p">[</span><span class="nb">super</span> <span class="n">init</span><span class="p">]))</span>
 </span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="p">[</span><span class="n">self</span> <span class="nl">setValuesForKeysWithDictionary:</span><span class="n">jsonObject</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">[</span><span class="nb">self</span> <span class="nl">setValuesForKeysWithDictionary</span><span class="p">:</span><span class="n">jsonObject</span><span class="p">];</span>
 </span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">self</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -2876,8 +2876,8 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="err">@</span><span class="p">[</span><span class="n">developer</span><span class="p">,</span><span class="n">teacher</span><span class="p">];</span>
-</span><span class='line'><span class="n">NSNumber</span> <span class="o">*</span><span class="n">totalLength</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath:</span><span class="s">@&quot;name.@sum.length&quot;</span><span class="p">];</span>    
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="l">@[</span><span class="n">developer</span><span class="p">,</span><span class="n">teacher</span><span class="l">]</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSNumber</span> <span class="o">*</span><span class="n">totalLength</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath</span><span class="p">:</span><span class="s">@&quot;name.@sum.length&quot;</span><span class="p">];</span>    
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2909,7 +2909,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <h4>解决办法:</h4>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">cell</span><span class="p">.</span><span class="n">tintColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">greenColor</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">cell</span><span class="p">.</span><span class="n">tintColor</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">greenColor</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2924,7 +2924,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <h4>解决办法:</h4>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="n">CGRect</span> <span class="n">cellFrame</span> <span class="o">=</span> <span class="p">[</span><span class="n">_tableView</span> <span class="nl">rectForRowAtIndexPath:</span><span class="p">[</span><span class="n">NSIndexPath</span> <span class="nl">indexPathForRow:</span><span class="n">index</span> <span class="nl">inSection:</span><span class="mi">0</span><span class="p">]];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="bp">CGRect</span> <span class="n">cellFrame</span> <span class="o">=</span> <span class="p">[</span><span class="n">_tableView</span> <span class="nl">rectForRowAtIndexPath</span><span class="p">:[</span><span class="bp">NSIndexPath</span> <span class="nl">indexPathForRow</span><span class="p">:</span><span class="n">index</span> <span class="nl">inSection</span><span class="p">:</span><span class="mi">0</span><span class="p">]];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2939,7 +2939,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 <h4>解决办法:</h4>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">_tableView</span><span class="p">.</span><span class="n">tableHeaderView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="n">_tableView</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="mf">0.01f</span><span class="p">)];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">_tableView</span><span class="p">.</span><span class="n">tableHeaderView</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="n">_tableView</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="mf">0.01f</span><span class="p">)];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2959,8 +2959,8 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'>   <span class="n">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">rowHeight</span> <span class="o">=</span> <span class="n">UITableViewAutomaticDimension</span><span class="p">;</span>
-</span><span class='line'>   <span class="n">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">estimatedRowHeight</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'>   <span class="nb">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">rowHeight</span> <span class="o">=</span> <span class="n">UITableViewAutomaticDimension</span><span class="p">;</span>
+</span><span class='line'>   <span class="nb">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">estimatedRowHeight</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 

@@ -1,84 +1,87 @@
 
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
-	<meta charset="utf-8">
-	<title>Objective-C 中的方法混写(Method Swizzling) - Summerrose’s Blog</title>
-	<meta name="author" content="ghren">
+  <meta charset="utf-8">
+  <title>Objective-C 中的方法混写(Method Swizzling) - Summerrose’s Blog</title>
+  <meta name="author" content="ghren">
 
-	
-	<meta name="description" content="目录 什么是方法混写（Method Swizzling）
+  
+  <meta name="description" content="目录 什么是方法混写（Method Swizzling）
 如何使用方法混写
 注意事项
 参考资料 什么是方法混写(Method Swizzling) Objective-C 中对象调用方法，或者叫“消息传递”,是通过一种动态绑定机制实现的，即对象收到消息后，究竟调用哪个方法，完全于运行期决定， &hellip;">
-	
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
 
-	<link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
-	<link rel="canonical" href="">
-	<link href="/favicon.png" rel="shortcut icon">
-	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-	<script async="true" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alex1212112.github.io/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+  
+
 </head>
 
-
-<body>
-	<header id="header" class="inner"><h1><a href="/">Summerrose’s Blog</a></h1>
-<nav id="main-nav"><ul class="main">
-	<li><a href="/">Blog</a></li>
-	<li><a href="/blog/archives">Archives</a></li>
-</ul>
-</nav>
-<nav id="mobile-nav">
-	<div class="alignleft menu">
-		<a class="button">Menu</a>
-		<div class="container"><ul class="main">
-	<li><a href="/">Blog</a></li>
-	<li><a href="/blog/archives">Archives</a></li>
-</ul>
-</div>
-	</div>
-	<div class="alignright search">
-		<a class="button"></a>
-		<div class="container">
-			<form action="http://google.com/search" method="get">
-				<input type="text" name="q" results="0">
-				<input type="hidden" name="q" value="site:alex1212112.github.io">
-			</form>
-		</div>
-	</div>
-</nav>
-<nav id="sub-nav" class="alignright">
-	<div class="social">
-		
-		
-		
-		
-    
-		
-		
-		
-		
-		
-		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
-		
-    
-	</div>
-	<form class="search" action="http://google.com/search" method="get">
-		<input class="alignright" type="text" name="q" results="0">
-		<input type="hidden" name="q" value="site:alex1212112.github.io">
-	</form>
-</nav>
-
+<body   >
+  <header role="banner">
 </header>
-	
-		
-	
-	<div id="content" class="inner"><article class="post">
-	<h2 class="title">Objective-C 中的方法混写(Method Swizzling)</h2>
-	<div class="entry-content"><p><img src="/images/201410201751.png" alt="" /></p>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="alex1212112.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Objective-C 中的方法混写(Method Swizzling)</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-10-20T17:47:07+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:47 pm</span></time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://alex1212112.github.io">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="/images/201410201751.png" alt="" /></p>
 
 <h3>目录</h3>
 
@@ -131,28 +134,28 @@
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;UIAlertView+GHSwizzling.h&quot;</span>
 </span><span class='line'><span class="cp">#import &lt;objc/runtime.h&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">@implementation</span> <span class="nc">UIAlertView</span> <span class="nl">(GHSwizzling)</span>
+</span><span class='line'><span class="k">@implementation</span> <span class="bp">UIAlertView</span> <span class="nl">(GHSwizzling)</span>
 </span><span class='line'>
 </span><span class='line'>
-</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">load</span>
+</span><span class='line'><span class="p">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">load</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">static</span> <span class="n">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">static</span> <span class="kt">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
 </span><span class='line'>    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="kt">SEL</span> <span class="n">show</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">show</span><span class="p">);</span>
 </span><span class='line'>        <span class="kt">SEL</span> <span class="n">replaceSHow</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">_gh_show</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="n">Method</span> <span class="n">existingMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">show</span><span class="p">);</span>
-</span><span class='line'>        <span class="n">Method</span> <span class="n">newMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">replaceSHow</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Method</span> <span class="n">existingMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">show</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Method</span> <span class="n">newMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">replaceSHow</span><span class="p">);</span>
 </span><span class='line'>        <span class="n">method_exchangeImplementations</span><span class="p">(</span><span class="n">existingMethod</span><span class="p">,</span> <span class="n">newMethod</span><span class="p">);</span><span class="c1">//交换两个方法</span>
 </span><span class='line'>    <span class="p">});</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>
 </span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">_gh_show</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">_gh_show</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="n">_gh_show</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="n">_gh_show</span><span class="p">];</span>
 </span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;alert show!&quot;</span><span class="p">);</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'><span class="k">@end</span>
@@ -175,7 +178,7 @@
 <ol>
 <li><p>方法混写最好在类的 category 中的 <code>+load</code> 方法中进行方法交换.</p></li>
 <li><p>方法混写的代码最好在 dispatch_once 中实现。</p></li>
-<li><p>要注意给自己实现的方法加上命名空间，以防止出现重复命名的问题，比如上述中的&#8221;<em>gh</em>&ldquo;前缀.</p></li>
+<li><p>要注意给自己实现的方法加上命名空间，以防止出现重复命名的问题，比如上述中的"<em>gh</em>&ldquo;前缀.</p></li>
 <li><p>不要滥用这个方法,该方法被称之为 Objective-C 中的黑魔法，滥用会导致难以调试的bug.</p></li>
 <li><p>只要在 <code>+load</code> 中实现了 <code>method_exchangeImplementations()</code>, 那么该类的这个方法在整个应用的生命周期以内都被 Swizzling 了，要想调用原来正常的方法，就只能通过调用自己实现的方法名了。</p></li>
 </ol>
@@ -194,62 +197,98 @@
 </div>
 
 
-<div class="meta">
-	<div class="date">
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">ghren</span></span>
+
+      
 
 
 
+
+<time class='entry-date' datetime='2014-10-20T17:47:07+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:47 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://alex1212112.github.io/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/" data-via="" data-counturl="http://alex1212112.github.io/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/" title="Previous Post: Objective-C 中的对象关联(Associated Objects)">&laquo; Objective-C 中的对象关联(Associated Objects)</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/01/31/touch-id-de-shi-yong/" title="Next Post: Touch ID 的使用">Touch ID 的使用 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/11/24/dispatch-source/">Dispatch Source</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/21/run-loop/">Run Loop</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/">iOS 中线程同步的一些方法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/">ReactiveCocoa 学习资料</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/">关于 UILocalNotification 的几个问题</a>
+      </li>
+    
+  </ul>
+</section>
 
 
 
 
 
   
+</aside>
 
 
-<time datetime="2014-10-20T17:47:07+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-</div>
-	
-	<div class="comments"><a href="#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-	<div class="share">
-	<div class="addthis_toolbox addthis_default_style ">
-		
-		
-		<a class="addthis_button_tweet"></a>
-		
-		
-		
-	</div>
-	
-</div>
-
-
-
-<section id="comment">
-    <h2 class="title">Comments</h2>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-</section>
-</div>
-	<footer id="footer" class="inner">Copyright &copy; 2016
+    </div>
+  </div>
+  <footer role="contentinfo">Copyright &copy; 2016
 
     ghren
 
-</footer>
-	<script src="/javascripts/slash.js"></script>
-<script src="/javascripts/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-	$('.fancybox').fancybox();
-})(jQuery);
-</script> <!-- Delete or comment this line to disable Fancybox -->
 
+</footer>
+  
 
 <script type="text/javascript">
       var disqus_shortname = 'alex1212112';
@@ -262,11 +301,26 @@
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//go.disqus.com/' + disqus_script;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>
 
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
 
 
 

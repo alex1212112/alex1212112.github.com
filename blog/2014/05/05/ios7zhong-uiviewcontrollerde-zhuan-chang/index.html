@@ -1,81 +1,84 @@
 
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
-	<meta charset="utf-8">
-	<title>iOS7 中 UIViewController 的转场 - Summerrose’s Blog</title>
-	<meta name="author" content="ghren">
+  <meta charset="utf-8">
+  <title>iOS7 中 UIViewController 的转场 - Summerrose’s Blog</title>
+  <meta name="author" content="ghren">
 
-	
-	<meta name="description" content="iOS7提供了一套供开发者方便自定义Viewcontroller间切换动画的API，我们可以利用这些API来自定义自己的转场效果，替代系统提供的默认push、present等动画效果。 实现流程 首先介绍presentViewController转场动画的实现，主要流程如下： &hellip;">
-	
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="description" content="iOS7提供了一套供开发者方便自定义Viewcontroller间切换动画的API，我们可以利用这些API来自定义自己的转场效果，替代系统提供的默认push、present等动画效果。 实现流程 首先介绍presentViewController转场动画的实现，主要流程如下： &hellip;">
+  
 
-	<link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
-	<link rel="canonical" href="">
-	<link href="/favicon.png" rel="shortcut icon">
-	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-	<script async="true" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alex1212112.github.io/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+  
+
 </head>
 
-
-<body>
-	<header id="header" class="inner"><h1><a href="/">Summerrose’s Blog</a></h1>
-<nav id="main-nav"><ul class="main">
-	<li><a href="/">Blog</a></li>
-	<li><a href="/blog/archives">Archives</a></li>
-</ul>
-</nav>
-<nav id="mobile-nav">
-	<div class="alignleft menu">
-		<a class="button">Menu</a>
-		<div class="container"><ul class="main">
-	<li><a href="/">Blog</a></li>
-	<li><a href="/blog/archives">Archives</a></li>
-</ul>
-</div>
-	</div>
-	<div class="alignright search">
-		<a class="button"></a>
-		<div class="container">
-			<form action="http://google.com/search" method="get">
-				<input type="text" name="q" results="0">
-				<input type="hidden" name="q" value="site:alex1212112.github.io">
-			</form>
-		</div>
-	</div>
-</nav>
-<nav id="sub-nav" class="alignright">
-	<div class="social">
-		
-		
-		
-		
-    
-		
-		
-		
-		
-		
-		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
-		
-    
-	</div>
-	<form class="search" action="http://google.com/search" method="get">
-		<input class="alignright" type="text" name="q" results="0">
-		<input type="hidden" name="q" value="site:alex1212112.github.io">
-	</form>
-</nav>
-
+<body   >
+  <header role="banner">
 </header>
-	
-		
-	
-	<div id="content" class="inner"><article class="post">
-	<h2 class="title">iOS7 中 UIViewController 的转场</h2>
-	<div class="entry-content"><p><img src="http://ww3.sinaimg.cn/large/8bcaa2dfjw1ec8pxqd4plj20dw07sdgr.jpg" alt="" /></p>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="alex1212112.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">iOS7 中 UIViewController 的转场</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-05-05T18:57:40+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>6:57 pm</span></time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://alex1212112.github.io">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="http://ww3.sinaimg.cn/large/8bcaa2dfjw1ec8pxqd4plj20dw07sdgr.jpg" alt="" /></p>
 
 <p>iOS7提供了一套供开发者方便自定义Viewcontroller间切换动画的API，我们可以利用这些API来自定义自己的转场效果，替代系统提供的默认push、present等动画效果。</p>
 
@@ -92,7 +95,7 @@
 <p>present时候要实现的方法：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">animationControllerForPresentedController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">presented</span> <span class="nf">presentingController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">presenting</span> <span class="nf">sourceController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">source</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">animationControllerForPresentedController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">presented</span> <span class="nf">presentingController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">presenting</span> <span class="nf">sourceController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">source</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -101,7 +104,7 @@
 <p>disMiss时候要实现的方法：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">animationControllerForDismissedController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">dismissed</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">animationControllerForDismissedController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">dismissed</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -117,9 +120,9 @@
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">UIViewController</span> <span class="o">*</span><span class="n">presentedVC</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIViewController</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-</span><span class='line'><span class="n">presentedVC</span><span class="p">.</span><span class="n">transitioningDelegate</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
-</span><span class='line'><span class="p">[</span><span class="n">self</span> <span class="nl">presentViewController:</span><span class="n">presentedVC</span> <span class="nl">animated:</span><span class="n">YES</span> <span class="nl">completion:</span><span class="nb">nil</span><span class="p">];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">UIViewController</span> <span class="o">*</span><span class="n">presentedVC</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIViewController</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'><span class="n">presentedVC</span><span class="p">.</span><span class="n">transitioningDelegate</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span> <span class="nl">presentViewController</span><span class="p">:</span><span class="n">presentedVC</span> <span class="nl">animated</span><span class="p">:</span><span class="nb">YES</span> <span class="nl">completion</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -135,10 +138,10 @@
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">navigationController:</span><span class="p">(</span><span class="n">UINavigationController</span> <span class="o">*</span><span class="p">)</span><span class="nv">navigationController</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">navigationController:</span><span class="p">(</span><span class="bp">UINavigationController</span> <span class="o">*</span><span class="p">)</span><span class="nv">navigationController</span>
 </span><span class='line'>                                   <span class="nf">animationControllerForOperation:</span><span class="p">(</span><span class="n">UINavigationControllerOperation</span><span class="p">)</span><span class="nv">operation</span>
-</span><span class='line'>                                                <span class="nf">fromViewController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">fromVC</span>
-</span><span class='line'>                                                  <span class="nf">toViewController:</span><span class="p">(</span><span class="n">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">toVC</span> <span class="p">;</span>
+</span><span class='line'>                                                <span class="nf">fromViewController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">fromVC</span>
+</span><span class='line'>                                                  <span class="nf">toViewController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">toVC</span> <span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -152,7 +155,7 @@
 
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -165,7 +168,7 @@
 <p>我们要自定义一个继承于NSObject的类，此类要实现UIViewControllerAnimatedTransitioning协议，并实现其代理方法，代理方法主要有两个，其中一个返回整个动画花费的时间，如下：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSTimeInterval</span><span class="p">)</span><span class="nf">transitionDuration:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="n">NSTimeInterval</span><span class="p">)</span><span class="nf">transitionDuration:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -175,7 +178,7 @@
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSTimeInterval</span><span class="p">)</span><span class="nf">transitionDuration:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="n">NSTimeInterval</span><span class="p">)</span><span class="nf">transitionDuration:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
 </span><span class='line'>      <span class="p">{</span>
 </span><span class='line'>          <span class="k">return</span> <span class="mf">1.0f</span><span class="p">;</span>
 </span><span class='line'>      <span class="p">}</span>
@@ -187,7 +190,7 @@
 <p>另一个就是具体动画实现的方法，如下：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">animateTransition:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">animateTransition:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -264,43 +267,43 @@
 <span class='line-number'>48</span>
 <span class='line-number'>49</span>
 <span class='line-number'>50</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">animateTransition:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="n">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">animateTransition:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
 </span><span class='line'>  <span class="p">{</span>
 </span><span class='line'>    <span class="c1">// 1. Get controllers from transition context</span>
-</span><span class='line'>    <span class="n">UIViewController</span> <span class="o">*</span><span class="n">toVC</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">viewControllerForKey:</span><span class="n">UITransitionContextToViewControllerKey</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">UIViewController</span> <span class="o">*</span><span class="n">toVC</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">viewControllerForKey</span><span class="p">:</span><span class="n">UITransitionContextToViewControllerKey</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// 2. Set init frame for toVC</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">CGRect</span> <span class="n">screenBounds</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIScreen</span> <span class="n">mainScreen</span><span class="p">]</span> <span class="n">bounds</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">CGRect</span> <span class="n">finalFrame</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">finalFrameForViewController:</span><span class="n">toVC</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">CGRect</span> <span class="n">screenBounds</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIScreen</span> <span class="n">mainScreen</span><span class="p">]</span> <span class="n">bounds</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">CGRect</span> <span class="n">finalFrame</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">finalFrameForViewController</span><span class="p">:</span><span class="n">toVC</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">UIView</span> <span class="o">*</span><span class="n">toViewSnapshot</span> <span class="o">=</span> <span class="p">[</span><span class="n">toVC</span><span class="p">.</span><span class="n">view</span> <span class="nl">resizableSnapshotViewFromRect:</span><span class="n">toVC</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">frame</span> <span class="nl">afterScreenUpdates:</span><span class="n">YES</span> <span class="nl">withCapInsets:</span><span class="n">UIEdgeInsetsZero</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">UIView</span> <span class="o">*</span><span class="n">toViewSnapshot</span> <span class="o">=</span> <span class="p">[</span><span class="n">toVC</span><span class="p">.</span><span class="n">view</span> <span class="nl">resizableSnapshotViewFromRect</span><span class="p">:</span><span class="n">toVC</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">frame</span> <span class="nl">afterScreenUpdates</span><span class="p">:</span><span class="nb">YES</span> <span class="nl">withCapInsets</span><span class="p">:</span><span class="n">UIEdgeInsetsZero</span><span class="p">];</span>
 </span><span class='line'>  
 </span><span class='line'>    <span class="n">toViewSnapshot</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectOffset</span><span class="p">(</span><span class="n">finalFrame</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">screenBounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">UIView</span> <span class="o">*</span><span class="n">toView</span> <span class="o">=</span> <span class="n">toVC</span><span class="p">.</span><span class="n">view</span><span class="p">;</span>
+</span><span class='line'>    <span class="bp">UIView</span> <span class="o">*</span><span class="n">toView</span> <span class="o">=</span> <span class="n">toVC</span><span class="p">.</span><span class="n">view</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// 3. Add toVC&#39;s view to containerView</span>
-</span><span class='line'>    <span class="n">UIView</span> <span class="o">*</span><span class="n">containerView</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="n">containerView</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">containerView</span> <span class="nl">addSubview:</span><span class="n">toViewSnapshot</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">UIView</span> <span class="o">*</span><span class="n">containerView</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="n">containerView</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">containerView</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">toViewSnapshot</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="c1">// 4. Do animate now</span>
-</span><span class='line'>    <span class="n">NSTimeInterval</span> <span class="n">duration</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nl">transitionDuration:</span><span class="n">transitionContext</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">UIView</span> <span class="nl">animateWithDuration:</span><span class="n">duration</span>
-</span><span class='line'>                          <span class="nl">delay:</span><span class="mf">0.0</span>
-</span><span class='line'>         <span class="nl">usingSpringWithDamping:</span><span class="mf">0.4</span>
-</span><span class='line'>          <span class="nl">initialSpringVelocity:</span><span class="mf">10.0</span>
-</span><span class='line'>                        <span class="nl">options:</span><span class="n">UIViewAnimationOptionCurveEaseInOut</span>
-</span><span class='line'>                     <span class="nl">animations:</span><span class="o">^</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">NSTimeInterval</span> <span class="n">duration</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">transitionDuration</span><span class="p">:</span><span class="n">transitionContext</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="bp">UIView</span> <span class="nl">animateWithDuration</span><span class="p">:</span><span class="n">duration</span>
+</span><span class='line'>                          <span class="nl">delay</span><span class="p">:</span><span class="mf">0.0</span>
+</span><span class='line'>         <span class="nl">usingSpringWithDamping</span><span class="p">:</span><span class="mf">0.4</span>
+</span><span class='line'>          <span class="nl">initialSpringVelocity</span><span class="p">:</span><span class="mf">10.0</span>
+</span><span class='line'>                        <span class="nl">options</span><span class="p">:</span><span class="n">UIViewAnimationOptionCurveEaseInOut</span>
+</span><span class='line'>                     <span class="nl">animations</span><span class="p">:</span><span class="o">^</span><span class="p">{</span>
 </span><span class='line'>                         <span class="n">toViewSnapshot</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">finalFrame</span><span class="p">;</span>
-</span><span class='line'>                     <span class="p">}</span> <span class="nl">completion:</span><span class="o">^</span><span class="p">(</span><span class="kt">BOOL</span> <span class="n">finished</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                     <span class="p">}</span> <span class="nl">completion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">BOOL</span> <span class="n">finished</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>
 </span><span class='line'>                         <span class="k">if</span> <span class="p">([</span><span class="n">transitionContext</span> <span class="n">transitionWasCancelled</span><span class="p">])</span> <span class="p">{</span>
 </span><span class='line'>
 </span><span class='line'>                         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 </span><span class='line'>                          <span class="c1">//5. add the real toView and remove the snapshot</span>
-</span><span class='line'>                             <span class="p">[</span><span class="n">containerView</span> <span class="nl">addSubview:</span><span class="n">toView</span><span class="p">];</span>
-</span><span class='line'>                             <span class="k">for</span> <span class="p">(</span><span class="n">UIView</span> <span class="o">*</span><span class="n">view</span> <span class="k">in</span> <span class="n">containerView</span><span class="p">.</span><span class="n">subviews</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                             <span class="p">[</span><span class="n">containerView</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">toView</span><span class="p">];</span>
+</span><span class='line'>                             <span class="k">for</span> <span class="p">(</span><span class="bp">UIView</span> <span class="o">*</span><span class="n">view</span> <span class="k">in</span> <span class="n">containerView</span><span class="p">.</span><span class="n">subviews</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>                                  <span class="k">if</span> <span class="p">(</span><span class="n">view</span> <span class="o">!=</span> <span class="n">toView</span><span class="p">)</span>
 </span><span class='line'>                                      <span class="p">{</span>
 </span><span class='line'>                                          <span class="p">[</span><span class="n">view</span> <span class="n">removeFromSuperview</span><span class="p">];</span>
@@ -309,7 +312,7 @@
 </span><span class='line'>
 </span><span class='line'>                         <span class="p">}</span>
 </span><span class='line'>                         <span class="c1">//6. transition is finished</span>
-</span><span class='line'>                         <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">completeTransition:</span><span class="o">!</span><span class="p">[</span><span class="n">transitionContext</span> <span class="n">transitionWasCancelled</span><span class="p">]];</span>
+</span><span class='line'>                         <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">completeTransition</span><span class="p">:</span><span class="o">!</span><span class="p">[</span><span class="n">transitionContext</span> <span class="n">transitionWasCancelled</span><span class="p">]];</span>
 </span><span class='line'>                     <span class="p">}];</span>
 </span><span class='line'>
 </span><span class='line'>
@@ -320,19 +323,19 @@
 <p>解释：</p>
 
 <blockquote><ol>
-<li><p>   从上下文中获取toVC(根据需要，这里也可以获取到fromVC).</p></li>
-<li><p>   获取toVC的view的快照和初始的frame.</p></li>
-<li><p>   获取动画发生的的容器View——containerView,并将toView的快照加入到该容器View中.</p></li>
-<li><p>   通过视图动画来执行自定义动画，此代码中的实现了一个iOS7中新增加的弹性动画效果，该动画使视图滑动时，像弹簧一样，稍微拉伸一些，再弹回正确位置.</p></li>
-<li><p>   移除toView的快照，并将真正的toView加入到容器View中.</p></li>
-<li><p>   向context报告动画切换已经完成.</p></li>
+<li><p>从上下文中获取toVC(根据需要，这里也可以获取到fromVC).</p></li>
+<li><p>获取toVC的view的快照和初始的frame.</p></li>
+<li><p>获取动画发生的的容器View——containerView,并将toView的快照加入到该容器View中.</p></li>
+<li><p>通过视图动画来执行自定义动画，此代码中的实现了一个iOS7中新增加的弹性动画效果，该动画使视图滑动时，像弹簧一样，稍微拉伸一些，再弹回正确位置.</p></li>
+<li><p>移除toView的快照，并将真正的toView加入到容器View中.</p></li>
+<li><p>向context报告动画切换已经完成.</p></li>
 </ol>
 </blockquote>
 
 <h3>参考资料</h3>
 
 <ol>
-<li><p><a href="http://onevcat.com/2013/10/vc-transition-in-ios7/">WWDC 2013 Session笔记 &ndash; iOS7中的ViewController切换</a>;</p></li>
+<li><p><a href="http://onevcat.com/2013/10/vc-transition-in-ios7/">WWDC 2013 Session笔记 - iOS7中的ViewController切换</a>;</p></li>
 <li><p><a href="http://objccn.io/issue-5-3/">View Controller 转场</a>;</p></li>
 <li><p><a href="http://www.cocoachina.com/gamedev/misc/2013/1224/7597.html">iOS7教程系列：自定义导航转场动画以及更多</a>;</p></li>
 <li><p><a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewControllerContextTransitioning_protocol/Reference/Reference.html">UIViewControllerContextTransitioning</a>;</p></li>
@@ -343,62 +346,96 @@
 </div>
 
 
-<div class="meta">
-	<div class="date">
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">ghren</span></span>
+
+      
 
 
 
+
+<time class='entry-date' datetime='2014-05-05T18:57:40+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>6:57 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://alex1212112.github.io/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang/" data-via="" data-counturl="http://alex1212112.github.io/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/06/09/uiviewxiang-guan/" title="Next Post: UIView 相关">UIView 相关 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/11/24/dispatch-source/">Dispatch Source</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/21/run-loop/">Run Loop</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/">iOS 中线程同步的一些方法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/">ReactiveCocoa 学习资料</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/">关于 UILocalNotification 的几个问题</a>
+      </li>
+    
+  </ul>
+</section>
 
 
 
 
 
   
+</aside>
 
 
-<time datetime="2014-05-05T18:57:40+08:00" pubdate data-updated="true">May 5<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-</div>
-	
-	<div class="comments"><a href="#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-	<div class="share">
-	<div class="addthis_toolbox addthis_default_style ">
-		
-		
-		<a class="addthis_button_tweet"></a>
-		
-		
-		
-	</div>
-	
-</div>
-
-
-
-<section id="comment">
-    <h2 class="title">Comments</h2>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-</section>
-</div>
-	<footer id="footer" class="inner">Copyright &copy; 2016
+    </div>
+  </div>
+  <footer role="contentinfo">Copyright &copy; 2016
 
     ghren
 
-</footer>
-	<script src="/javascripts/slash.js"></script>
-<script src="/javascripts/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-	$('.fancybox').fancybox();
-})(jQuery);
-</script> <!-- Delete or comment this line to disable Fancybox -->
 
+</footer>
+  
 
 <script type="text/javascript">
       var disqus_shortname = 'alex1212112';
@@ -411,11 +448,26 @@
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//go.disqus.com/' + disqus_script;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>
 
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
 
 
 
