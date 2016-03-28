@@ -9,7 +9,7 @@
   <meta name="author" content="ghren">
 
   
-  <meta name="description" content="####简介 UIKit dynamics(UIKit动力学)是UIKit的一套动画和交互体系。和我们用的CoreAnimation或者UIView animations一样，只不过UIKit 动力学将现实世界动力驱动的动画引入了UIKit，比如重力，铰链连接，碰撞，悬挂、吸附等效果。 &hellip;">
+  <meta name="description" content="###目录 什么是方法混写（Method Swizzling） 如何使用方法混写 注意事项 参考资料 什么是方法混写(Method Swizzling) Objective-C 中对象调用方法，或者叫“消息传递”,是通过一种动态绑定机制实现的，即对象收到消息后，究竟调用哪个方法，完全于运行期决定 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -63,7 +63,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi/">UIKit 动力学(UIKit Dynamics)学习</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/">Objective-C 中的方法混写(Method Swizzling)</a></h1>
     
     
       <p class="meta">
@@ -79,165 +79,35 @@
   
 
 
-<time datetime="2014-06-11T11:17:46+08:00" pubdate data-updated="true"></time>
+<time datetime="2014-10-20T17:47:07+08:00" pubdate data-updated="true"></time>
         
-           | <a href="/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi/#disqus_thread"
-             data-disqus-identifier="http://alex1212112.github.io/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi/">Comments</a>
+           | <a href="/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/#disqus_thread"
+             data-disqus-identifier="http://alex1212112.github.io/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p><img src="/images/4908ab0eae4b946b9066eafd11f8030580c2c4f79dfd.png" alt="" />
-####简介</p>
-
-<p>UIKit dynamics(UIKit动力学)是UIKit的一套动画和交互体系。和我们用的CoreAnimation或者UIView animations一样，只不过UIKit 动力学将现实世界动力驱动的动画引入了UIKit，比如重力，铰链连接，碰撞，悬挂、吸附等效果。</p>
-
-<h4 id="section">基本概念和元素</h4>
-
-<ul>
-  <li>
-    <p>UIdynamicItem: 实现了UIDynamicItem委托的对象，它是动画的执行者，相关的物理属性也是加在这个对象上，由于iOS7之后，UIView和UICollectionViewLayoutAttributes类默认实现了该协议，所以UIView就可以看作是一个UIdynamicItem；</p>
-  </li>
-  <li>
-    <p>UIDynamicBehavior：动力行为的描述，用来指定UIDynamicItem应该如何运动，即定义适用的物理规则。一般我们使用这个类的子类对象来对一组UIDynamicItem应该遵守的行为规则进行描述，在iOS7中，系统默认提供了如下的动力行为：</p>
-
-    <p>1、UIGravityBehavior：重力行为</p>
-
-    <p>2、UICollisionBehavior：碰撞行为</p>
-
-    <p>3、UIAttachmentBehavior：铰链行为，两个物体连接的状态，可以模拟无形变或者弹性行遍的情况</p>
-
-    <p>4、UISnapBehavior：吸附行为，将UIView通过动画吸附到某个点上。</p>
-
-    <p>5、UIPushBehavior：推行为，比如为一个UIView施加一个力的作用，我们可以指定力的大小，方向和租用点等信息。</p>
-
-    <p>6、UIDynamicItemBehavior：动力学辅助元素行为，系统有一组自定义的默认值</p>
-  </li>
-  <li>
-    <p>UIDynamicAnimator；动画的播放者，动力行为（UIDynamicBehavior）的容器，添加到容器内的行为将发挥作用；</p>
-  </li>
-  <li>
-    <p>ReferenceView：力学参考系，只有当想要添加力学的UIView是ReferenceView的子view时，动力UI才发生作用，比如你可以把ViewController的view作为ReferenceView；</p>
-  </li>
-</ul>
-
-<h4 id="section-1">代码示例（一个简单的重力行为）</h4>
-
-<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-<span class="line-number">32</span>
-<span class="line-number">33</span>
-<span class="line-number">34</span>
-<span class="line-number">35</span>
-<span class="line-number">36</span>
-<span class="line-number">37</span>
-<span class="line-number">38</span>
-<span class="line-number">39</span>
-<span class="line-number">40</span>
-<span class="line-number">41</span>
-<span class="line-number">42</span>
-<span class="line-number">43</span>
-<span class="line-number">44</span>
-<span class="line-number">45</span>
-<span class="line-number">46</span>
-<span class="line-number">47</span>
-<span class="line-number">48</span>
-<span class="line-number">49</span>
-</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="cm">/**</span>
-</span><span class="line"><span class="cm"> *  初始化subView</span>
-</span><span class="line"><span class="cm"> */</span>
-</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">initSubView</span>
-</span><span class="line"><span class="p">{</span>
-</span><span class="line">    <span class="n">_subView</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:(</span><span class="bp">CGRect</span><span class="p">){</span>
-</span><span class="line">
-</span><span class="line">        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span>   <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class="line">        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span>   <span class="mf">108.0f</span><span class="p">,</span>
-</span><span class="line">        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class="line">        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class="line">    <span class="p">}];</span>
-</span><span class="line">    <span class="n">_subView</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">lightGrayColor</span><span class="p">];</span>
-</span><span class="line">
-</span><span class="line">    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">view</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">_subView</span><span class="p">];</span>
-</span><span class="line"><span class="p">}</span>
-</span><span class="line"><span class="cm">/**</span>
-</span><span class="line"><span class="cm"> *  简单的重力行为</span>
-</span><span class="line"><span class="cm"> *</span>
-</span><span class="line"><span class="cm"> *  @param sender leftButton</span>
-</span><span class="line"><span class="cm"> */</span>
-</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">leftButtonClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
-</span><span class="line"><span class="p">{</span>
-</span><span class="line">
-</span><span class="line">    <span class="n">_subView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span>  <span class="p">(</span><span class="bp">CGRect</span><span class="p">){</span>
-</span><span class="line">
-</span><span class="line">        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span>   <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class="line">        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span>   <span class="mf">108.0f</span><span class="p">,</span>
-</span><span class="line">        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class="line">        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class="line">
-</span><span class="line">    <span class="p">};</span>
-</span><span class="line">
-</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">_animator</span><span class="p">)</span>
-</span><span class="line">    <span class="p">{</span>
-</span><span class="line">        <span class="c1">// 1 假如animator为空的话，就以当前ViewController的View为参考View初始化一个animator</span>
-</span><span class="line">        <span class="n">_animator</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIDynamicAnimator</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithReferenceView</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">view</span><span class="p">];</span>
-</span><span class="line">    <span class="p">}</span>
-</span><span class="line">
-</span><span class="line">        <span class="c1">//  移除animator上所有的力学行为</span>
-</span><span class="line">    <span class="p">[</span><span class="n">_animator</span> <span class="n">removeAllBehaviors</span><span class="p">];</span>
-</span><span class="line">
-</span><span class="line">        <span class="c1">// 2 初始化重力行为</span>
-</span><span class="line">    <span class="bp">UIGravityBehavior</span> <span class="o">*</span><span class="n">gravityBeahvior</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIGravityBehavior</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithItems</span><span class="p">:</span><span class="l">@[</span><span class="n">_subView</span><span class="l">]</span><span class="p">];</span>
-</span><span class="line">
-</span><span class="line">       <span class="c1">// 3 添加重力行为到animator上，使重力行为生效</span>
-</span><span class="line">    <span class="p">[</span><span class="n">_animator</span> <span class="nl">addBehavior</span><span class="p">:</span><span class="n">gravityBeahvior</span><span class="p">];</span>
-</span><span class="line">
-</span><span class="line"><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-<p>代码中关键的地方已经用注释表示出来，在制作一个简单的UIKit 动力学行为的的步骤如下：</p>
+  <div class="entry-content"><p><img src="/images/201410201751.png" alt="" />
+###目录</p>
 
 <ol>
-  <li>通过参考系(ReferenceView)来初始化一个UIDynamicAnimator；</li>
-  <li>初始化一个力学行为，上述代码中是一个重力行为UIGravityBehavior；</li>
-  <li>把配置好的力学行为添加到animator中；</li>
+  <li>什么是方法混写（Method Swizzling）</li>
+  <li>如何使用方法混写</li>
+  <li>注意事项</li>
+  <li>参考资料</li>
 </ol>
 
-<p>表现出来的效果如下图：</p>
+<h3 id="method-swizzling">什么是方法混写(Method Swizzling)</h3>
 
-<p><img src="/images/201406111150gravity.gif" alt="" /></p>
+<p>Objective-C 中对象调用方法，或者叫“消息传递”,是通过一种动态绑定机制实现的，即对象收到消息后，究竟调用哪个方法，完全于运行期决定，而且方法名和其对应的实现也是可以在运行期改变的，这样，我们不需要源代码，也不用通过继承子类的来覆写方法，就能改变这个类中的方法。这种在运行期改变类的方法实现的手段被称之为方法混写（Method Swizzling）.</p>
 
-<h4 id="section-2">代码示例（带碰撞的重力行为）</h4>
+<h3 id="section">如何使用方法混写</h3>
+
+<p>举一个UIAlertView的例子，UIAlertView 有一个 show 的方法，我们想改变这个 show 的方法，可以按如下实现:</p>
+
+<p>UIAlertView+GHSwizzling.m</p>
 
 <figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -267,567 +137,869 @@
 <span class="line-number">26</span>
 <span class="line-number">27</span>
 <span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-<span class="line-number">32</span>
-<span class="line-number">33</span>
-<span class="line-number">34</span>
-<span class="line-number">35</span>
-<span class="line-number">36</span>
-<span class="line-number">37</span>
-</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="cm">/**</span>
-</span><span class="line"><span class="cm"> *  带重力的碰撞行为</span>
-</span><span class="line"><span class="cm"> *</span>
-</span><span class="line"><span class="cm"> *  @param sender middleButton</span>
-</span><span class="line"><span class="cm"> */</span>
-</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">middleButtonClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="cp">#import &quot;UIAlertView+GHSwizzling.h&quot;</span>
+</span><span class="line"><span class="cp">#import &lt;objc/runtime.h&gt;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@implementation</span> <span class="bp">UIAlertView</span> <span class="nl">(GHSwizzling)</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="p">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">load</span>
 </span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="k">static</span> <span class="kt">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
+</span><span class="line">    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
 </span><span class="line">
-</span><span class="line">    <span class="n">_subView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span>  <span class="p">(</span><span class="bp">CGRect</span><span class="p">){</span>
+</span><span class="line">        <span class="kt">SEL</span> <span class="n">show</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">show</span><span class="p">);</span>
+</span><span class="line">        <span class="kt">SEL</span> <span class="n">replaceSHow</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">_gh_show</span><span class="p">);</span>
 </span><span class="line">
-</span><span class="line">        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span>   <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class="line">        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span>   <span class="mf">108.0f</span><span class="p">,</span>
-</span><span class="line">        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class="line">        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class="line">
-</span><span class="line">    <span class="p">};</span>
-</span><span class="line">
-</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">_animator</span><span class="p">)</span>
-</span><span class="line">    <span class="p">{</span>
-</span><span class="line">        <span class="n">_animator</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIDynamicAnimator</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithReferenceView</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">view</span><span class="p">];</span>
-</span><span class="line">    <span class="p">}</span>
-</span><span class="line">
-</span><span class="line">    <span class="p">[</span><span class="n">_animator</span> <span class="n">removeAllBehaviors</span><span class="p">];</span>
-</span><span class="line">
-</span><span class="line">    <span class="c1">//初始化一个碰撞的行为</span>
-</span><span class="line">    <span class="bp">UICollisionBehavior</span> <span class="o">*</span><span class="n">collisionBehavior</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UICollisionBehavior</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithItems</span><span class="p">:</span><span class="l">@[</span><span class="n">_subView</span><span class="l">]</span><span class="p">];</span>
-</span><span class="line">
-</span><span class="line">    <span class="c1">//配置碰撞的边界，下述代码设置碰撞边界为参考系(self.view)的边框作为碰撞边界</span>
-</span><span class="line">    <span class="n">collisionBehavior</span><span class="p">.</span><span class="n">translatesReferenceBoundsIntoBoundary</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
-</span><span class="line">
-</span><span class="line">    <span class="p">[</span><span class="n">_animator</span> <span class="nl">addBehavior</span><span class="p">:</span><span class="n">collisionBehavior</span><span class="p">];</span>
-</span><span class="line">
-</span><span class="line">    <span class="c1">//重力行为</span>
-</span><span class="line">    <span class="bp">UIGravityBehavior</span> <span class="o">*</span><span class="n">gravityBeahvior</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIGravityBehavior</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithItems</span><span class="p">:</span><span class="l">@[</span><span class="n">_subView</span><span class="l">]</span><span class="p">];</span>
-</span><span class="line">    <span class="p">[</span><span class="n">_animator</span> <span class="nl">addBehavior</span><span class="p">:</span><span class="n">gravityBeahvior</span><span class="p">];</span>
-</span><span class="line">
+</span><span class="line">        <span class="n">Method</span> <span class="n">existingMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">show</span><span class="p">);</span>
+</span><span class="line">        <span class="n">Method</span> <span class="n">newMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">replaceSHow</span><span class="p">);</span>
+</span><span class="line">        <span class="n">method_exchangeImplementations</span><span class="p">(</span><span class="n">existingMethod</span><span class="p">,</span> <span class="n">newMethod</span><span class="p">);</span><span class="c1">//交换两个方法</span>
+</span><span class="line">    <span class="p">});</span>
 </span><span class="line"><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-<p>表现出来的效果如下图：</p>
-
-<p><img src="/images/201406111150gravityCollision.gif" alt="" /></p>
-
-<p>注：碰撞行为有自己的delegate回调，可以帮助我们了解碰撞的具体情况，包括哪个item和哪个item开始发生碰撞，碰撞接触点是什么，是否和边界碰撞，和哪个边界碰撞了等信息。参见:<a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollisionBehaviorDelegate_Protocol/Reference/Reference.html">UICollisionBehavior</a>.</p>
-
-<h4 id="section-3">代码示例（吸附行为）</h4>
-
-<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="cm">/**</span>
-</span><span class="line"><span class="cm"> *  吸附行为</span>
-</span><span class="line"><span class="cm"> *</span>
-</span><span class="line"><span class="cm"> *  @param sender rightButton</span>
-</span><span class="line"><span class="cm"> */</span>
-</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">rightButtonClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">_gh_show</span>
 </span><span class="line"><span class="p">{</span>
-</span><span class="line">
-</span><span class="line">    <span class="n">_subView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span>  <span class="p">(</span><span class="bp">CGRect</span><span class="p">){</span>
-</span><span class="line">
-</span><span class="line">        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span>   <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class="line">        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span>   <span class="mf">108.0f</span><span class="p">,</span>
-</span><span class="line">        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class="line">        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
-</span><span class="line">
-</span><span class="line">    <span class="p">};</span>
-</span><span class="line">
-</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">_animator</span><span class="p">)</span>
-</span><span class="line">    <span class="p">{</span>
-</span><span class="line">        <span class="n">_animator</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIDynamicAnimator</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithReferenceView</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">view</span><span class="p">];</span>
-</span><span class="line">    <span class="p">}</span>
-</span><span class="line">
-</span><span class="line">    <span class="p">[</span><span class="n">_animator</span> <span class="n">removeAllBehaviors</span><span class="p">];</span>
-</span><span class="line">
-</span><span class="line">    <span class="c1">//初始化一个吸附行为</span>
-</span><span class="line">    <span class="bp">UISnapBehavior</span> <span class="o">*</span><span class="n">snap</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UISnapBehavior</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithItem</span><span class="p">:</span><span class="n">_subView</span> <span class="nl">snapToPoint</span><span class="p">:(</span><span class="bp">CGPoint</span><span class="p">){</span><span class="mf">100.0f</span><span class="p">,</span><span class="mf">300.0f</span><span class="p">}];</span>
-</span><span class="line">    <span class="c1">//添加吸附行为到animator</span>
-</span><span class="line">    <span class="p">[</span><span class="n">_animator</span> <span class="nl">addBehavior</span><span class="p">:</span><span class="n">snap</span><span class="p">];</span>
+</span><span class="line">    <span class="p">[</span><span class="nb">self</span> <span class="n">_gh_show</span><span class="p">];</span>
+</span><span class="line">    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;alert show!&quot;</span><span class="p">);</span>
 </span><span class="line"><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-<p>表现出来的效果如下图：</p>
-
-<p><img src="/images/201406111151snap.gif" alt="" /></p>
-
-<h4 id="section-4">下载</h4>
-
-<p><a href="https://github.com/alex1212112/DynamicsDemo">Demo下载地址</a></p>
-
-<h4 id="section-5">参考资料</h4>
-<p><a href="http://onevcat.com/2013/06/uikit-dynamics-started/">UIKit Dynamics入门</a></p>
-
-<p><a href="http://beyondvincent.com/blog/2013/06/16/88/">iOS7新特征汇总[05]初窥UIKit动力(UIKit Dynamics)</a></p>
-
-<p><a href="http://www.raywenderlich.com/zh-hans/52617/uikit-%E5%8A%9B%E5%AD%A6%E6%95%99%E7%A8%8B">UIKit-力学教程</a></p>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/06/09/uiviewxiang-guan/">UIView 相关</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-06-09T10:21:49+08:00" pubdate data-updated="true"></time>
-        
-           | <a href="/blog/2014/06/09/uiviewxiang-guan/#disqus_thread"
-             data-disqus-identifier="http://alex1212112.github.io/blog/2014/06/09/uiviewxiang-guan/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://ww3.sinaimg.cn/large/8bcaa2dfjw1ec8pxpionej20dw07sdgj.jpg" alt="" /></p>
-
-<h4 id="section">问题描述:</h4>
-
-<p>有时候设置subView的center如下：</p>
-
-<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="n">subView</span><span class="p">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">view</span><span class="p">.</span><span class="n">center</span><span class="p">;</span>
+</span><span class="line"><span class="k">@end</span>
 </span></code></pre></td></tr></table></div></figure>
 
-<p>但实际显示出来发现subView的位置不对，该如何处理？</p>
-
-<h4 id="section-1">解决办法:</h4>
-
-<p>改为</p>
-
-<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="n">subView</span><span class="p">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">CGPointMake</span><span class="p">(</span><span class="n">view</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-</span><span class="line"><span class="n">view</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-<p>不要使用view.center,除非view和subView共用同一个superView,center这个属性指的是子view的中心点在父view中的位置,是以父view的坐标系为参考的；</p>
-
-<hr />
-
-<h4 id="section-2">问题描述:</h4>
-
-<p>UIView在自己实现draw方法时候，为什么整个view的背景都变成黑色？</p>
-
-<h4 id="section-3">解决办法:</h4>
-
-<p>设置下view的backgroundColor就OK了。</p>
-
-<p>说明：当view的backgroundColor为nil并且opaque属性为YES，自己实现draw方法，view的背景颜色就会变成黑色。</p>
-
-<hr />
-
-<h4 id="section-4">问题描述:</h4>
-
-<p>UIView 通过layer 的 shadowColor、shadowOpacity、shadowOffset、shadowRadius 几个属性可以很方便的为 UIView 添加阴影效果。但是在添加了阴影后，会出现动画卡顿的现象，如何解决？</p>
-
-<h4 id="section-5">解决办法:</h4>
-
-<p>为阴影指定路径，即设置 layer 的 shadowPath 属性。如下：</p>
-
-<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="n">view</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">shadowPath</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIBezierPath</span>  <span class="nl">bezierPathWithRect</span><span class="p">:</span><span class="n">view</span><span class="p">.</span><span class="n">bounds</span><span class="p">].</span><span class="bp">CGPath</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-<p>说明：不指定阴影路径时，绘制阴影会产生大量的 Offscreen-Rendered 。而 Offscreen-Rendered（离屏渲染）和 Blending（混合）是 iOS 绘图中对性能影响比较大的两方面。</p>
-
-<p>参考：<a href="http://blog.devdlh.com/blog/2013/03/18/performance-problerm-caused-by-shadowpath/">绘制阴影引发的 iOS 绘图性能问题总结</a></p>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang/">iOS7 中 UIViewController 的转场</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-05T18:57:40+08:00" pubdate data-updated="true"></time>
-        
-           | <a href="/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang/#disqus_thread"
-             data-disqus-identifier="http://alex1212112.github.io/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://ww3.sinaimg.cn/large/8bcaa2dfjw1ec8pxqd4plj20dw07sdgr.jpg" alt="" /></p>
-
-<p>iOS7提供了一套供开发者方便自定义Viewcontroller间切换动画的API，我们可以利用这些API来自定义自己的转场效果，替代系统提供的默认push、present等动画效果。</p>
-
-<h2 id="section">实现流程</h2>
-
-<h4 id="presentviewcontroller">首先介绍presentViewController转场动画的实现，主要流程如下：</h4>
-
-<ul>
-  <li>
-    <p>自定义一个转场动画效果。</p>
-  </li>
-  <li>
-    <p>在 presentingViewConttroller 里实现 UIViewControllerTransitioningDelegate 代理	方法，主要有两个，分别是present时候的动画和disMiss时候的动画，</p>
-  </li>
-</ul>
-
-<p>present时候要实现的方法：</p>
-
-<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">animationControllerForPresentedController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">presented</span> <span class="nf">presentingController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">presenting</span> <span class="nf">sourceController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">source</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-<p>disMiss时候要实现的方法：</p>
-
-<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">animationControllerForDismissedController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">dismissed</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-<p>这两个方法都返回刚才第一步自定义的转场动画。</p>
-
-<ul>
-  <li>在present的时候设置presentedViewController 的 transitioningDelegate如下：</li>
-</ul>
-
-<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">UIViewController</span> <span class="o">*</span><span class="n">presentedVC</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIViewController</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-</span><span class="line"><span class="n">presentedVC</span><span class="p">.</span><span class="n">transitioningDelegate</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
-</span><span class="line"><span class="p">[</span><span class="nb">self</span> <span class="nl">presentViewController</span><span class="p">:</span><span class="n">presentedVC</span> <span class="nl">animated</span><span class="p">:</span><span class="nb">YES</span> <span class="nl">completion</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-<h4 id="navigationcontrollerpushpop">关于navigationController的push、pop的动画流程如下所示：</h4>
-
-<ul>
-  <li>
-    <p>自定义一个转场动画效果。</p>
-  </li>
-  <li>
-    <p>实现UINavigationControllerDelegate的代理方法，这里就一个</p>
-  </li>
-</ul>
-
-<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">navigationController:</span><span class="p">(</span><span class="bp">UINavigationController</span> <span class="o">*</span><span class="p">)</span><span class="nv">navigationController</span>
-</span><span class="line">                                   <span class="nf">animationControllerForOperation:</span><span class="p">(</span><span class="n">UINavigationControllerOperation</span><span class="p">)</span><span class="nv">operation</span>
-</span><span class="line">                                                <span class="nf">fromViewController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">fromVC</span>
-</span><span class="line">                                                  <span class="nf">toViewController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">toVC</span> <span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-<p>这个方法也返回第一步里自定义的转场动画。为什么viewController有present 和disMiss两个方法，为什么这里没有push 和pop 两个方法呢，那是因为在这个代理方法里可以通过(UINavigationControllerOperation)operation 参数来确认当前操作究竟是push 还是pop， 当<code>operation == UINavigationControllerOperationPush</code>时候 就是push操作，当<code>operation == UINavigationControllerOperationPop</code> 时候就是pop操作。</p>
-
-<ul>
-  <li>在初始化时候设置NavigationController的delgate如下:</li>
-</ul>
-
-<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="nb">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-<h3 id="api">自定义动画和相关API介绍</h3>
-
-<p>上面流程里第一步转场动画效果该如何实现呢？？？</p>
-
-<p>我们要自定义一个继承于NSObject的类，此类要实现UIViewControllerAnimatedTransitioning协议，并实现其代理方法，代理方法主要有两个，其中一个返回整个动画花费的时间，如下：</p>
-
-<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="n">NSTimeInterval</span><span class="p">)</span><span class="nf">transitionDuration:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
-</span></code></pre></td></tr></table></div></figure>
-
-<p>假如我们动画时间为1秒，我们就可以在这样实现此方法</p>
-
-<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="n">NSTimeInterval</span><span class="p">)</span><span class="nf">transitionDuration:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
-</span><span class="line">		<span class="p">{</span>
-</span><span class="line">			<span class="k">return</span> <span class="mf">1.0f</span><span class="p">;</span>
-</span><span class="line">		<span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-<p>另一个就是具体动画实现的方法，如下：</p>
-
-<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">animateTransition:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-<p>其中	transitionContext可以理解为动画切换的上下文，它是一个实现了 <code>UIViewControllerContextTransitioning</code>协议的NSObject，它提供了VC切换的一切必需内容，如从哪个VC到哪个VC，动画切换的容器等，这个NSObject里的几个比较重要的方法如下：</p>
-
-<ul>
-  <li><code>-(UIView *)containerView; </code></li>
-</ul>
-
-<pre><code>VC切换所发生的view容器，开发者应该将切出的view移除，将切入的view加入到该view容器中。
-</code></pre>
-
-<ul>
-  <li><code>-(UIViewController )viewControllerForKey:(NSString )key; </code></li>
-</ul>
-
-<pre><code>提供一个key，返回对应的VC。现在的SDK中key的选择只有UITransitionContextFromViewControllerKey和UITransitionContextToViewControllerKey两种，分别表示将要切出和切入的VC。
-</code></pre>
-
-<ul>
-  <li><code>-(CGRect)initialFrameForViewController:(UIViewController *)vc; </code></li>
-</ul>
-
-<pre><code>某个VC的初始位置，可以用来做动画的计算。
-</code></pre>
-
-<ul>
-  <li><code>-(CGRect)finalFrameForViewController:(UIViewController *)vc;</code></li>
-</ul>
-
-<pre><code>与上面的方法对应，得到切换结束时某个VC应在的frame。
-</code></pre>
-
-<ul>
-  <li><code>-(void)completeTransition:(BOOL)didComplete; </code></li>
-</ul>
-
-<pre><code>向这个context报告切换已经完成。
-</code></pre>
-
-<p>下面是一个该方法的简单实现</p>
-
-<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-<span class="line-number">32</span>
-<span class="line-number">33</span>
-<span class="line-number">34</span>
-<span class="line-number">35</span>
-<span class="line-number">36</span>
-<span class="line-number">37</span>
-<span class="line-number">38</span>
-<span class="line-number">39</span>
-<span class="line-number">40</span>
-<span class="line-number">41</span>
-<span class="line-number">42</span>
-<span class="line-number">43</span>
-<span class="line-number">44</span>
-<span class="line-number">45</span>
-<span class="line-number">46</span>
-<span class="line-number">47</span>
-<span class="line-number">48</span>
-<span class="line-number">49</span>
-<span class="line-number">50</span>
-</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">animateTransition:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
-</span><span class="line">	<span class="p">{</span>
-</span><span class="line">    <span class="c1">// 1. Get controllers from transition context</span>
-</span><span class="line">    <span class="bp">UIViewController</span> <span class="o">*</span><span class="n">toVC</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">viewControllerForKey</span><span class="p">:</span><span class="n">UITransitionContextToViewControllerKey</span><span class="p">];</span>
-</span><span class="line">
-</span><span class="line">    <span class="c1">// 2. Set init frame for toVC</span>
-</span><span class="line">
-</span><span class="line">    <span class="bp">CGRect</span> <span class="n">screenBounds</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIScreen</span> <span class="n">mainScreen</span><span class="p">]</span> <span class="n">bounds</span><span class="p">];</span>
-</span><span class="line">    <span class="bp">CGRect</span> <span class="n">finalFrame</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">finalFrameForViewController</span><span class="p">:</span><span class="n">toVC</span><span class="p">];</span>
-</span><span class="line">
-</span><span class="line">    <span class="bp">UIView</span> <span class="o">*</span><span class="n">toViewSnapshot</span> <span class="o">=</span> <span class="p">[</span><span class="n">toVC</span><span class="p">.</span><span class="n">view</span> <span class="nl">resizableSnapshotViewFromRect</span><span class="p">:</span><span class="n">toVC</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">frame</span> <span class="nl">afterScreenUpdates</span><span class="p">:</span><span class="nb">YES</span> <span class="nl">withCapInsets</span><span class="p">:</span><span class="n">UIEdgeInsetsZero</span><span class="p">];</span>
-</span><span class="line"> 	
-</span><span class="line">    <span class="n">toViewSnapshot</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectOffset</span><span class="p">(</span><span class="n">finalFrame</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">screenBounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
-</span><span class="line">
-</span><span class="line">    <span class="bp">UIView</span> <span class="o">*</span><span class="n">toView</span> <span class="o">=</span> <span class="n">toVC</span><span class="p">.</span><span class="n">view</span><span class="p">;</span>
-</span><span class="line">
-</span><span class="line">    <span class="c1">// 3. Add toVC&#39;s view to containerView</span>
-</span><span class="line">    <span class="bp">UIView</span> <span class="o">*</span><span class="n">containerView</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="n">containerView</span><span class="p">];</span>
-</span><span class="line">    <span class="p">[</span><span class="n">containerView</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">toViewSnapshot</span><span class="p">];</span>
-</span><span class="line">
-</span><span class="line">    <span class="c1">// 4. Do animate now</span>
-</span><span class="line">    <span class="n">NSTimeInterval</span> <span class="n">duration</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">transitionDuration</span><span class="p">:</span><span class="n">transitionContext</span><span class="p">];</span>
-</span><span class="line">    <span class="p">[</span><span class="bp">UIView</span> <span class="nl">animateWithDuration</span><span class="p">:</span><span class="n">duration</span>
-</span><span class="line">                          <span class="nl">delay</span><span class="p">:</span><span class="mf">0.0</span>
-</span><span class="line">         <span class="nl">usingSpringWithDamping</span><span class="p">:</span><span class="mf">0.4</span>
-</span><span class="line">          <span class="nl">initialSpringVelocity</span><span class="p">:</span><span class="mf">10.0</span>
-</span><span class="line">                        <span class="nl">options</span><span class="p">:</span><span class="n">UIViewAnimationOptionCurveEaseInOut</span>
-</span><span class="line">                     <span class="nl">animations</span><span class="p">:</span><span class="o">^</span><span class="p">{</span>
-</span><span class="line">                         <span class="n">toViewSnapshot</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">finalFrame</span><span class="p">;</span>
-</span><span class="line">                     <span class="p">}</span> <span class="nl">completion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">BOOL</span> <span class="n">finished</span><span class="p">)</span> <span class="p">{</span>
-</span><span class="line">
-</span><span class="line">                         <span class="k">if</span> <span class="p">([</span><span class="n">transitionContext</span> <span class="n">transitionWasCancelled</span><span class="p">])</span> <span class="p">{</span>
-</span><span class="line">
-</span><span class="line">                         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class="line">							<span class="c1">//5. add the real toView and remove the snapshot</span>
-</span><span class="line">                             <span class="p">[</span><span class="n">containerView</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">toView</span><span class="p">];</span>
-</span><span class="line">                             <span class="k">for</span> <span class="p">(</span><span class="bp">UIView</span> <span class="o">*</span><span class="n">view</span> <span class="k">in</span> <span class="n">containerView</span><span class="p">.</span><span class="n">subviews</span><span class="p">)</span> <span class="p">{</span>
-</span><span class="line">        							<span class="k">if</span> <span class="p">(</span><span class="n">view</span> <span class="o">!=</span> <span class="n">toView</span><span class="p">)</span>
-</span><span class="line">        								<span class="p">{</span>
-</span><span class="line">            								<span class="p">[</span><span class="n">view</span> <span class="n">removeFromSuperview</span><span class="p">];</span>
-</span><span class="line">        								<span class="p">}</span>
-</span><span class="line">    <span class="p">}</span>
-</span><span class="line">
-</span><span class="line">                         <span class="p">}</span>
-</span><span class="line">                         <span class="c1">//6. transition is finished</span>
-</span><span class="line">                         <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">completeTransition</span><span class="p">:</span><span class="o">!</span><span class="p">[</span><span class="n">transitionContext</span> <span class="n">transitionWasCancelled</span><span class="p">]];</span>
-</span><span class="line">                     <span class="p">}];</span>
-</span><span class="line">
-</span><span class="line">
-</span><span class="line">	<span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-<p>解释：</p>
-
-<blockquote>
-  <ol>
-    <li>从上下文中获取toVC(根据需要，这里也可以获取到fromVC).</li>
-  </ol>
-</blockquote>
-
-<blockquote>
-  <ol>
-    <li>获取toVC的view的快照和初始的frame.</li>
-  </ol>
-</blockquote>
-
-<blockquote>
-  <ol>
-    <li>获取动画发生的的容器View——containerView,并将toView的快照加入到该容器View中.</li>
-  </ol>
-</blockquote>
-
-<blockquote>
-  <ol>
-    <li>通过视图动画来执行自定义动画，此代码中的实现了一个iOS7中新增加的弹性动画效果，该动画使视图滑动时，像弹簧一样，稍微拉伸一些，再弹回正确位置.</li>
-  </ol>
-</blockquote>
-
-<blockquote>
-  <ol>
-    <li>移除toView的快照，并将真正的toView加入到容器View中.</li>
-  </ol>
-</blockquote>
-
-<blockquote>
-  <ol>
-    <li>向context报告动画切换已经完成.</li>
-  </ol>
-</blockquote>
-
-<h3 id="section-1">参考资料</h3>
+<p>从上面代码我们可以看到，实现方法混写的步骤：</p>
 
 <ol>
   <li>
-    <p><a href="http://onevcat.com/2013/10/vc-transition-in-ios7/">WWDC 2013 Session笔记 - iOS7中的ViewController切换</a>;</p>
+    <p>编写自己希望实现方法的代码，上述中为 <code>_gh_show</code>,我们看到 该方法里调用了自己，好像会陷入递归调用的死循环，不过我们需要知道，这个方法是要和 <code>show</code> 方法交换的。</p>
   </li>
   <li>
-    <p><a href="http://objccn.io/issue-5-3/">View Controller 转场</a>;</p>
+    <p>获取自己实现方法的 method 和原实现方法的 method.</p>
   </li>
   <li>
-    <p><a href="http://www.cocoachina.com/gamedev/misc/2013/1224/7597.html">iOS7教程系列：自定义导航转场动画以及更多</a>;</p>
+    <p>通过 <code>method_exchangeImplementations()</code> 函数交换两个方法.</p>
+  </li>
+</ol>
+
+<p>注意: 这只是方法混写中的一种，交换两个实现方法，还有 <code>method_setImplementayion()</code>等方法.</p>
+
+<h3 id="section-1">注意事项</h3>
+
+<ol>
+  <li>
+    <p>方法混写最好在类的 category 中的 <code>+load</code> 方法中进行方法交换.</p>
   </li>
   <li>
-    <p><a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewControllerContextTransitioning_protocol/Reference/Reference.html">UIViewControllerContextTransitioning</a>;</p>
+    <p>方法混写的代码最好在 dispatch_once 中实现。</p>
   </li>
   <li>
-    <p><a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewControllerAnimatedTransitioning_Protocol/Reference/Reference.html">UIViewControllerAnimatedTransitioning</a>;</p>
+    <p>要注意给自己实现的方法加上命名空间，以防止出现重复命名的问题，比如上述中的”<em>gh</em>“前缀.</p>
   </li>
   <li>
-    <p><a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIViewControllerTransitioningDelegate_protocol/Reference/Reference.html">UIViewControllerTransitioningDelegate</a>;</p>
+    <p>不要滥用这个方法,该方法被称之为 Objective-C 中的黑魔法，滥用会导致难以调试的bug.</p>
   </li>
+  <li>
+    <p>只要在 <code>+load</code> 中实现了 <code>method_exchangeImplementations()</code>, 那么该类的这个方法在整个应用的生命周期以内都被 Swizzling 了，要想调用原来正常的方法，就只能通过调用自己实现的方法名了。</p>
+  </li>
+</ol>
+
+<h3 id="section-2">参考资料</h3>
+
+<ol>
+  <li>
+    <p><a href="http://nshipster.com/method-swizzling/">Method Swizzling</a></p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/yiyaaixuexi/article/details/9374411">Objective-C的hook方案（一）: Method Swizzling</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.cnblogs.com/kesalin/archive/2012/01/05/objc_method_swizzling.html">[Cocoa]深入浅出Cocoa之Method Swizzling</a></p>
+  </li>
+  <li>
+    <p><a href="http://sjpsega.com/blog/2014/09/17/oc-method-swizzling/">Objective-C Method Swizzling</a></p>
+  </li>
+  <li>
+    <p><a href="http://billwang1990.github.io/blog/2014/01/04/about-swizzling/">关于swizzling</a></p>
+  </li>
+</ol>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/">Objective-C 中的对象关联(Associated Objects)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-20T12:14:09+08:00" pubdate data-updated="true"></time>
+        
+           | <a href="/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/#disqus_thread"
+             data-disqus-identifier="http://alex1212112.github.io/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/201410201218.png" alt="" /></p>
+
+<h3 id="section">目录</h3>
+
+<ol>
+  <li>什么是对象关联（Associated Objects）</li>
+  <li>如何使用</li>
+  <li>注意事项</li>
+  <li>参考资料</li>
+</ol>
+
+<h3 id="associated-objects">什么是对象关联(Associated Objects)</h3>
+
+<p>对象关联是Objective-C 2.0运行时的一个特性，起始于OS X Snow Leopard和iOS 4。我们有时候需要在对象中存放一些相关的信息，而又无法通过别的手段实现时，就可以把这些信息通过对象关联的方法与对象关联起来，在需要的时候通过对应的 key 就可以获取到对象的这些信息，比如说我们可以在 Category 中通过对象关联添加自定义的属性。对象关联通过  &lt;objc/runtime.h&gt; 中定义的三个方法实现的:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="kt">void</span> <span class="nf">objc_setAssociatedObject</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">,</span> <span class="kt">id</span> <span class="n">value</span><span class="p">,</span> <span class="n">objc_AssociationPolicy</span> <span class="n">policy</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="kt">id</span> <span class="nf">objc_getAssociatedObject</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="n">objc_removeAssociatedObjects</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">)</span><span class="err">；</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h3 id="section-1">如何使用对象关联</h3>
+
+<p>我们可以使用关联对象在 Category 中添加自定义的属性，比如为一个 GHPerson 类添加一个体重的属性（weight）:</p>
+
+<p>GHPerson+GHAssociatedObject.h</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="cp">#import &quot;GHPerson.h&quot;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@interface</span> <span class="nc">GHPerson</span> <span class="nl">(GHAssociatedObject)</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">weight</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>GHPerson+GHAssociatedObject.m</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="cp">#import &quot;GHPerson+GHAssociatedObject.h&quot;</span>
+</span><span class="line"><span class="cp">#import &lt;objc/runtime.h&gt;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">static</span> <span class="kt">char</span> <span class="n">weightKey</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@implementation</span> <span class="nc">GHPerson</span> <span class="nl">(GHAssociatedObject)</span>
+</span><span class="line"><span class="k">@dynamic</span> <span class="n">weight</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setWeight:</span><span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nv">weight</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="n">objc_setAssociatedObject</span> <span class="p">(</span><span class="nb">self</span><span class="p">,</span><span class="o">&amp;</span><span class="n">weightKey</span><span class="p">,</span><span class="n">weight</span><span class="p">,</span><span class="n">OBJC_ASSOCIATION_RETAIN</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nf">weight</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">   <span class="k">return</span> <span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="n">objc_getAssociatedObject</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">weightKey</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>其中 weightKey 是我们关联对象时用到的key，一般最好使用一个 char 类型的静态全局变量。从关联这个角度上看，我们用的属性不过是把对象关联到了一个实例变量上面。</p>
+
+<p>我们看到 objc_setAssociatedObject 中的第 4 个参数，它表明了一个引用的关系，和 @property 中的属性等同：</p>
+
+<blockquote>
+  <p>OBJC_ASSOCIATION_ASSIGN   等同于 @property (assign) 或 @property (unsafe_unretained)</p>
+</blockquote>
+
+<blockquote>
+  <p>OBJC_ASSOCIATION_RETAIN_NONATOMIC	等同于 @property (nonatomic, strong),其不可以被原子化</p>
+</blockquote>
+
+<blockquote>
+  <p>OBJC_ASSOCIATION_COPY_NONATOMIC	    等同于 @property (nonatomic, copy),其不可以被原子化</p>
+</blockquote>
+
+<blockquote>
+  <p>OBJC_ASSOCIATION_RETAIN  等同于  @property (atomic, strong),  可以被原子化</p>
+</blockquote>
+
+<blockquote>
+  <p>OBJC_ASSOCIATION_COPY  等同于  @property (atomic, copy), 可以被原子化</p>
+</blockquote>
+
+<h3 id="section-2">注意事项</h3>
+
+<ol>
+  <li>不应该用 objc_removeAssociatedObjects() 来删除对象的属性，因为可能会导致其他客户对其添加的属性也被移除了。规范的方法是：调用 objc_setAssociatedObject 方法并传入一个 nil 值来清除一个关联。</li>
+  <li>应该小心使用对象关联，不要滥用，因为可能会引起难以调试的bug。</li>
+</ol>
+
+<h3 id="section-3">参考资料</h3>
+
+<ol>
+  <li><a href="http://nshipster.cn/associated-objects/">Associated Objects</a></li>
+</ol>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/">关于对象等同性判断</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-19T20:20:26+08:00" pubdate data-updated="true"></time>
+        
+           | <a href="/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/#disqus_thread"
+             data-disqus-identifier="http://alex1212112.github.io/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/201410192024.png" alt="" /></p>
+
+<p>我们经常会遇到判断两个对象是否相等的的情况，如果食用 == 操作符来进行判断，比较出来多结果不一定是我们想要的，因为 == 操作符比较的事两个对象对指针，而不是对象的值。 NSObject 协议中有两个用语判断等同性的关键方法：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nf">hash</span><span class="p">;</span>
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>NSObject类对其的默认实现为当且仅当其指针完全相同的时候，两个对象才相等。我们要实现自己的对象等同性就要覆写这两个方法。 有一点要理解，如果 “isEqual:” 方法判断两个对象相等，那么其 hash 方法也必须返回同一个值，但是，如果两个对象的 hash 方法返回同一个值， “isEqual:” 方法却未必认为二者相等。</p>
+
+<p>假如有一个Person类如下:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="k">@interface</span> <span class="nc">Person</span> : <span class="bp">NSObject</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>我们实现其等同性判断的步骤如下：</p>
+
+<ol>
+  <li>编写一个等同性判定方法，类似 NSString 类中的 <code>isEqualToString:</code> 方法，我们这里可以声明为 <code>isEqualToPerson:</code>.</li>
+  <li>覆写 <code>isEqual:</code> 方法和 <code>hash</code> 方法.</li>
+</ol>
+
+<p>具体实现如下：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqualToPerson:</span><span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="nv">person</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span> <span class="o">==</span> <span class="n">person</span><span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">([</span><span class="n">_name</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">]</span> <span class="o">||</span> <span class="n">_name</span> <span class="o">==</span> <span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">))</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">([</span><span class="n">_age</span> <span class="nl">isEqualToNumber</span><span class="p">:</span><span class="n">person</span><span class="p">.</span><span class="n">age</span><span class="p">]</span> <span class="o">||</span> <span class="n">_age</span> <span class="o">==</span> <span class="n">person</span><span class="p">.</span><span class="n">age</span><span class="p">))</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">([</span><span class="nb">self</span> <span class="k">class</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="n">object</span> <span class="k">class</span><span class="p">])</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">isEqualToPerson</span><span class="p">:</span> <span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="n">object</span><span class="p">];</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">else</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="p">[</span><span class="nb">super</span> <span class="nl">isEqual</span><span class="p">:</span><span class="n">object</span><span class="p">];</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nf">hash</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="k">return</span> <span class="p">[</span><span class="n">_name</span> <span class="n">hash</span><span class="p">]</span> <span class="o">^</span> <span class="p">[</span><span class="n">_age</span> <span class="n">hash</span><span class="p">];</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>至此，我们已经完成了符合自己需求的对象等同性判断。</p>
+
+<h3 id="section">参考资料</h3>
+
+<ol>
+  <li><a href="http://www.objccn.io/issue-7-2/">值对象</a></li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/18/foundationkuang-jia-zhong-ji-he-lei-de-%5B%3F%5D-xie-yong-fa-nsarray/">Foundation 框架中集合类的一些用法-NSArray</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-18T21:21:07+08:00" pubdate data-updated="true"></time>
+        
+           | <a href="/blog/2014/10/18/foundationkuang-jia-zhong-ji-he-lei-de-%5B%3F%5D-xie-yong-fa-nsarray/#disqus_thread"
+             data-disqus-identifier="http://alex1212112.github.io/blog/2014/10/18/foundationkuang-jia-zhong-ji-he-lei-de-%5B%3F%5D-xie-yong-fa-nsarray/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/201410191739.png" alt="" /></p>
+
+<h3 id="section">目录</h3>
+
+<ol>
+  <li>遍历</li>
+  <li>排序</li>
+  <li>过滤</li>
+  <li>其他</li>
+  <li>参考资料</li>
+</ol>
+
+<h3 id="section-1">遍历</h3>
+
+<h4 id="for">普通for循环</h4>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"> <span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="p">[</span><span class="n">array</span> <span class="n">count</span><span class="p">];</span> <span class="n">n</span> <span class="o">++</span><span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h4 id="for-in-nsfastenumeration">for in 方式（NSFastEnumeration方式）</h4>
+
+<p>该方式无法获取到数组的下标，在不需要下标且数组元素很多的时候，可以用这种方式</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"> <span class="k">for</span> <span class="p">(</span><span class="kt">id</span> <span class="n">object</span> <span class="k">in</span> <span class="n">array</span><span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>####enumerateObjectsUsingBlock方式</p>
+
+<p>数组遍历的 block 方式 ，其中的stop标志提供了一个优雅的停止遍历的方法，当 *stop = Yes 的时候，遍历就会停止</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"> <span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsUsingBlock</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">}];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h4 id="enumerateobjectswithoptions">enumerateObjectsWithOptions方式</h4>
+
+<p>option 设置为 NSEnumerationConcurrent 为并发遍历方式,</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsWithOptions</span><span class="p">:</span><span class="n">NSEnumerationConcurrent</span> <span class="nl">usingBlock</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">}];</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>这里要注意使用并发方式进行遍历的话，最好不要在block里使用 NSMutableArray 之类的非线程安全的对象，当引起读写冲突的时候，会抛出 double free 的异常。</p>
+
+<p>option 设置为 NSEnumerationReverse 为倒序遍历方式</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsWithOptions</span><span class="p">:</span><span class="n">NSEnumerationReverse</span> <span class="nl">usingBlock</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">}];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h3 id="section-2">排序</h3>
+
+<p>假如数组里要排序的对象如下；</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="k">@interface</span> <span class="nc">User</span> : <span class="bp">NSObject</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h4 id="nsdescriptor">使用NSDescriptor进行排序</h4>
+
+<p>按年龄和姓名进行排序,该方法可以对属性的多个key进行排序</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortDescriptors</span> <span class="o">=</span> <span class="l">@[</span><span class="p">[</span><span class="bp">NSSortDescriptor</span> <span class="nl">sortDescriptorWithKey</span><span class="p">:</span><span class="s">@&quot;age&quot;</span> <span class="nl">ascending</span><span class="p">:</span><span class="nb">YES</span><span class="p">],[</span><span class="bp">NSSortDescriptor</span> <span class="nl">sortDescriptorWithKey</span><span class="p">:</span><span class="s">@&quot;name&quot;</span> <span class="nl">ascending</span><span class="p">:</span><span class="nb">YES</span><span class="p">]</span><span class="l">]</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span>  <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingDescriptors</span><span class="p">:</span><span class="n">sortDescriptors</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h4 id="nscomparator">使用NSComparator进行排序</h4>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingComparator</span><span class="p">:</span><span class="o">^</span><span class="n">NSComparisonResult</span><span class="p">(</span><span class="n">User</span> <span class="o">*</span><span class="n">user1</span><span class="p">,</span> <span class="n">User</span> <span class="o">*</span><span class="n">user2</span><span class="p">){</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">return</span> <span class="p">[</span><span class="n">user1</span><span class="p">.</span><span class="n">age</span> <span class="nl">compare</span><span class="p">:</span><span class="n">user2</span><span class="p">.</span><span class="n">age</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line"><span class="p">}];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h4 id="selctor">使用selctor</h4>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">compare</span><span class="p">:)];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>其中compare为 User对象的方法</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="n">NSComparisonResult</span><span class="p">)</span><span class="nf">compare:</span><span class="p">(</span><span class="n">User</span> <span class="o">*</span><span class="p">)</span><span class="nv">otherUser</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">return</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">age</span> <span class="nl">compare</span><span class="p">:</span><span class="n">otherUser</span><span class="p">.</span><span class="n">age</span><span class="p">];</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h3 id="section-3">过滤</h3>
+
+<p>有时候需要按照一定规则从数组中过滤出符合要求的元素，这时候就要用到NSPredicate了,常用的格式化的用法如下：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSPredicate</span> <span class="o">*</span><span class="n">predicate</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSPredicate</span> <span class="nl">predicateWithFormat</span><span class="p">:</span><span class="s">@&quot;((age &gt;= %@) AND (age &lt; %@))&quot;</span><span class="p">,</span><span class="mi">@20</span><span class="p">,</span><span class="mi">@30</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">filteredArrayUsingPredicate</span><span class="p">:</span><span class="n">predicate</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>这个便返回了 user 数组中 age 在 20 到 30 之间的元素。</p>
+
+<p>NSPredicate 也有个 block 用法</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSPredicate</span> <span class="o">*</span><span class="n">predicate</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSPredicate</span> <span class="nl">predicateWithBlock</span><span class="p">:</span><span class="o">^</span><span class="kt">BOOL</span><span class="p">(</span><span class="kt">id</span> <span class="n">evaluatedObject</span><span class="p">,</span> <span class="bp">NSDictionary</span> <span class="o">*</span><span class="n">bindings</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">        <span class="k">return</span>  <span class="p">((</span><span class="n">User</span> <span class="o">*</span><span class="p">)</span><span class="n">evaluatedObject</span><span class="p">).</span><span class="n">age</span> <span class="o">&gt;=</span> <span class="mi">20</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="n">User</span> <span class="o">*</span><span class="p">)</span><span class="n">evaluatedObject</span><span class="p">).</span><span class="n">age</span> <span class="o">&lt;=</span> <span class="mi">30</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">}];</span>
+</span><span class="line">
+</span><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">filteredArrayUsingPredicate</span><span class="p">:</span><span class="n">predicate</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h3 id="section-4">其他</h3>
+
+<h4 id="section-5">去重</h4>
+
+<p>有一个优雅的KVC用法</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath</span><span class="p">:</span><span class="s">@&quot;@distinctUnionOfObjects.self&quot;</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>别忘了前面 distinctUnionOfObjects 前面的 @ 符号,假如只想返回一个由user数组中的姓名组成的不重复的新数组，可以</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">valueForKeyPath</span><span class="p">:</span><span class="s">@&quot;@distinctUnionOfObjects.name&quot;</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>还要注意假如数组里面存储的是我们自己的对象多话，这个对象还要实现等通性判断的方法：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span><span class="p">;</span>
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nf">hash</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>假如不实现等同性判断的话，系统默认的会把两个对象的指针相同才认为是同一个对象，有时候这显然不是我们想要的. 对象等同性具体实现可参考<a href="http://alex1212112.github.io/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/">对象等同性判断</a>。</p>
+
+<h3 id="section-6">参考资料</h3>
+
+<ol>
+  <li>
+    <p><a href="http://beyondvincent.com/blog/2014/01/26/how-to-sort-nsarray-with-custom-objects/">对 NSArray 中自定义的对象进行排序</a></p>
+  </li>
+  <li>
+    <p><a href="http://objccn.io/issue-7-1/">基础集合类</a></p>
+  </li>
+  <li>
+    <p><a href="http://blog.sunnyxx.com/2014/04/30/ios_iterator/">ios中集合遍历方法的比较和技巧</a></p>
+  </li>
+  <li>
+    <p><a href="http://nshipster.cn/nspredicate/">NSPredicate</a></p>
+  </li>
+  <li>
+    <p><a href="http://nshipster.cn/kvc-collection-operators/">KVC Collection Operators</a></p>
+  </li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/02/kvojian-jie/">KVO 简介</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-02T16:24:18+08:00" pubdate data-updated="true"></time>
+        
+           | <a href="/blog/2014/09/02/kvojian-jie/#disqus_thread"
+             data-disqus-identifier="http://alex1212112.github.io/blog/2014/09/02/kvojian-jie/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/201409021638.png" alt="" /></p>
+
+<h3 id="section">目录</h3>
+
+<p>什么是KVO？</p>
+
+<p>KVO使用流程</p>
+
+<p>KVO实例</p>
+
+<p>相关技巧</p>
+
+<p>参考资料</p>
+
+<h3 id="kvo">什么是KVO？</h3>
+
+<p>KVO提供了一种观察者机制，当指定的对象的属性发生变化的时候，观察者就会收到通知，我们可以根据通知来进行UI更新等操作。它能降低代码之间的藕合度，显著减少开发者编写的代码量。KVO 是 Cocoa 的一项特性，我们可以在 Foundation 的框架里找到它。</p>
+
+<h3 id="kvo-1">KVO使用流程</h3>
+
+<ul>
+  <li>添加观察者（注册KVO),一般在观察者对象初始化的时候，添加观察者</li>
+</ul>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">addObserver:</span><span class="p">(</span><span class="bp">NSObject</span> <span class="o">*</span><span class="p">)</span><span class="nv">observer</span> <span class="nf">forKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">options:</span><span class="p">(</span><span class="n">NSKeyValueObservingOptions</span><span class="p">)</span><span class="nv">options</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<ul>
+  <li>属性变化时的回调</li>
+</ul>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">observeValueForKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">ofObject:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span> <span class="nf">change:</span><span class="p">(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nv">change</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<ul>
+  <li>移除观察者（注销KVO),一般在观察者对象释放的时候移除，比如在dealloc中移除</li>
+</ul>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">removeObserver:</span><span class="p">(</span><span class="bp">NSObject</span> <span class="o">*</span><span class="p">)</span><span class="nv">observer</span> <span class="nf">forKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h3 id="kvo-2">KVO实例</h3>
+
+<p>这里举一个例子，比如我有一个Person的对象如下：</p>
+
+<p>Person.h</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="k">@interface</span> <span class="nc">Person</span> : <span class="bp">NSObject</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+</span><span class="line"><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">age</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>我们的viewController中会引用到该person对象，并在viewController的 - (void)viewWillAppear:(BOOL)animated 方法中注册KVO：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"> <span class="p">[[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">]</span> <span class="nl">addObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;name&quot;</span> <span class="nl">options</span><span class="p">:</span><span class="n">NSKeyValueObservingOptionInitial</span> <span class="nl">context</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">];</span>
+</span><span class="line"> <span class="p">[[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">]</span> <span class="nl">addObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;age&quot;</span> <span class="nl">options</span><span class="p">:</span><span class="n">NSKeyValueObservingOptionInitial</span> <span class="nl">context</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>当person的属性name或age变化的时候，viewController就会调用</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">addObserver:</span><span class="p">(</span><span class="bp">NSObject</span> <span class="o">*</span><span class="p">)</span><span class="nv">anObserver</span>
+</span><span class="line">         <span class="nf">forKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span>
+</span><span class="line">            <span class="nf">options:</span><span class="p">(</span><span class="n">NSKeyValueObservingOptions</span><span class="p">)</span><span class="nv">options</span>
+</span><span class="line">            <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>我们实现该方法如下：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">observeValueForKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">ofObject:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span> <span class="nf">change:</span><span class="p">(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nv">change</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">((</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">context</span> <span class="o">==</span> <span class="nb">self</span><span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="k">if</span> <span class="p">([</span><span class="n">keyPath</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">])</span>
+</span><span class="line">        <span class="p">{</span>
+</span><span class="line">            <span class="nb">self</span><span class="p">.</span><span class="n">nameLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">].</span><span class="n">name</span><span class="p">;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">        <span class="k">if</span> <span class="p">([</span><span class="n">keyPath</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="s">@&quot;age&quot;</span><span class="p">])</span>
+</span><span class="line">        <span class="p">{</span>
+</span><span class="line">            <span class="nb">self</span><span class="p">.</span><span class="n">ageLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">].</span><span class="n">age</span> <span class="n">stringValue</span><span class="p">];</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">else</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="p">[</span><span class="nb">super</span> <span class="nl">observeValueForKeyPath</span><span class="p">:</span><span class="n">keyPath</span> <span class="nl">ofObject</span><span class="p">:</span><span class="n">object</span> <span class="nl">change</span><span class="p">:</span><span class="n">change</span> <span class="nl">context</span><span class="p">:</span><span class="n">context</span><span class="p">];</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>这样当person属性变化的时候，viewController就会更新nameLabel 和 ageLabel.</p>
+
+<p>不要忘了最后要移除KVO，因为我们是在 - (void)viewWillAppear:(BOOL)animated 中添加的KVO，所以我们要在 - (void)viewWillDisappear:(BOOL)animated 中移除KVO，假如添加了KVO 而在观察者释放的时候没有移除KVO，那么对象会因为向已经释放的观察者发送消息而crash.让然移除的时候也不要移除没有添加到观察者的 keyPath，同样会导致程序crash.</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">[</span><span class="nb">self</span> <span class="nl">removeObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;name&quot;</span> <span class="nl">context</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line"><span class="p">[</span><span class="nb">self</span> <span class="nl">removeObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;age&quot;</span> <span class="nl">context</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nb">self</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>这样，一个实现KVO的简单例子就完成了.  <a href="https://github.com/alex1212112/KVODemo">Demo</a>.</p>
+
+<h3 id="section-1">相关技巧与说明</h3>
+
+<ol>
+  <li>
+    <p>有时候需要在第一次运行代码的时候更新一次 UI。我们可以设置KVO的选项   NSKeyValueObservingOptionInitial 的选项。这将会让 KVO 通知在调用 -addObserver:forKeyPath:… 的时候也被触发。</p>
+  </li>
+  <li>
+    <p>KVO 能降低代码的藕合度，是因为Model对象在改变的时候，所有观察者能自动的去处理相关逻辑，这样我们就不用在模型对象里去编写专门的代码去通知观察者了，从而保持了模型类的简洁性。</p>
+  </li>
+  <li>
+    <p>有时候你可能想在第一次更新UI的时候去检查Model的属性是否为空，如果为空，就通过一些方法（比如方法A）去获取这个属性的值，再重新触发KVO，来更新获取到的新值，不过这里要注意方法A里假如也全是在主线程运行的话，第二次KVO就不会触发，因为KVO是同步运行在主线程上的，这样做可能是为了防止出现死循环吧，这时候就要在方法A里通过后台线程去获取属性的值，然后在主线程里把值赋给Model的属性，这样就能触发KVO了。</p>
+  </li>
+</ol>
+
+<h3 id="section-2">参考资料</h3>
+
+<ol>
+  <li>
+    <p><a href="http://objccn.io/issue-7-3/">KVC 和 KVO</a>;</p>
+  </li>
+  <li>
+    <p><a href="http://nshipster.com/key-value-observing/">Key-Value Observing</a>;</p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/kesalin/article/details/8194240">[深入浅出Cocoa]详解键值观察（KVO）及其实现机理</a>;</p>
+  </li>
+  <li>
+    <p><a href="https://developer.apple.com/library/ios/documentation/cocoa/conceptual/KeyValueCoding/Articles/KeyValueCoding.html#//apple_ref/doc/uid/10000107-SW1">Key-Value Coding Programming Guide</a>;</p>
+  </li>
+  <li>
+    <p><a href="http://blog.riaproject.com/objective-c/2147/%E4%BA%86%E8%A7%A3-objective-c-%E4%B8%8A%E7%9A%84-kvokey-value-observing-%E6%A9%9F%E5%88%B6.html">了解 Objective-C 上的 KVO(Key-Value Observing) 機制</a>;</p>
+  </li>
+  <li><a href="http://yulingtianxia.com/blog/2014/05/12/objective-czhong-de-kvche-kvo/">Objective-C中的KVC和KVO</a></li>
+  <li><a href="http://beyondvincent.com/blog/2013/05/05/18/">iOS设计模式(01):观察者</a>；</li>
 </ol>
 
 </div>
@@ -838,6 +1010,8 @@
     </article>
   
   <div class="pagination">
+    
+      <a class="prev" href="4">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     

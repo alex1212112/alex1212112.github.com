@@ -1,0 +1,898 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Summerrose’s Blog</title>
+  <meta name="author" content="ghren">
+
+  
+  <meta name="description" content="####简介 UIKit dynamics(UIKit动力学)是UIKit的一套动画和交互体系。和我们用的CoreAnimation或者UIView animations一样，只不过UIKit 动力学将现实世界动力驱动的动画引入了UIKit，比如重力，铰链连接，碰撞，悬挂、吸附等效果。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://alex1212112.github.io/posts/5">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin" rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Noto+Serif:400,700' rel='stylesheet' type='text/css'>
+
+
+
+  
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <nav id="main-nav" role="navigation">
+<ul class="main-navigation">
+  <li><a href="/" class="nav-link">Blog</a></li>
+  <li><a href="/blog/archives" class="nav-link">Archives</a></li>
+  <li><a href="/atom.xml" class="nav-link">RSS</a></li>
+</ul>
+
+</nav>
+  <header role="banner"><hgroup>
+	
+  <h1><a href="/">Summerrose’s Blog</a></h1>
+  
+</hgroup>
+
+</header> 
+  
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi/">UIKit 动力学(UIKit Dynamics)学习</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-11T11:17:46+08:00" pubdate data-updated="true"></time>
+        
+           | <a href="/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi/#disqus_thread"
+             data-disqus-identifier="http://alex1212112.github.io/blog/2014/06/11/uikitdong-li-xue-uikit-dynamics-xue-xi/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/4908ab0eae4b946b9066eafd11f8030580c2c4f79dfd.png" alt="" />
+####简介</p>
+
+<p>UIKit dynamics(UIKit动力学)是UIKit的一套动画和交互体系。和我们用的CoreAnimation或者UIView animations一样，只不过UIKit 动力学将现实世界动力驱动的动画引入了UIKit，比如重力，铰链连接，碰撞，悬挂、吸附等效果。</p>
+
+<h4 id="section">基本概念和元素</h4>
+
+<ul>
+  <li>
+    <p>UIdynamicItem: 实现了UIDynamicItem委托的对象，它是动画的执行者，相关的物理属性也是加在这个对象上，由于iOS7之后，UIView和UICollectionViewLayoutAttributes类默认实现了该协议，所以UIView就可以看作是一个UIdynamicItem；</p>
+  </li>
+  <li>
+    <p>UIDynamicBehavior：动力行为的描述，用来指定UIDynamicItem应该如何运动，即定义适用的物理规则。一般我们使用这个类的子类对象来对一组UIDynamicItem应该遵守的行为规则进行描述，在iOS7中，系统默认提供了如下的动力行为：</p>
+
+    <p>1、UIGravityBehavior：重力行为</p>
+
+    <p>2、UICollisionBehavior：碰撞行为</p>
+
+    <p>3、UIAttachmentBehavior：铰链行为，两个物体连接的状态，可以模拟无形变或者弹性行遍的情况</p>
+
+    <p>4、UISnapBehavior：吸附行为，将UIView通过动画吸附到某个点上。</p>
+
+    <p>5、UIPushBehavior：推行为，比如为一个UIView施加一个力的作用，我们可以指定力的大小，方向和租用点等信息。</p>
+
+    <p>6、UIDynamicItemBehavior：动力学辅助元素行为，系统有一组自定义的默认值</p>
+  </li>
+  <li>
+    <p>UIDynamicAnimator；动画的播放者，动力行为（UIDynamicBehavior）的容器，添加到容器内的行为将发挥作用；</p>
+  </li>
+  <li>
+    <p>ReferenceView：力学参考系，只有当想要添加力学的UIView是ReferenceView的子view时，动力UI才发生作用，比如你可以把ViewController的view作为ReferenceView；</p>
+  </li>
+</ul>
+
+<h4 id="section-1">代码示例（一个简单的重力行为）</h4>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> *  初始化subView</span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">initSubView</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="n">_subView</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:(</span><span class="bp">CGRect</span><span class="p">){</span>
+</span><span class="line">
+</span><span class="line">        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span>   <span class="mf">100.0f</span><span class="p">,</span>
+</span><span class="line">        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span>   <span class="mf">108.0f</span><span class="p">,</span>
+</span><span class="line">        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
+</span><span class="line">        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
+</span><span class="line">    <span class="p">}];</span>
+</span><span class="line">    <span class="n">_subView</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">lightGrayColor</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">view</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">_subView</span><span class="p">];</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> *  简单的重力行为</span>
+</span><span class="line"><span class="cm"> *</span>
+</span><span class="line"><span class="cm"> *  @param sender leftButton</span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">leftButtonClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">_subView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span>  <span class="p">(</span><span class="bp">CGRect</span><span class="p">){</span>
+</span><span class="line">
+</span><span class="line">        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span>   <span class="mf">100.0f</span><span class="p">,</span>
+</span><span class="line">        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span>   <span class="mf">108.0f</span><span class="p">,</span>
+</span><span class="line">        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
+</span><span class="line">        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">_animator</span><span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="c1">// 1 假如animator为空的话，就以当前ViewController的View为参考View初始化一个animator</span>
+</span><span class="line">        <span class="n">_animator</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIDynamicAnimator</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithReferenceView</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">view</span><span class="p">];</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">        <span class="c1">//  移除animator上所有的力学行为</span>
+</span><span class="line">    <span class="p">[</span><span class="n">_animator</span> <span class="n">removeAllBehaviors</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line">        <span class="c1">// 2 初始化重力行为</span>
+</span><span class="line">    <span class="bp">UIGravityBehavior</span> <span class="o">*</span><span class="n">gravityBeahvior</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIGravityBehavior</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithItems</span><span class="p">:</span><span class="l">@[</span><span class="n">_subView</span><span class="l">]</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line">       <span class="c1">// 3 添加重力行为到animator上，使重力行为生效</span>
+</span><span class="line">    <span class="p">[</span><span class="n">_animator</span> <span class="nl">addBehavior</span><span class="p">:</span><span class="n">gravityBeahvior</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>代码中关键的地方已经用注释表示出来，在制作一个简单的UIKit 动力学行为的的步骤如下：</p>
+
+<ol>
+  <li>通过参考系(ReferenceView)来初始化一个UIDynamicAnimator；</li>
+  <li>初始化一个力学行为，上述代码中是一个重力行为UIGravityBehavior；</li>
+  <li>把配置好的力学行为添加到animator中；</li>
+</ol>
+
+<p>表现出来的效果如下图：</p>
+
+<p><img src="/images/201406111150gravity.gif" alt="" /></p>
+
+<h4 id="section-2">代码示例（带碰撞的重力行为）</h4>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> *  带重力的碰撞行为</span>
+</span><span class="line"><span class="cm"> *</span>
+</span><span class="line"><span class="cm"> *  @param sender middleButton</span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">middleButtonClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">_subView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span>  <span class="p">(</span><span class="bp">CGRect</span><span class="p">){</span>
+</span><span class="line">
+</span><span class="line">        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span>   <span class="mf">100.0f</span><span class="p">,</span>
+</span><span class="line">        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span>   <span class="mf">108.0f</span><span class="p">,</span>
+</span><span class="line">        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
+</span><span class="line">        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">_animator</span><span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="n">_animator</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIDynamicAnimator</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithReferenceView</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">view</span><span class="p">];</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">[</span><span class="n">_animator</span> <span class="n">removeAllBehaviors</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">//初始化一个碰撞的行为</span>
+</span><span class="line">    <span class="bp">UICollisionBehavior</span> <span class="o">*</span><span class="n">collisionBehavior</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UICollisionBehavior</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithItems</span><span class="p">:</span><span class="l">@[</span><span class="n">_subView</span><span class="l">]</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">//配置碰撞的边界，下述代码设置碰撞边界为参考系(self.view)的边框作为碰撞边界</span>
+</span><span class="line">    <span class="n">collisionBehavior</span><span class="p">.</span><span class="n">translatesReferenceBoundsIntoBoundary</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">[</span><span class="n">_animator</span> <span class="nl">addBehavior</span><span class="p">:</span><span class="n">collisionBehavior</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">//重力行为</span>
+</span><span class="line">    <span class="bp">UIGravityBehavior</span> <span class="o">*</span><span class="n">gravityBeahvior</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIGravityBehavior</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithItems</span><span class="p">:</span><span class="l">@[</span><span class="n">_subView</span><span class="l">]</span><span class="p">];</span>
+</span><span class="line">    <span class="p">[</span><span class="n">_animator</span> <span class="nl">addBehavior</span><span class="p">:</span><span class="n">gravityBeahvior</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>表现出来的效果如下图：</p>
+
+<p><img src="/images/201406111150gravityCollision.gif" alt="" /></p>
+
+<p>注：碰撞行为有自己的delegate回调，可以帮助我们了解碰撞的具体情况，包括哪个item和哪个item开始发生碰撞，碰撞接触点是什么，是否和边界碰撞，和哪个边界碰撞了等信息。参见:<a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollisionBehaviorDelegate_Protocol/Reference/Reference.html">UICollisionBehavior</a>.</p>
+
+<h4 id="section-3">代码示例（吸附行为）</h4>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> *  吸附行为</span>
+</span><span class="line"><span class="cm"> *</span>
+</span><span class="line"><span class="cm"> *  @param sender rightButton</span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">rightButtonClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">_subView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span>  <span class="p">(</span><span class="bp">CGRect</span><span class="p">){</span>
+</span><span class="line">
+</span><span class="line">        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span>   <span class="mf">100.0f</span><span class="p">,</span>
+</span><span class="line">        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span>   <span class="mf">108.0f</span><span class="p">,</span>
+</span><span class="line">        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
+</span><span class="line">        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">_animator</span><span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="n">_animator</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIDynamicAnimator</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithReferenceView</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">view</span><span class="p">];</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">[</span><span class="n">_animator</span> <span class="n">removeAllBehaviors</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">//初始化一个吸附行为</span>
+</span><span class="line">    <span class="bp">UISnapBehavior</span> <span class="o">*</span><span class="n">snap</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UISnapBehavior</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithItem</span><span class="p">:</span><span class="n">_subView</span> <span class="nl">snapToPoint</span><span class="p">:(</span><span class="bp">CGPoint</span><span class="p">){</span><span class="mf">100.0f</span><span class="p">,</span><span class="mf">300.0f</span><span class="p">}];</span>
+</span><span class="line">    <span class="c1">//添加吸附行为到animator</span>
+</span><span class="line">    <span class="p">[</span><span class="n">_animator</span> <span class="nl">addBehavior</span><span class="p">:</span><span class="n">snap</span><span class="p">];</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>表现出来的效果如下图：</p>
+
+<p><img src="/images/201406111151snap.gif" alt="" /></p>
+
+<h4 id="section-4">下载</h4>
+
+<p><a href="https://github.com/alex1212112/DynamicsDemo">Demo下载地址</a></p>
+
+<h4 id="section-5">参考资料</h4>
+<p><a href="http://onevcat.com/2013/06/uikit-dynamics-started/">UIKit Dynamics入门</a></p>
+
+<p><a href="http://beyondvincent.com/blog/2013/06/16/88/">iOS7新特征汇总[05]初窥UIKit动力(UIKit Dynamics)</a></p>
+
+<p><a href="http://www.raywenderlich.com/zh-hans/52617/uikit-%E5%8A%9B%E5%AD%A6%E6%95%99%E7%A8%8B">UIKit-力学教程</a></p>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/09/uiviewxiang-guan/">UIView 相关</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-09T10:21:49+08:00" pubdate data-updated="true"></time>
+        
+           | <a href="/blog/2014/06/09/uiviewxiang-guan/#disqus_thread"
+             data-disqus-identifier="http://alex1212112.github.io/blog/2014/06/09/uiviewxiang-guan/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://ww3.sinaimg.cn/large/8bcaa2dfjw1ec8pxpionej20dw07sdgj.jpg" alt="" /></p>
+
+<h4 id="section">问题描述:</h4>
+
+<p>有时候设置subView的center如下：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="n">subView</span><span class="p">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">view</span><span class="p">.</span><span class="n">center</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>但实际显示出来发现subView的位置不对，该如何处理？</p>
+
+<h4 id="section-1">解决办法:</h4>
+
+<p>改为</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="n">subView</span><span class="p">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">CGPointMake</span><span class="p">(</span><span class="n">view</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+</span><span class="line"><span class="n">view</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>不要使用view.center,除非view和subView共用同一个superView,center这个属性指的是子view的中心点在父view中的位置,是以父view的坐标系为参考的；</p>
+
+<hr />
+
+<h4 id="section-2">问题描述:</h4>
+
+<p>UIView在自己实现draw方法时候，为什么整个view的背景都变成黑色？</p>
+
+<h4 id="section-3">解决办法:</h4>
+
+<p>设置下view的backgroundColor就OK了。</p>
+
+<p>说明：当view的backgroundColor为nil并且opaque属性为YES，自己实现draw方法，view的背景颜色就会变成黑色。</p>
+
+<hr />
+
+<h4 id="section-4">问题描述:</h4>
+
+<p>UIView 通过layer 的 shadowColor、shadowOpacity、shadowOffset、shadowRadius 几个属性可以很方便的为 UIView 添加阴影效果。但是在添加了阴影后，会出现动画卡顿的现象，如何解决？</p>
+
+<h4 id="section-5">解决办法:</h4>
+
+<p>为阴影指定路径，即设置 layer 的 shadowPath 属性。如下：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="n">view</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">shadowPath</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIBezierPath</span>  <span class="nl">bezierPathWithRect</span><span class="p">:</span><span class="n">view</span><span class="p">.</span><span class="n">bounds</span><span class="p">].</span><span class="bp">CGPath</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>说明：不指定阴影路径时，绘制阴影会产生大量的 Offscreen-Rendered 。而 Offscreen-Rendered（离屏渲染）和 Blending（混合）是 iOS 绘图中对性能影响比较大的两方面。</p>
+
+<p>参考：<a href="http://blog.devdlh.com/blog/2013/03/18/performance-problerm-caused-by-shadowpath/">绘制阴影引发的 iOS 绘图性能问题总结</a></p>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang/">iOS7 中 UIViewController 的转场</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-05T18:57:40+08:00" pubdate data-updated="true"></time>
+        
+           | <a href="/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang/#disqus_thread"
+             data-disqus-identifier="http://alex1212112.github.io/blog/2014/05/05/ios7zhong-uiviewcontrollerde-zhuan-chang/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://ww3.sinaimg.cn/large/8bcaa2dfjw1ec8pxqd4plj20dw07sdgr.jpg" alt="" /></p>
+
+<p>iOS7提供了一套供开发者方便自定义Viewcontroller间切换动画的API，我们可以利用这些API来自定义自己的转场效果，替代系统提供的默认push、present等动画效果。</p>
+
+<h2 id="section">实现流程</h2>
+
+<h4 id="presentviewcontroller">首先介绍presentViewController转场动画的实现，主要流程如下：</h4>
+
+<ul>
+  <li>
+    <p>自定义一个转场动画效果。</p>
+  </li>
+  <li>
+    <p>在 presentingViewConttroller 里实现 UIViewControllerTransitioningDelegate 代理	方法，主要有两个，分别是present时候的动画和disMiss时候的动画，</p>
+  </li>
+</ul>
+
+<p>present时候要实现的方法：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">animationControllerForPresentedController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">presented</span> <span class="nf">presentingController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">presenting</span> <span class="nf">sourceController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">source</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>disMiss时候要实现的方法：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">animationControllerForDismissedController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">dismissed</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>这两个方法都返回刚才第一步自定义的转场动画。</p>
+
+<ul>
+  <li>在present的时候设置presentedViewController 的 transitioningDelegate如下：</li>
+</ul>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="bp">UIViewController</span> <span class="o">*</span><span class="n">presentedVC</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIViewController</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class="line"><span class="n">presentedVC</span><span class="p">.</span><span class="n">transitioningDelegate</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
+</span><span class="line"><span class="p">[</span><span class="nb">self</span> <span class="nl">presentViewController</span><span class="p">:</span><span class="n">presentedVC</span> <span class="nl">animated</span><span class="p">:</span><span class="nb">YES</span> <span class="nl">completion</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h4 id="navigationcontrollerpushpop">关于navigationController的push、pop的动画流程如下所示：</h4>
+
+<ul>
+  <li>
+    <p>自定义一个转场动画效果。</p>
+  </li>
+  <li>
+    <p>实现UINavigationControllerDelegate的代理方法，这里就一个</p>
+  </li>
+</ul>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerAnimatedTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">navigationController:</span><span class="p">(</span><span class="bp">UINavigationController</span> <span class="o">*</span><span class="p">)</span><span class="nv">navigationController</span>
+</span><span class="line">                                   <span class="nf">animationControllerForOperation:</span><span class="p">(</span><span class="n">UINavigationControllerOperation</span><span class="p">)</span><span class="nv">operation</span>
+</span><span class="line">                                                <span class="nf">fromViewController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">fromVC</span>
+</span><span class="line">                                                  <span class="nf">toViewController:</span><span class="p">(</span><span class="bp">UIViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">toVC</span> <span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>这个方法也返回第一步里自定义的转场动画。为什么viewController有present 和disMiss两个方法，为什么这里没有push 和pop 两个方法呢，那是因为在这个代理方法里可以通过(UINavigationControllerOperation)operation 参数来确认当前操作究竟是push 还是pop， 当<code>operation == UINavigationControllerOperationPush</code>时候 就是push操作，当<code>operation == UINavigationControllerOperationPop</code> 时候就是pop操作。</p>
+
+<ul>
+  <li>在初始化时候设置NavigationController的delgate如下:</li>
+</ul>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="nb">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h3 id="api">自定义动画和相关API介绍</h3>
+
+<p>上面流程里第一步转场动画效果该如何实现呢？？？</p>
+
+<p>我们要自定义一个继承于NSObject的类，此类要实现UIViewControllerAnimatedTransitioning协议，并实现其代理方法，代理方法主要有两个，其中一个返回整个动画花费的时间，如下：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="n">NSTimeInterval</span><span class="p">)</span><span class="nf">transitionDuration:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>假如我们动画时间为1秒，我们就可以在这样实现此方法</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="n">NSTimeInterval</span><span class="p">)</span><span class="nf">transitionDuration:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
+</span><span class="line">		<span class="p">{</span>
+</span><span class="line">			<span class="k">return</span> <span class="mf">1.0f</span><span class="p">;</span>
+</span><span class="line">		<span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>另一个就是具体动画实现的方法，如下：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">animateTransition:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>其中	transitionContext可以理解为动画切换的上下文，它是一个实现了 <code>UIViewControllerContextTransitioning</code>协议的NSObject，它提供了VC切换的一切必需内容，如从哪个VC到哪个VC，动画切换的容器等，这个NSObject里的几个比较重要的方法如下：</p>
+
+<ul>
+  <li><code>-(UIView *)containerView; </code></li>
+</ul>
+
+<pre><code>VC切换所发生的view容器，开发者应该将切出的view移除，将切入的view加入到该view容器中。
+</code></pre>
+
+<ul>
+  <li><code>-(UIViewController )viewControllerForKey:(NSString )key; </code></li>
+</ul>
+
+<pre><code>提供一个key，返回对应的VC。现在的SDK中key的选择只有UITransitionContextFromViewControllerKey和UITransitionContextToViewControllerKey两种，分别表示将要切出和切入的VC。
+</code></pre>
+
+<ul>
+  <li><code>-(CGRect)initialFrameForViewController:(UIViewController *)vc; </code></li>
+</ul>
+
+<pre><code>某个VC的初始位置，可以用来做动画的计算。
+</code></pre>
+
+<ul>
+  <li><code>-(CGRect)finalFrameForViewController:(UIViewController *)vc;</code></li>
+</ul>
+
+<pre><code>与上面的方法对应，得到切换结束时某个VC应在的frame。
+</code></pre>
+
+<ul>
+  <li><code>-(void)completeTransition:(BOOL)didComplete; </code></li>
+</ul>
+
+<pre><code>向这个context报告切换已经完成。
+</code></pre>
+
+<p>下面是一个该方法的简单实现</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">animateTransition:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
+</span><span class="line">	<span class="p">{</span>
+</span><span class="line">    <span class="c1">// 1. Get controllers from transition context</span>
+</span><span class="line">    <span class="bp">UIViewController</span> <span class="o">*</span><span class="n">toVC</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">viewControllerForKey</span><span class="p">:</span><span class="n">UITransitionContextToViewControllerKey</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// 2. Set init frame for toVC</span>
+</span><span class="line">
+</span><span class="line">    <span class="bp">CGRect</span> <span class="n">screenBounds</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIScreen</span> <span class="n">mainScreen</span><span class="p">]</span> <span class="n">bounds</span><span class="p">];</span>
+</span><span class="line">    <span class="bp">CGRect</span> <span class="n">finalFrame</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">finalFrameForViewController</span><span class="p">:</span><span class="n">toVC</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line">    <span class="bp">UIView</span> <span class="o">*</span><span class="n">toViewSnapshot</span> <span class="o">=</span> <span class="p">[</span><span class="n">toVC</span><span class="p">.</span><span class="n">view</span> <span class="nl">resizableSnapshotViewFromRect</span><span class="p">:</span><span class="n">toVC</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">frame</span> <span class="nl">afterScreenUpdates</span><span class="p">:</span><span class="nb">YES</span> <span class="nl">withCapInsets</span><span class="p">:</span><span class="n">UIEdgeInsetsZero</span><span class="p">];</span>
+</span><span class="line"> 	
+</span><span class="line">    <span class="n">toViewSnapshot</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectOffset</span><span class="p">(</span><span class="n">finalFrame</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">screenBounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line">    <span class="bp">UIView</span> <span class="o">*</span><span class="n">toView</span> <span class="o">=</span> <span class="n">toVC</span><span class="p">.</span><span class="n">view</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// 3. Add toVC&#39;s view to containerView</span>
+</span><span class="line">    <span class="bp">UIView</span> <span class="o">*</span><span class="n">containerView</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="n">containerView</span><span class="p">];</span>
+</span><span class="line">    <span class="p">[</span><span class="n">containerView</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">toViewSnapshot</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// 4. Do animate now</span>
+</span><span class="line">    <span class="n">NSTimeInterval</span> <span class="n">duration</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">transitionDuration</span><span class="p">:</span><span class="n">transitionContext</span><span class="p">];</span>
+</span><span class="line">    <span class="p">[</span><span class="bp">UIView</span> <span class="nl">animateWithDuration</span><span class="p">:</span><span class="n">duration</span>
+</span><span class="line">                          <span class="nl">delay</span><span class="p">:</span><span class="mf">0.0</span>
+</span><span class="line">         <span class="nl">usingSpringWithDamping</span><span class="p">:</span><span class="mf">0.4</span>
+</span><span class="line">          <span class="nl">initialSpringVelocity</span><span class="p">:</span><span class="mf">10.0</span>
+</span><span class="line">                        <span class="nl">options</span><span class="p">:</span><span class="n">UIViewAnimationOptionCurveEaseInOut</span>
+</span><span class="line">                     <span class="nl">animations</span><span class="p">:</span><span class="o">^</span><span class="p">{</span>
+</span><span class="line">                         <span class="n">toViewSnapshot</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">finalFrame</span><span class="p">;</span>
+</span><span class="line">                     <span class="p">}</span> <span class="nl">completion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">BOOL</span> <span class="n">finished</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">                         <span class="k">if</span> <span class="p">([</span><span class="n">transitionContext</span> <span class="n">transitionWasCancelled</span><span class="p">])</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">                         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">							<span class="c1">//5. add the real toView and remove the snapshot</span>
+</span><span class="line">                             <span class="p">[</span><span class="n">containerView</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">toView</span><span class="p">];</span>
+</span><span class="line">                             <span class="k">for</span> <span class="p">(</span><span class="bp">UIView</span> <span class="o">*</span><span class="n">view</span> <span class="k">in</span> <span class="n">containerView</span><span class="p">.</span><span class="n">subviews</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        							<span class="k">if</span> <span class="p">(</span><span class="n">view</span> <span class="o">!=</span> <span class="n">toView</span><span class="p">)</span>
+</span><span class="line">        								<span class="p">{</span>
+</span><span class="line">            								<span class="p">[</span><span class="n">view</span> <span class="n">removeFromSuperview</span><span class="p">];</span>
+</span><span class="line">        								<span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">                         <span class="p">}</span>
+</span><span class="line">                         <span class="c1">//6. transition is finished</span>
+</span><span class="line">                         <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">completeTransition</span><span class="p">:</span><span class="o">!</span><span class="p">[</span><span class="n">transitionContext</span> <span class="n">transitionWasCancelled</span><span class="p">]];</span>
+</span><span class="line">                     <span class="p">}];</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line">	<span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>解释：</p>
+
+<blockquote>
+  <ol>
+    <li>从上下文中获取toVC(根据需要，这里也可以获取到fromVC).</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>获取toVC的view的快照和初始的frame.</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>获取动画发生的的容器View——containerView,并将toView的快照加入到该容器View中.</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>通过视图动画来执行自定义动画，此代码中的实现了一个iOS7中新增加的弹性动画效果，该动画使视图滑动时，像弹簧一样，稍微拉伸一些，再弹回正确位置.</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>移除toView的快照，并将真正的toView加入到容器View中.</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>向context报告动画切换已经完成.</li>
+  </ol>
+</blockquote>
+
+<h3 id="section-1">参考资料</h3>
+
+<ol>
+  <li>
+    <p><a href="http://onevcat.com/2013/10/vc-transition-in-ios7/">WWDC 2013 Session笔记 - iOS7中的ViewController切换</a>;</p>
+  </li>
+  <li>
+    <p><a href="http://objccn.io/issue-5-3/">View Controller 转场</a>;</p>
+  </li>
+  <li>
+    <p><a href="http://www.cocoachina.com/gamedev/misc/2013/1224/7597.html">iOS7教程系列：自定义导航转场动画以及更多</a>;</p>
+  </li>
+  <li>
+    <p><a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewControllerContextTransitioning_protocol/Reference/Reference.html">UIViewControllerContextTransitioning</a>;</p>
+  </li>
+  <li>
+    <p><a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewControllerAnimatedTransitioning_Protocol/Reference/Reference.html">UIViewControllerAnimatedTransitioning</a>;</p>
+  </li>
+  <li>
+    <p><a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIViewControllerTransitioningDelegate_protocol/Reference/Reference.html">UIViewControllerTransitioningDelegate</a>;</p>
+  </li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="4">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - ghren -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'alex1212112';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
