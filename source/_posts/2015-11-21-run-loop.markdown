@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-###目录
+### 目录
 1. 介绍
 2. 用途
 3. Runloop Mode
@@ -15,15 +15,15 @@ categories:
 6. 自定义 input source
 
 
-###介绍
+### 介绍
 
 Run Loop 正如其字面意思一样，表示运行循环，可以理解为一个 do-while 循环。Run Loop 与线程密切相关，每个线程对应着自己的一个 Run Loop，但是除了主线程的 Run Loop 是默认开启之外，剩下的线程的 Run Loop 一开始是不存在的，需要手动通过 `[NSRunLoop currentRunLoop]` 或 `CFRunLoopGetCurrent()` 获取当前线程的 Run Loop，这两个方法分别对应着 Foundation 框架和 Core Foundation 框架，它们的原理为，若当前线程对应的 Run Loop 存在的时候，直接返回该 Run Loop，当该线程当前不存在 Run Loop 时候，就创建当前线程的 Run Loop。 Foundation 框架的方法是对 Core Foundation 框架的方法做了一层封装，另外，NSRunloop 是非线程安全的，而 CFRunloopRef 是线程安全的。
 
-###用途
+### 用途
 
 Run Loop 主要是用来保持线程常驻，从而接收事件的。比如常见的触摸事件，就是通过主线程的 Run Loop 来接收，然后再分发给相关的处理程序。
 
-###Runloop Mode
+### Runloop Mode
 
 每一个 Run Loop 包含着多个 Runloop mode，每次运行的时候，它只会运行在一个特定的 Runloop mode 下，iOS 系统常用的 Runloop Mode 有两个：
 
@@ -36,23 +36,25 @@ Run Loop 主要是用来保持线程常驻，从而接收事件的。比如常�
 
 来让此 timer 被标记为 NSRunLoopCommonModes 或 UITrackingRunLoopMode， 最好是被标记为 NSRunLoopCommonModes，这样，不管线程的 Run Loop 运行在什么 Mode 下，都能接收到事件了。
 
-###Runloop Mode Item
+### Runloop Mode Item
 
 每一个 Runloop Mode 都包含若干 Mode Item，Mode Item 有3种，分别是 Source， Timer 和 Observer。每一个Run Loop 会运行在特定的 Mode 下，这个 Mode 里面必须包含至少一个 Mode Item，如果这个 Mode 里面没有包含任何 Mode Item，那么当前的 Run Loop 会立刻退出。我们可以通过以下方法来添加 Mode Item 到指定的 Mode 中：
 
-```
+```objc
 CFRunLoopAddSource(CFRunLoopRef rl, CFRunLoopSourceRef source, CFStringRef modeName);
 CFRunLoopAddObserver(CFRunLoopRef rl, CFRunLoopObserverRef observer, CFStringRef modeName);
 CFRunLoopAddTimer(CFRunLoopRef rl, CFRunLoopTimerRef timer, CFStringRef mode);
 ```
+
 通过下面的方法把 Mode Item 从指定 Mode 中移除
 
-```
+```objc
 CFRunLoopRemoveSource(CFRunLoopRef rl, CFRunLoopSourceRef source, CFStringRef modeName);
 CFRunLoopRemoveObserver(CFRunLoopRef rl, CFRunLoopObserverRef observer, CFStringRef modeName);
 CFRunLoopRemoveTimer(CFRunLoopRef rl, CFRunLoopTimerRef timer, CFStringRef mode);
 ```
-####Source
+
+#### Source
 
 Source（CFRunLoopSourceRef） 用来产生事件的，它有两个版本 Source0 和 Source1。
 
@@ -61,13 +63,13 @@ Source0 包含了一个回调函数，它无法主动唤醒线程的 Run Loop，
 Source1 被称为基于 Port 的 source （Port based source）; 它主要用来进行线程间的通信，能主动唤醒线程的 Run Loop。
 
 
-####Timer
+#### Timer
 
 Timer 就是我们平时使用的 NSTimer，它实际上是对 CFRunLoopTimerRef 进行了封装，当我们将其加入 RunLoop 时，RunLoop会注册对应的时间点，当时间点到时，RunLoop会被唤醒以执行对应的回调函数。
 
 假如 Timer 被设置为只触发一次，其触发后会从Run Loop中移除，假如 Timer 被设置为循环触发时，会一直保存在当前Run Loop中，直到调用invalidated方法。
 
-####Observer
+#### Observer
 
 Run Loop 的 Observer(CFRunLoopObserverRef) 会观察 Run Loop 的运行状态，对于不同的状态执行不同的回调函数，Run Loop 的状态有以下几种:
 
@@ -80,7 +82,7 @@ Run Loop 的 Observer(CFRunLoopObserverRef) 会观察 Run Loop 的运行状态�
 
 Observer 同 Timer 类似，在被设置为只触发一次，其触发后会从Run Loop中移除，假如被设置为循环触发时，会一直保存在当前Run Loop中。
 
-###Run Loop 运行机制
+### Run Loop 运行机制
 
 Run Loop 是用来接收事件的一个循环，其生命周期如下：
 
@@ -106,20 +108,21 @@ Run Loop 是用来接收事件的一个循环，其生命周期如下：
 
 
 
-###自定义 input source
+### 自定义 input source
 
-####Source0
+#### Source0
 
 我们首先定义一个 Source：
 
-```
+```objc
 CFRunLoopSourceContext context = {0,(__bridge void *)(self), NULL, NULL, NULL, NULL, NULL, NULL, NULL, &runLoopSourceFired};
     
 self.inputSource = CFRunLoopSourceCreate(kCFAllocatorDefault, 0, &context);
 ```
+
 其中 context 里面的最后一个参数表示 source 触发时候的回调函数:
 
-```
+```objc
 void runLoopSourceFired(void *info)
 {
     NSLog(@"source0 Fired");
@@ -127,13 +130,15 @@ void runLoopSourceFired(void *info)
 ```
 
 之后我们建立并开启一个线程：
-```
+
+```objc
 self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(p_threadWillEnter) object:nil];
 [self.thread start];
 ```
 
 在这个线程里我们执行如下方法：
-```
+
+```objc
 - (void)p_threadWillEnter{
 
     @autoreleasepool {
@@ -152,7 +157,8 @@ self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(p_threadW
 ```
 
 之后假如有事件发生，我们需要通知辅助线程，执行 source0 回调:
-```
+
+```objc
 - (IBAction)buttonDidClicked:(id)sender {
     
     CFRunLoopSourceSignal(self.inputSource); //将该 source 标记为待处理
@@ -166,21 +172,28 @@ self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(p_threadW
 #### Source1 (Port-based Source)
 
 首先定义一个 NSPort
-```
+
+```objc
   self.mainThreadPort = [NSPort port];
 ```
 
 之后设置处理该 port 接收事件的 delegate
-```
+
+```objc
    self.mainThreadPort.delegate = self;
 ```
+
 把该 port 加入到 Run Loop 里,并开启 Run Loop
-```
+
+
+```objc
     [[NSRunLoop currentRunLoop] addPort:self.mainThreadPort forMode:NSDefaultRunLoopMode];
     [[NSRunLoop currentRunLoop] run];
 ```
+
 实现 port 的 delegate 方法：
-```
+
+```objc
 - (void)handlePortMessage:(NSPortMessage *)message{
 
     UInt32 msid = [message msgid];
@@ -191,14 +204,15 @@ self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(p_threadW
 
 创建新的线程和该线程的 Port
 
-```
+```objc
 self.backgroundThread = [[NSThread alloc] initWithTarget:self selector:@selector(p_threadWillEnter) object:nil];
 self.backgroundThreadPort = [NSPort port];
 self.backgroundThreadPort.delegate = self;
 ```
 
 开启该线程的 Run Loop
-```
+
+```objc
 - (void)p_threadWillEnter{
     
     @autoreleasepool {
@@ -216,7 +230,8 @@ self.backgroundThreadPort.delegate = self;
 ```
 
 从 backgroundThread 向 mainThread 发送信息
-```
+
+```objc
 - (IBAction)buttonClicked:(id)sender {
     
     NSPortMessage* messageObj = [[NSPortMessage alloc] initWithSendPort:self.mainThreadPort
@@ -231,7 +246,7 @@ self.backgroundThreadPort.delegate = self;
 这样每次按按钮，就会看到 `- (void)handlePortMessage:(NSPortMessage *)message` 回调方法被执行了，实现了线程间基于 Port 的通信。注意这个代码时运行在 OS X 上的，因为 iOS 里面 没有 `NSPortMessage`。
 
 
-###参考资料
+### 参考资料
 
 1. [Run Loops](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html)
 
