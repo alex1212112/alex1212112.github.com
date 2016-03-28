@@ -1,15 +1,11 @@
-
 <!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
   <title>Summerrose’s Blog</title>
   <meta name="author" content="ghren">
 
   
-  <meta name="description" content="目录 概述 事件与种类 使用 Dispatch Source 概述 iOS 中有两种 Source，一种是 Run Loop Source ,一种是 Dispatch Source。 Source 可以理解为产生事件的地方，Source 产生事件，然后 Source 的回调函数负责 处理这些事件 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,76 +15,119 @@
 
   
   <link rel="canonical" href="http://alex1212112.github.io/">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  <!-- http://opengraphprotocol.org/ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://alex1212112.github.io/">
+  <meta property="og:title" content="Summerrose’s Blog">
+  
+
+  <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
+
+<link href="/assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/assets/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+
+
+  
+  <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
 
   
 
 </head>
 
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Summerrose’s Blog</a></h1>
-  
-</hgroup>
+  <body    class="collapse-sidebar sidebar-footer" >
+    <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" title="toggle navbar" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Summerrose’s Blog</a>
+        </div>
 
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="alex1212112.github.io">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-</ul>
-
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a rel="index" href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="navbar-form navbar-right" action="http://google.com/search" method="GET">
+                    <input type="hidden" name="sitesearch" value="alex1212112.github.io">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
 </nav>
-  <div id="main">
-    <div id="content">
-      <div class="blog-index">
-  
-  
-  
-    <article>
+
+
+      </header>
+      <div id="main" role="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9">
+    <div class="blog-index" itemscope itemtype="http://schema.org/Blog">
+    <meta itemprop="name" content="Summerrose’s Blog" />
+    
+    <meta itemprop="url" content="http://alex1212112.github.io" />
       
-  <header>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
     
-      <h1 class="entry-title"><a href="/blog/2015/11/24/dispatch-source/">Dispatch Source</a></h1>
-    
-    
-      <p class="meta">
+      <p class="meta text-muted text-uppercase">
         
 
 
 
 
-<time class='entry-date' datetime='2015-11-24T00:16:49+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:16 am</span></time>
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-11-24T00:16:49+08:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
         
-           | <a href="/blog/2015/11/24/dispatch-source/#disqus_thread"
+           | <a href="/blog/2015/11/24/dispatch-source/#disqus_thread" itemprop="discussionUrl"
              data-disqus-identifier="http://alex1212112.github.io/blog/2015/11/24/dispatch-source/">Comments</a>
         
       </p>
     
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/11/24/dispatch-source/" itemprop="url">Dispatch Source</a></h2>
+    
   </header>
 
 
-  <div class="entry-content"><h3 id="section">目录</h3>
+  <div class="entry-content clearfix" itemprop="articleBody description"><h3 id="section">目录</h3>
 <ol>
   <li>概述</li>
   <li>事件与种类</li>
@@ -271,33 +310,41 @@
   
 
 
-    </article>
-  
-  
-    <article>
+        </article>
       
-  <header>
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
     
-      <h1 class="entry-title"><a href="/blog/2015/11/21/run-loop/">Run Loop</a></h1>
-    
-    
-      <p class="meta">
+      <p class="meta text-muted text-uppercase">
         
 
 
 
 
-<time class='entry-date' datetime='2015-11-21T21:17:04+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>9:17 pm</span></time>
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-11-21T21:17:04+08:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
         
-           | <a href="/blog/2015/11/21/run-loop/#disqus_thread"
+           | <a href="/blog/2015/11/21/run-loop/#disqus_thread" itemprop="discussionUrl"
              data-disqus-identifier="http://alex1212112.github.io/blog/2015/11/21/run-loop/">Comments</a>
         
       </p>
     
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/11/21/run-loop/" itemprop="url">Run Loop</a></h2>
+    
   </header>
 
 
-  <div class="entry-content"><h3 id="section">目录</h3>
+  <div class="entry-content clearfix" itemprop="articleBody description"><h3 id="section">目录</h3>
 <ol>
   <li>介绍</li>
   <li>用途</li>
@@ -628,33 +675,41 @@
   
 
 
-    </article>
-  
-  
-    <article>
+        </article>
       
-  <header>
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
     
-      <h1 class="entry-title"><a href="/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/">iOS 中线程同步的一些方法</a></h1>
-    
-    
-      <p class="meta">
+      <p class="meta text-muted text-uppercase">
         
 
 
 
 
-<time class='entry-date' datetime='2015-10-23T15:21:04+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>3:21 pm</span></time>
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-10-23T15:21:04+08:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
         
-           | <a href="/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/#disqus_thread"
+           | <a href="/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/#disqus_thread" itemprop="discussionUrl"
              data-disqus-identifier="http://alex1212112.github.io/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/">Comments</a>
         
       </p>
     
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/10/23/ios-zhong-xian-cheng-tong-bu-de-%5B%3F%5D-xie-fang-fa/" itemprop="url">iOS 中线程同步的一些方法</a></h2>
+    
   </header>
 
 
-  <div class="entry-content"><h3 id="section">目录</h3>
+  <div class="entry-content clearfix" itemprop="articleBody description"><h3 id="section">目录</h3>
 <ol>
   <li>使用串行队列</li>
   <li>使用 dispatch_group</li>
@@ -858,33 +913,41 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
   
 
 
-    </article>
-  
-  
-    <article>
+        </article>
       
-  <header>
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
     
-      <h1 class="entry-title"><a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/">ReactiveCocoa 学习资料</a></h1>
-    
-    
-      <p class="meta">
+      <p class="meta text-muted text-uppercase">
         
 
 
 
 
-<time class='entry-date' datetime='2015-08-19T17:58:36+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>5:58 pm</span></time>
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-08-19T17:58:36+08:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
         
-           | <a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/#disqus_thread"
+           | <a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/#disqus_thread" itemprop="discussionUrl"
              data-disqus-identifier="http://alex1212112.github.io/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/">Comments</a>
         
       </p>
     
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/08/19/reactivecocoa-xue-xi-zi-liao/" itemprop="url">ReactiveCocoa 学习资料</a></h2>
+    
   </header>
 
 
-  <div class="entry-content"><p><img src="/images/201508191805.png" alt="" /></p>
+  <div class="entry-content clearfix" itemprop="articleBody description"><p><img src="/images/201508191805.png" alt="" /></p>
 
 <ol>
   <li>
@@ -926,33 +989,41 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
   
 
 
-    </article>
-  
-  
-    <article>
+        </article>
       
-  <header>
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
     
-      <h1 class="entry-title"><a href="/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/">关于 UILocalNotification 的几个问题</a></h1>
-    
-    
-      <p class="meta">
+      <p class="meta text-muted text-uppercase">
         
 
 
 
 
-<time class='entry-date' datetime='2015-05-27T18:47:25+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:47 pm</span></time>
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-05-27T18:47:25+08:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
         
-           | <a href="/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/#disqus_thread"
+           | <a href="/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/#disqus_thread" itemprop="discussionUrl"
              data-disqus-identifier="http://alex1212112.github.io/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/">Comments</a>
         
       </p>
     
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/05/27/guan-yu-uilocalnotification-de-ji-ge-wen-ti/" itemprop="url">关于 UILocalNotification 的几个问题</a></h2>
+    
   </header>
 
 
-  <div class="entry-content"><p><img src="/images/201505271852.png" alt="" /></p>
+  <div class="entry-content clearfix" itemprop="articleBody description"><p><img src="/images/201505271852.png" alt="" /></p>
 
 <h3 id="section">问题</h3>
 
@@ -1014,31 +1085,45 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
   
 
 
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/posts/2">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
-<aside class="sidebar">
-  
-    
-  
-</aside>
-
+        </article>
+      
     </div>
+
+    <ul class="pager">
+      
+        <li class="previous"><a href="/posts/2">&larr;&nbsp;Older</a></li>
+      
+      <li><a href="/blog/archives">Blog Archives</a></li>
+      
+        <li class="next disabled"><a href="#">Newer&nbsp;&rarr;</a></li>
+      
+    </ul>
   </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - ghren -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+
+  
+    <aside class="sidebar col-md-3">
+      
+        
+      
+    </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2016 - ghren<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
 </p>
 
+</div>
 </footer>
-  
+    
 
 <script type="text/javascript">
       var disqus_shortname = 'alex1212112';
@@ -1070,8 +1155,9 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
   </script>
 
 
+<script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr.js"></script>
 
 
-
-</body>
+  </body>
 </html>

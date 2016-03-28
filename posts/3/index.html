@@ -1,15 +1,11 @@
-
 <!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
   <title>Summerrose’s Blog</title>
   <meta name="author" content="ghren">
 
   
-  <meta name="description" content="###目录 什么是方法混写（Method Swizzling） 如何使用方法混写 注意事项 参考资料 什么是方法混写(Method Swizzling) Objective-C 中对象调用方法，或者叫“消息传递”,是通过一种动态绑定机制实现的，即对象收到消息后，究竟调用哪个方法，完全于运行期决定 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,76 +15,119 @@
 
   
   <link rel="canonical" href="http://alex1212112.github.io/posts/3/">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="Summerrose’s Blog" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  <!-- http://opengraphprotocol.org/ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://alex1212112.github.io/posts/3/">
+  <meta property="og:title" content="Summerrose’s Blog">
+  
+
+  <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
+
+<link href="/assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/assets/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+
+
+  
+  <link href="/stylesheets/screen.css" media="screen, projection, print" rel="stylesheet" type="text/css">
 
   
 
 </head>
 
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Summerrose’s Blog</a></h1>
-  
-</hgroup>
+  <body    class="collapse-sidebar sidebar-footer" >
+    <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" title="toggle navbar" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Summerrose’s Blog</a>
+        </div>
 
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="alex1212112.github.io">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-</ul>
-
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a rel="index" href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="navbar-form navbar-right" action="http://google.com/search" method="GET">
+                    <input type="hidden" name="sitesearch" value="alex1212112.github.io">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
 </nav>
-  <div id="main">
-    <div id="content">
-      <div class="blog-index">
-  
-  
-  
-    <article>
+
+
+      </header>
+      <div id="main" role="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9">
+    <div class="blog-index" itemscope itemtype="http://schema.org/Blog">
+    <meta itemprop="name" content="Summerrose’s Blog" />
+    
+    <meta itemprop="url" content="http://alex1212112.github.io" />
       
-  <header>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
     
-      <h1 class="entry-title"><a href="/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/">Objective-C 中的方法混写(Method Swizzling)</a></h1>
-    
-    
-      <p class="meta">
+      <p class="meta text-muted text-uppercase">
         
 
 
 
 
-<time class='entry-date' datetime='2014-10-20T17:47:07+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:47 pm</span></time>
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-10-20T17:47:07+08:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
         
-           | <a href="/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/#disqus_thread"
+           | <a href="/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/#disqus_thread" itemprop="discussionUrl"
              data-disqus-identifier="http://alex1212112.github.io/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/">Comments</a>
         
       </p>
     
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2014/10/20/objective-c-zhong-de-fang-fa-hun-xie-method-swizzling/" itemprop="url">Objective-C 中的方法混写(Method Swizzling)</a></h2>
+    
   </header>
 
 
-  <div class="entry-content"><p><img src="/images/201410201751.png" alt="" />
+  <div class="entry-content clearfix" itemprop="articleBody description"><p><img src="/images/201410201751.png" alt="" />
 ###目录</p>
 
 <ol>
@@ -226,33 +265,41 @@
   
 
 
-    </article>
-  
-  
-    <article>
+        </article>
       
-  <header>
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
     
-      <h1 class="entry-title"><a href="/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/">Objective-C 中的对象关联(Associated Objects)</a></h1>
-    
-    
-      <p class="meta">
+      <p class="meta text-muted text-uppercase">
         
 
 
 
 
-<time class='entry-date' datetime='2014-10-20T12:14:09+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:14 pm</span></time>
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-10-20T12:14:09+08:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
         
-           | <a href="/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/#disqus_thread"
+           | <a href="/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/#disqus_thread" itemprop="discussionUrl"
              data-disqus-identifier="http://alex1212112.github.io/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/">Comments</a>
         
       </p>
     
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2014/10/20/objective-czhong-de-dui-xiang-guan-lian-associated-objects/" itemprop="url">Objective-C 中的对象关联(Associated Objects)</a></h2>
+    
   </header>
 
 
-  <div class="entry-content"><p><img src="/images/201410201218.png" alt="" /></p>
+  <div class="entry-content clearfix" itemprop="articleBody description"><p><img src="/images/201410201218.png" alt="" /></p>
 
 <h3 id="section">目录</h3>
 
@@ -383,33 +430,41 @@
   
 
 
-    </article>
-  
-  
-    <article>
+        </article>
       
-  <header>
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
     
-      <h1 class="entry-title"><a href="/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/">关于对象等同性判断</a></h1>
-    
-    
-      <p class="meta">
+      <p class="meta text-muted text-uppercase">
         
 
 
 
 
-<time class='entry-date' datetime='2014-10-19T20:20:26+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>8:20 pm</span></time>
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-10-19T20:20:26+08:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
         
-           | <a href="/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/#disqus_thread"
+           | <a href="/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/#disqus_thread" itemprop="discussionUrl"
              data-disqus-identifier="http://alex1212112.github.io/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/">Comments</a>
         
       </p>
     
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/" itemprop="url">关于对象等同性判断</a></h2>
+    
   </header>
 
 
-  <div class="entry-content"><p><img src="/images/201410192024.png" alt="" /></p>
+  <div class="entry-content clearfix" itemprop="articleBody description"><p><img src="/images/201410192024.png" alt="" /></p>
 
 <p>我们经常会遇到判断两个对象是否相等的的情况，如果食用 == 操作符来进行判断，比较出来多结果不一定是我们想要的，因为 == 操作符比较的事两个对象对指针，而不是对象的值。 NSObject 协议中有两个用语判断等同性的关键方法：</p>
 
@@ -533,33 +588,41 @@
   
 
 
-    </article>
-  
-  
-    <article>
+        </article>
       
-  <header>
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
     
-      <h1 class="entry-title"><a href="/blog/2014/10/18/foundationkuang-jia-zhong-ji-he-lei-de-%5B%3F%5D-xie-yong-fa-nsarray/">Foundation 框架中集合类的一些用法-NSArray</a></h1>
-    
-    
-      <p class="meta">
+      <p class="meta text-muted text-uppercase">
         
 
 
 
 
-<time class='entry-date' datetime='2014-10-18T21:21:07+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:21 pm</span></time>
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-10-18T21:21:07+08:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
         
-           | <a href="/blog/2014/10/18/foundationkuang-jia-zhong-ji-he-lei-de-%5B%3F%5D-xie-yong-fa-nsarray/#disqus_thread"
+           | <a href="/blog/2014/10/18/foundationkuang-jia-zhong-ji-he-lei-de-%5B%3F%5D-xie-yong-fa-nsarray/#disqus_thread" itemprop="discussionUrl"
              data-disqus-identifier="http://alex1212112.github.io/blog/2014/10/18/foundationkuang-jia-zhong-ji-he-lei-de-%5B%3F%5D-xie-yong-fa-nsarray/">Comments</a>
         
       </p>
     
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2014/10/18/foundationkuang-jia-zhong-ji-he-lei-de-%5B%3F%5D-xie-yong-fa-nsarray/" itemprop="url">Foundation 框架中集合类的一些用法-NSArray</a></h2>
+    
   </header>
 
 
-  <div class="entry-content"><p><img src="/images/201410191739.png" alt="" /></p>
+  <div class="entry-content clearfix" itemprop="articleBody description"><p><img src="/images/201410191739.png" alt="" /></p>
 
 <h3 id="section">目录</h3>
 
@@ -775,33 +838,41 @@
   
 
 
-    </article>
-  
-  
-    <article>
+        </article>
       
-  <header>
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
     
-      <h1 class="entry-title"><a href="/blog/2014/09/02/kvojian-jie/">KVO 简介</a></h1>
-    
-    
-      <p class="meta">
+      <p class="meta text-muted text-uppercase">
         
 
 
 
 
-<time class='entry-date' datetime='2014-09-02T16:24:18+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>4:24 pm</span></time>
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-09-02T16:24:18+08:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
         
-           | <a href="/blog/2014/09/02/kvojian-jie/#disqus_thread"
+           | <a href="/blog/2014/09/02/kvojian-jie/#disqus_thread" itemprop="discussionUrl"
              data-disqus-identifier="http://alex1212112.github.io/blog/2014/09/02/kvojian-jie/">Comments</a>
         
       </p>
     
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2014/09/02/kvojian-jie/" itemprop="url">KVO 简介</a></h2>
+    
   </header>
 
 
-  <div class="entry-content"><p><img src="/images/201409021638.png" alt="" /></p>
+  <div class="entry-content clearfix" itemprop="articleBody description"><p><img src="/images/201409021638.png" alt="" /></p>
 
 <h3 id="section">目录</h3>
 
@@ -978,33 +1049,45 @@
   
 
 
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/posts/4">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-    <a class="next" href="/posts/2">Newer &rarr;</a>
-    
-  </div>
-</div>
-<aside class="sidebar">
-  
-    
-  
-</aside>
-
+        </article>
+      
     </div>
+
+    <ul class="pager">
+      
+        <li class="previous"><a href="/posts/4">&larr;&nbsp;Older</a></li>
+      
+      <li><a href="/blog/archives">Blog Archives</a></li>
+      
+        <li class="next"><a href="/posts/2">Newer&nbsp;&rarr;</a></li>
+      
+    </ul>
   </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - ghren -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+
+  
+    <aside class="sidebar col-md-3">
+      
+        
+      
+    </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2016 - ghren<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
 </p>
 
+</div>
 </footer>
-  
+    
 
 <script type="text/javascript">
       var disqus_shortname = 'alex1212112';
@@ -1036,8 +1119,9 @@
   </script>
 
 
+<script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr.js"></script>
 
 
-
-</body>
+  </body>
 </html>
