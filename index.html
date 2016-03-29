@@ -1067,7 +1067,7 @@ dispatch queue 也分串行队列和并发队列，我们这里需要创建一�
 </span><span class="line">    <span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
-<p>对于问题1，有时候在 ` [[UIApplication sharedApplication] cancelLocalNotification:notification]<code>的时候可能会发现并没有立即cancel掉，也可以采用这样的方法，在 cancel 完之后 执行下 </code>[NSThread sleepForTimeInterval:.01f]`;</p>
+<p>对于问题1，有时候在 <code>[[UIApplication sharedApplication] cancelLocalNotification:notification]</code> 的时候可能会发现并没有立即cancel掉，也可以采用这样的方法，在 cancel 完之后 执行下 <code>[NSThread sleepForTimeInterval:.01f]</code>;</p>
 
 <h3 id="section-2">参考资料</h3>
 

@@ -371,41 +371,26 @@
 
 <p>解释：</p>
 
-<blockquote>
-  <ol>
-    <li>从上下文中获取toVC(根据需要，这里也可以获取到fromVC).</li>
-  </ol>
-</blockquote>
-
-<blockquote>
-  <ol>
-    <li>获取toVC的view的快照和初始的frame.</li>
-  </ol>
-</blockquote>
-
-<blockquote>
-  <ol>
-    <li>获取动画发生的的容器View——containerView,并将toView的快照加入到该容器View中.</li>
-  </ol>
-</blockquote>
-
-<blockquote>
-  <ol>
-    <li>通过视图动画来执行自定义动画，此代码中的实现了一个iOS7中新增加的弹性动画效果，该动画使视图滑动时，像弹簧一样，稍微拉伸一些，再弹回正确位置.</li>
-  </ol>
-</blockquote>
-
-<blockquote>
-  <ol>
-    <li>移除toView的快照，并将真正的toView加入到容器View中.</li>
-  </ol>
-</blockquote>
-
-<blockquote>
-  <ol>
-    <li>向context报告动画切换已经完成.</li>
-  </ol>
-</blockquote>
+<ol>
+  <li>
+    <p>从上下文中获取toVC(根据需要，这里也可以获取到fromVC).</p>
+  </li>
+  <li>
+    <p>获取toVC的view的快照和初始的frame.</p>
+  </li>
+  <li>
+    <p>获取动画发生的的容器View——containerView,并将toView的快照加入到该容器View中.</p>
+  </li>
+  <li>
+    <p>通过视图动画来执行自定义动画，此代码中的实现了一个iOS7中新增加的弹性动画效果，该动画使视图滑动时，像弹簧一样，稍微拉伸一些，再弹回正确位置.</p>
+  </li>
+  <li>
+    <p>移除toView的快照，并将真正的toView加入到容器View中.</p>
+  </li>
+  <li>
+    <p>向context报告动画切换已经完成.</p>
+  </li>
+</ol>
 
 <h3 id="section-1">参考资料</h3>
 
