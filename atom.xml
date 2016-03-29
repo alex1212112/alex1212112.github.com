@@ -4,7 +4,7 @@
   <title><![CDATA[Summerrose’s Blog]]></title>
   <link href="http://alex1212112.github.io/atom.xml" rel="self"/>
   <link href="http://alex1212112.github.io/"/>
-  <updated>2016-03-29T10:28:20+08:00</updated>
+  <updated>2016-03-29T10:34:19+08:00</updated>
   <id>http://alex1212112.github.io/</id>
   <author>
     <name><![CDATA[ghren]]></name>
@@ -93,7 +93,7 @@
 
 <p>首先创建并配置 Dispatch Sourcce</p>
 
-<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
@@ -108,24 +108,26 @@
 <span class="line-number">13</span>
 <span class="line-number">14</span>
 <span class="line-number">15</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">self.count = 0;
-</span><span class="line">dispatch_queue_t queue = dispatch_get_main_queue();
-</span><span class="line">self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_DATA_ADD, 0, 0, queue);//创建 Dispatch Source，种类为DISPATCH_SOURCE_TYPE_DATA_ADD，即获取到的变量会相加
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="nb">self</span><span class="p">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="kt">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_main_queue</span><span class="p">();</span>
+</span><span class="line"><span class="nb">self</span><span class="p">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">dispatch_source_create</span><span class="p">(</span><span class="n">DISPATCH_SOURCE_TYPE_DATA_ADD</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">queue</span><span class="p">);</span><span class="c1">//创建 Dispatch Source，种类为DISPATCH_SOURCE_TYPE_DATA_ADD，即获取到的变量会相加</span>
 </span><span class="line">
 </span><span class="line">
-</span><span class="line">dispatch_source_set_event_handler(self.source, ^{
+</span><span class="line"><span class="n">dispatch_source_set_event_handler</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">source</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
 </span><span class="line">
-</span><span class="line">    UInt64 value = dispatch_source_get_data(self.source);
-</span><span class="line">    
-</span><span class="line">    self.count += value;
-</span><span class="line">    NSLog(@"n = %ld",(long)self.count);
-</span><span class="line">    
-</span><span class="line">});//配置 Dispatch Source 的回调 block，即当收到该 Source 事件时候，就把该 block 追加到对应的queue中
+</span><span class="line">    <span class="n">UInt64</span> <span class="n">value</span> <span class="o">=</span> <span class="n">dispatch_source_get_data</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">source</span><span class="p">);</span>
 </span><span class="line">
-</span><span class="line">dispatch_resume(self.source); //启动 Source， Source 默认是 suspend 的，需要手动启动</span></code></pre></td></tr></table></div></figure>
+</span><span class="line">    <span class="nb">self</span><span class="p">.</span><span class="n">count</span> <span class="o">+=</span> <span class="n">value</span><span class="p">;</span>
+</span><span class="line">    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;n = %ld&quot;</span><span class="p">,(</span><span class="kt">long</span><span class="p">)</span><span class="nb">self</span><span class="p">.</span><span class="n">count</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="p">});</span><span class="c1">//配置 Dispatch Source 的回调 block，即当收到该 Source 事件时候，就把该 block 追加到对应的queue中</span>
+</span><span class="line">
+</span><span class="line"><span class="n">dispatch_resume</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">source</span><span class="p">);</span> <span class="c1">//启动 Source， Source 默认是 suspend 的，需要手动启动</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>发送 Dispatch Source 事件</p>
-<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
@@ -141,22 +143,23 @@
 <span class="line-number">14</span>
 <span class="line-number">15</span>
 <span class="line-number">16</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">- (IBAction)buttonDidClicked:(id)sender {
-</span><span class="line">    
-</span><span class="line">    self.count = 0.0;
-</span><span class="line">    
-</span><span class="line">    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT , 0);
-</span><span class="line">    
-</span><span class="line">    for (NSInteger i = 0; i &lt; 100; i++) {
-</span><span class="line">        
-</span><span class="line">        dispatch_async(queue, ^{
-</span><span class="line">            
-</span><span class="line">            dispatch_source_merge_data(self.source, 1);//发送 Source 事件
-</span><span class="line">            sleep(1);
-</span><span class="line">            
-</span><span class="line">        });
-</span><span class="line">    }
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">buttonDidClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="nb">self</span><span class="p">.</span><span class="n">count</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kt">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span> <span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">        <span class="n">dispatch_async</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class="line">
+</span><span class="line">            <span class="n">dispatch_source_merge_data</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">source</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span><span class="c1">//发送 Source 事件</span>
+</span><span class="line">            <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line">        <span class="p">});</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>之后，我们点击按钮之后，就会通过全局并发队列 发送 100 次 Source 事件，不过并不会 回调 100 次 回调 Block， 这是因为对应的 队列在接收到 Source 事件之后，假如队列处于空闲状态，就会执行对应的 回调 Block，假如队列处于 busy 状态，该事件就会和后面的一系列同种事件通过一定的方式被合并起来（此例中是按照相加的方式），等到队列空闲的时候再执行。</p>
 
@@ -164,7 +167,7 @@
 
 <p>利用 Dispatch Source 的 DISPATCH_SOURCE_TYPE_TIMER 类型，我们可以创建一个 跨线程的 定时器（我们平时使用的 NSTimer 是基于 Run Loop 的 timer 事件，只能在对应的线程里触发）</p>
 
-<figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
@@ -173,15 +176,16 @@
 <span class="line-number">7</span>
 <span class="line-number">8</span>
 <span class="line-number">9</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">dispatch_queue_t queue = dispatch_get_main_queue();
-</span><span class="line">self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);//创建一个 timer；
-</span><span class="line">dispatch_source_set_timer(self.timer, DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC, 0 * NSEC_PER_SEC);//配置 timer，从现在起，每两秒在主线程触发一次，精度为0s
-</span><span class="line">dispatch_source_set_event_handler(self.timer, ^{
-</span><span class="line">    
-</span><span class="line">    NSLog(@"%ld", self.count++);
-</span><span class="line">});//timer 触发之后的回调 block
+</pre></td><td class="code"><pre><code class="objc"><span class="line"><span class="kt">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_main_queue</span><span class="p">();</span>
+</span><span class="line"><span class="nb">self</span><span class="p">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">dispatch_source_create</span><span class="p">(</span><span class="n">DISPATCH_SOURCE_TYPE_TIMER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">queue</span><span class="p">);</span><span class="c1">//创建一个 timer；</span>
+</span><span class="line"><span class="n">dispatch_source_set_timer</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">timer</span><span class="p">,</span> <span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">,</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">);</span><span class="c1">//配置 timer，从现在起，每两秒在主线程触发一次，精度为0s</span>
+</span><span class="line"><span class="n">dispatch_source_set_event_handler</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">timer</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
 </span><span class="line">
-</span><span class="line">dispatch_resume(self.time); //启动 timer</span></code></pre></td></tr></table></div></figure>
+</span><span class="line">    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">count</span><span class="o">++</span><span class="p">);</span>
+</span><span class="line"><span class="p">});</span><span class="c1">//timer 触发之后的回调 block</span>
+</span><span class="line">
+</span><span class="line"><span class="n">dispatch_resume</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">time</span><span class="p">);</span> <span class="c1">//启动 timer</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <h3 id="section-3">参考资料</h3>
 <ol>
