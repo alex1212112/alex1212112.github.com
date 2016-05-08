@@ -36,7 +36,7 @@ categories:
     }
 ```
 
-对于问题1，有时候在 ` [[UIApplication sharedApplication] cancelLocalNotification:notification]`的时候可能会发现并没有立即cancel掉，也可以采用这样的方法，在 cancel 完之后 执行下 `[NSThread sleepForTimeInterval:.01f]`;
+对于问题1，有时候在 `[[UIApplication sharedApplication] cancelLocalNotification:notification]` 的时候可能会发现并没有立即cancel掉，也可以采用这样的方法，在 cancel 完之后 执行下 `[NSThread sleepForTimeInterval:.01f]`;
 
 ###参考资料
 

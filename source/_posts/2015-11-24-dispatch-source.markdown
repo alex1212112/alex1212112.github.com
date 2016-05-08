@@ -68,7 +68,7 @@ Dispatch Source 监控的事件主要有以下几种：
 
 首先创建并配置 Dispatch Sourcce
 
-```
+```objc
     self.count = 0;
     dispatch_queue_t queue = dispatch_get_main_queue();
     self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_DATA_ADD, 0, 0, queue);//创建 Dispatch Source，种类为DISPATCH_SOURCE_TYPE_DATA_ADD，即获取到的变量会相加
@@ -87,7 +87,8 @@ Dispatch Source 监控的事件主要有以下几种：
 ```
 
 发送 Dispatch Source 事件
-```
+
+```objc
 - (IBAction)buttonDidClicked:(id)sender {
     
     self.count = 0.0;
@@ -113,7 +114,7 @@ Dispatch Source 监控的事件主要有以下几种：
 
 利用 Dispatch Source 的 DISPATCH_SOURCE_TYPE_TIMER 类型，我们可以创建一个 跨线程的 定时器（我们平时使用的 NSTimer 是基于 Run Loop 的 timer 事件，只能在对应的线程里触发）
 
-```
+```objc
     dispatch_queue_t queue = dispatch_get_main_queue();
     self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);//创建一个 timer；
     dispatch_source_set_timer(self.timer, DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC, 0 * NSEC_PER_SEC);//配置 timer，从现在起，每两秒在主线程触发一次，精度为0s

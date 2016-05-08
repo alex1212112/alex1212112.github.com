@@ -116,7 +116,7 @@ self.navigationController.delegate = self;
 	
 下面是一个该方法的简单实现
 
-``` 
+```objc 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
 	{
     // 1. Get controllers from transition context
@@ -173,17 +173,17 @@ self.navigationController.delegate = self;
 
 解释：
 
->1. 	从上下文中获取toVC(根据需要，这里也可以获取到fromVC).
+1. 	从上下文中获取toVC(根据需要，这里也可以获取到fromVC).
 
->2. 	获取toVC的view的快照和初始的frame.
+2. 	获取toVC的view的快照和初始的frame.
 
->3. 	获取动画发生的的容器View——containerView,并将toView的快照加入到该容器View中.
+3. 	获取动画发生的的容器View——containerView,并将toView的快照加入到该容器View中.
 
->4. 	通过视图动画来执行自定义动画，此代码中的实现了一个iOS7中新增加的弹性动画效果，该动画使视图滑动时，像弹簧一样，稍微拉伸一些，再弹回正确位置.
+4. 	通过视图动画来执行自定义动画，此代码中的实现了一个iOS7中新增加的弹性动画效果，该动画使视图滑动时，像弹簧一样，稍微拉伸一些，再弹回正确位置.
 
->5. 	移除toView的快照，并将真正的toView加入到容器View中.
+5. 	移除toView的快照，并将真正的toView加入到容器View中.
 
->6. 	向context报告动画切换已经完成.
+6. 	向context报告动画切换已经完成.
 
 
 ### 参考资料
