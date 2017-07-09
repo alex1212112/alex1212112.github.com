@@ -3,7 +3,7 @@ layout: post
 title: "Swift 与 Objective-C 混编及如何调用 Cocoapods"
 date: 2015-04-12 11:42:05 +0800
 comments: true
-categories: 
+categories: iOS 
 ---
 ![](/images/201504121200.png)
 
@@ -42,4 +42,3 @@ categories:
 ```
 
 接下来就可以在 Swift 的文件里使用了
-

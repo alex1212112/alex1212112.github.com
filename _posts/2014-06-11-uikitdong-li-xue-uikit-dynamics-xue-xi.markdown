@@ -3,7 +3,7 @@ layout: post
 title: "UIKit 动力学(UIKit Dynamics)学习"
 date: 2014-06-11 11:17:46 +0800
 comments: true
-categories: 
+categories: iOS
 ---
 
 ![](/images/4908ab0eae4b946b9066eafd11f8030580c2c4f79dfd.png)
@@ -18,15 +18,15 @@ UIKit dynamics(UIKit动力学)是UIKit的一套动画和交互体系。和我们
 * UIDynamicBehavior：动力行为的描述，用来指定UIDynamicItem应该如何运动，即定义适用的物理规则。一般我们使用这个类的子类对象来对一组UIDynamicItem应该遵守的行为规则进行描述，在iOS7中，系统默认提供了如下的动力行为：
 
 	1、UIGravityBehavior：重力行为
-	
+
 	2、UICollisionBehavior：碰撞行为
-	
+
 	3、UIAttachmentBehavior：铰链行为，两个物体连接的状态，可以模拟无形变或者弹性行遍的情况
-	
+
 	4、UISnapBehavior：吸附行为，将UIView通过动画吸附到某个点上。
-	
+
 	5、UIPushBehavior：推行为，比如为一个UIView施加一个力的作用，我们可以指定力的大小，方向和租用点等信息。
-	
+
 	6、UIDynamicItemBehavior：动力学辅助元素行为，系统有一组自定义的默认值
 
 * UIDynamicAnimator；动画的播放者，动力行为（UIDynamicBehavior）的容器，添加到容器内的行为将发挥作用；
@@ -42,14 +42,14 @@ UIKit dynamics(UIKit动力学)是UIKit的一套动画和交互体系。和我们
 - (void)initSubView
 {
     _subView = [[UIView alloc] initWithFrame:(CGRect){
-        
+
         .origin.x =   100.0f,
         .origin.y =   108.0f,
         .size.width = 100.0f,
-        .size.height = 100.0f, 
+        .size.height = 100.0f,
     }];
     _subView.backgroundColor = [UIColor lightGrayColor];
-   
+
     [self.view addSubview:_subView];
 }
 /**
@@ -59,14 +59,14 @@ UIKit dynamics(UIKit动力学)是UIKit的一套动画和交互体系。和我们
  */
 - (void)leftButtonClicked:(id)sender
 {
-    
+
     _subView.frame =  (CGRect){
-        
+
         .origin.x =   100.0f,
         .origin.y =   108.0f,
         .size.width = 100.0f,
         .size.height = 100.0f,
-        
+
     };
 
     if (!_animator)
@@ -74,13 +74,13 @@ UIKit dynamics(UIKit动力学)是UIKit的一套动画和交互体系。和我们
         // 1 假如animator为空的话，就以当前ViewController的View为参考View初始化一个animator
         _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
     }
-    
+
         //  移除animator上所有的力学行为
     [_animator removeAllBehaviors];
 
         // 2 初始化重力行为
     UIGravityBehavior *gravityBeahvior = [[UIGravityBehavior alloc] initWithItems:@[_subView]];
-    
+
        // 3 添加重力行为到animator上，使重力行为生效
     [_animator addBehavior:gravityBeahvior];
 
@@ -107,35 +107,35 @@ UIKit dynamics(UIKit动力学)是UIKit的一套动画和交互体系。和我们
  */
 - (void)middleButtonClicked:(id)sender
 {
-    
+
     _subView.frame =  (CGRect){
-        
+
         .origin.x =   100.0f,
         .origin.y =   108.0f,
         .size.width = 100.0f,
         .size.height = 100.0f,
-        
+
     };
-    
+
     if (!_animator)
     {
         _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
     }
-    
+
     [_animator removeAllBehaviors];
 
     //初始化一个碰撞的行为
     UICollisionBehavior *collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[_subView]];
-    
+
     //配置碰撞的边界，下述代码设置碰撞边界为参考系(self.view)的边框作为碰撞边界
     collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
-    
+
     [_animator addBehavior:collisionBehavior];
-    
+
     //重力行为
     UIGravityBehavior *gravityBeahvior = [[UIGravityBehavior alloc] initWithItems:@[_subView]];
     [_animator addBehavior:gravityBeahvior];
-    
+
 }
 ```
 表现出来的效果如下图：
@@ -154,23 +154,23 @@ UIKit dynamics(UIKit动力学)是UIKit的一套动画和交互体系。和我们
  */
 - (void)rightButtonClicked:(id)sender
 {
-    
+
     _subView.frame =  (CGRect){
-        
+
         .origin.x =   100.0f,
         .origin.y =   108.0f,
         .size.width = 100.0f,
         .size.height = 100.0f,
-        
+
     };
-    
+
     if (!_animator)
     {
         _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
     }
-    
+
     [_animator removeAllBehaviors];
-    
+
     //初始化一个吸附行为
     UISnapBehavior *snap = [[UISnapBehavior alloc] initWithItem:_subView snapToPoint:(CGPoint){100.0f,300.0f}];
     //添加吸附行为到animator
@@ -191,5 +191,3 @@ UIKit dynamics(UIKit动力学)是UIKit的一套动画和交互体系。和我们
 [iOS7新特征汇总[05]初窥UIKit动力(UIKit Dynamics)](http://beyondvincent.com/blog/2013/06/16/88/)
 
 [UIKit-力学教程](http://www.raywenderlich.com/zh-hans/52617/uikit-%E5%8A%9B%E5%AD%A6%E6%95%99%E7%A8%8B)
-
-

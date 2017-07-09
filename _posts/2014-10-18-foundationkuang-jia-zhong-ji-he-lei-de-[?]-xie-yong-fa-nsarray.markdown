@@ -3,7 +3,7 @@ layout: post
 title: "Foundation 框架中集合类的一些用法-NSArray"
 date: 2014-10-18 21:21:07 +0800
 comments: true
-categories: 
+categories: iOS
 ---
 ![](/images/201410191739.png)
 
@@ -22,7 +22,7 @@ categories:
 ```objc
  for (NSInteger n = 0 ; n < [array count]; n ++)
     {
-        
+
     }
 ```
 
@@ -33,7 +33,7 @@ categories:
 ```objc
  for (id object in array)
     {
-        
+
     }
 ```
 ####enumerateObjectsUsingBlock方式
@@ -42,7 +42,7 @@ categories:
 
 ```objc
  [array enumerateObjectsUsingBlock:^(id object, NSUInteger idx, BOOL *stop) {
-        
+
     }];
 ```
 
@@ -53,7 +53,7 @@ option 设置为 NSEnumerationConcurrent 为并发遍历方式,
 
 ```objc
 [array enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        
+
     }];
 ```
 这里要注意使用并发方式进行遍历的话，最好不要在block里使用 NSMutableArray 之类的非线程安全的对象，当引起读写冲突的时候，会抛出 double free 的异常。
@@ -63,7 +63,7 @@ option 设置为 NSEnumerationReverse 为倒序遍历方式
 
 ```objc
 [array enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        
+
     }];            
 ```
 
@@ -106,7 +106,7 @@ NSArray *sortedArray = [array sortedArrayUsingComparator:^NSComparisonResult(Use
 
 
 ```objc
-NSArray *sortedArray = [array sortedArrayUsingSelector:@selector(compare:)]; 
+NSArray *sortedArray = [array sortedArrayUsingSelector:@selector(compare:)];
 
 ```
 
@@ -126,7 +126,7 @@ NSArray *sortedArray = [array sortedArrayUsingSelector:@selector(compare:)];
 
 ```objc
 NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((age >= %@) AND (age < %@))",@20,@30];
-    
+
 NSArray *result = [array filteredArrayUsingPredicate:predicate];
 ```
 这个便返回了 user 数组中 age 在 20 到 30 之间的元素。
@@ -135,11 +135,11 @@ NSPredicate 也有个 block 用法
 
 ```objc
 NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-        
+
         return  ((User *)evaluatedObject).age >= 20 && ((User *)evaluatedObject).age <= 30;
-        
+
     }];
-    
+
 NSArray *result = [array filteredArrayUsingPredicate:predicate];
 ```
 
@@ -180,7 +180,3 @@ NSArray *result = [array valueForKeyPath:@"@distinctUnionOfObjects.name"];
 4. [NSPredicate](http://nshipster.cn/nspredicate/)
 
 5. [KVC Collection Operators](http://nshipster.cn/kvc-collection-operators/)
-
-
-
-

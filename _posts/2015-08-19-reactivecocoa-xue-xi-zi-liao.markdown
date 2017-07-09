@@ -3,7 +3,7 @@ layout: post
 title: "ReactiveCocoa 学习资料"
 date: 2015-08-19 17:58:36 +0800
 comments: true
-categories: 
+categories: iOS
 ---
 ![](/images/201508191805.png)
 

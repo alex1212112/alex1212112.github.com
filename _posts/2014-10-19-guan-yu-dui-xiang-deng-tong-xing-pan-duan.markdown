@@ -3,7 +3,7 @@ layout: post
 title: "关于对象等同性判断"
 date: 2014-10-19 20:20:26 +0800
 comments: true
-categories: 
+categories: iOS 
 ---
 ![](/images/201410192024.png)
 
@@ -46,12 +46,12 @@ NSObject类对其的默认实现为当且仅当其指针完全相同的时候，
     {
         return NO;
     }
-    
+
     if (!([_age isEqualToNumber:person.age] || _age == person.age))
     {
         return NO;
     }
-    
+
     return YES;
 
 }
@@ -81,5 +81,3 @@ NSObject类对其的默认实现为当且仅当其指针完全相同的时候，
 ###参考资料
 
 1. [值对象](http://www.objccn.io/issue-7-2/)
-
-

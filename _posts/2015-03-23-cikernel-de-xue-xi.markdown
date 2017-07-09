@@ -3,7 +3,7 @@ layout: post
 title: "CIKernel 的学习"
 date: 2015-03-23 21:39:36 +0800
 comments: true
-categories: 
+categories: iOS 
 ---
 ![](/images/201503232142.png)
 
@@ -24,7 +24,7 @@ CIKernel 有两个子类：`CIColorKernel`和`CIWarpKernel`。
     @"  vec2 offset = vec2(0.0, 2.0);\n"
     @"  return sample (image, samplerTransform (image, dc + offset));\n"
     @"}";
-    
+
     CIKernel *kernel = [CIKernel kernelWithString:kernelString];
 ```
 
@@ -33,12 +33,12 @@ CIKernel 有两个子类：`CIColorKernel`和`CIWarpKernel`。
 使用的时候可以这么用：
 
 ```objc
-UIImage *image = [UIImage imageNamed:@"flower"]; 
+UIImage *image = [UIImage imageNamed:@"flower"];
 CIImage *inputImage = [CIImage imageWithCGImage:image.CGImage];
 
 CIImage *outImage = [kernel applyWithExtent:inputImage.extent roiCallback:^CGRect(int index, CGRect rect) {
         return inputImage.extent;
-        
+
     } arguments:@[inputImage]];
 ```
 
@@ -59,12 +59,12 @@ kernel vec4 moveUpTwoPixels (sampler image) {
                    arguments:(NSArray*)args
 ```
  方法里的 args 的参数。
- 
- 
+
+
 ###CIColorKernel
- 
+
 我们也可以创建一个CIColorKernel:
- 
+
 ```objc
 NSString *kernelString =
     @"kernel vec4 chromaKey( __sample s, __color c, float threshold ) { \n"
@@ -73,7 +73,7 @@ NSString *kernelString =
     @"  float alpha = compare( distance - threshold, 0.0, 0.5 );\n"
     @"  return vec4( s.rgb, alpha ); \n"
     @"}";
-    
+
 CIColorKernel *kernel = [CIColorKernel kernelWithString:kernelString];
 ```
 
@@ -85,29 +85,25 @@ UIImage *image = [UIImage imageNamed:@"flower"];
 CIImage *inputImage = [CIImage imageWithCGImage:image.CGImage];
 CIImage *outImage = [kernel applyWithExtent:inputImage.extent arguments:@[inputImage,[CIColor colorWithRed:0.0f green:1.0f blue:0.0f],@0.0f]];
 ```
- 
+
 ###更多
- 
+
  进一步学习中。。。
- 
- 
- 
+
+
+
 ###参考资料
- 
+
  1. [iOS8 Day-by-Day :: Day 19 :: CoreImage Kernels](http://www.shinobicontrols.com/blog/posts/2014/08/19/ios8-day-by-day-day-19-coreimage-kernels)
- 
+
  2. [Core Image Kernel Language](https://developer.apple.com/library/mac/documentation/GraphicsImaging/Reference/CIKernelLangRef/ci_gslang_ext.html#//apple_ref/doc/uid/TP40004397-CH206-TPXREF101)
- 
+
  3. [About Core Image](https://developer.apple.com/library/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_intro/ci_intro.html#//apple_ref/doc/uid/TP30001185)
- 
+
  4. [What You Need to Know Before Writing a Custom Filter](https://developer.apple.com/library/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_advanced_concepts/ci.advanced_concepts.html#//apple_ref/doc/uid/TP30001185-CH9-SW1)
- 
+
  5. [Creating Custom Filters](https://developer.apple.com/library/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_custom_filters/ci_custom_filters.html#//apple_ref/doc/uid/TP30001185-CH6-TPXREF101)
- 
+
  6. [Packaging and Loading Image Units](https://developer.apple.com/library/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_image_units/ci_image_units.html#//apple_ref/doc/uid/TP30001185-CH7-SW12)
- 
+
  7. [如何制作Core Image滤镜插件](http://www.cocoachina.com/b/?p=174#more-174)
-
-
-
-

@@ -3,7 +3,7 @@ layout: post
 title: "KVC 简介"
 date: 2014-06-30 18:50:23 +0800
 comments: true
-categories: 
+categories: iOS 
 ---
 
 ![](/images/2d7462592d67a98dbffc700f70ae01d4423b1c1256049.png)
@@ -11,12 +11,12 @@ categories:
 ###目录
 
 什么是KVC？
-	
+
 为什么要用KVC？
-	
+
 KVC用法介绍.
-	
-	
+
+
 ###什么是KVC？
 
 
@@ -98,11 +98,11 @@ People *developer = [[People alloc] init];
 
 People *teacher = [[People alloc] init];
 [teacher setValue:@"Lucy" forKey:@"name"];
-	
+
 NSArray *array = @[developer,teacher];
-	
+
 NSArray *nameArray = [array valueForKey:@"name"];
-	
+
 ```
 name 被传递给array中的每一个元素，并返回一个新的数组，新的数组中的元素是一个姓名的字符串。
 对于 keyPath 使用方法也类似：
@@ -142,4 +142,3 @@ NSArray *array = @[developer,teacher];
 NSNumber *totalLength = [array valueForKeyPath:@"name.@sum.length"]; 	
 ```
 @sum是一个操作符，对指定的属性（name.length）求和。
- 

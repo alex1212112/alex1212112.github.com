@@ -3,7 +3,7 @@ layout: post
 title: "Objective-C 中的对象关联(Associated Objects)"
 date: 2014-10-20 12:14:09 +0800
 comments: true
-categories: 
+categories: iOS 
 ---
 ![](/images/201410201218.png)
 
@@ -30,8 +30,8 @@ objc_removeAssociatedObjects(id object)；
 
 我们可以使用关联对象在 Category 中添加自定义的属性，比如为一个 GHPerson 类添加一个体重的属性（weight）:
 
-GHPerson+GHAssociatedObject.h 
- 
+GHPerson+GHAssociatedObject.h
+
 ```objc
 #import "GHPerson.h"
 
@@ -44,7 +44,7 @@ GHPerson+GHAssociatedObject.h
 ```
 
 GHPerson+GHAssociatedObject.m
- 
+
 ```objc
 #import "GHPerson+GHAssociatedObject.h"
 #import <objc/runtime.h>

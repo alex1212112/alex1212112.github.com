@@ -3,7 +3,7 @@ layout: post
 title: "Touch ID 的使用"
 date: 2015-01-31 19:41:53 +0800
 comments: true
-categories: 
+categories: iOS 
 ---
 ![](/images/201501312106.png)
 
@@ -49,10 +49,10 @@ iOS8，苹果开放了 Touch ID 的 SDK，苹果自身的 Connect、 Health 应�
     LAContext *context = [[LAContext alloc] init];
     NSError *error = nil;
     BOOL success;
-    
+
     // test if we can evaluate the policy, this test will tell us if Touch ID is available and enrolled
     success = [context canEvaluatePolicy: LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error];
-    
+
     return success;
 }
 ```
@@ -66,14 +66,14 @@ iOS8，苹果开放了 Touch ID 的 SDK，苹果自身的 Connect、 Health 应�
 - (void)evaluatePolicyWithTitle:(NSString *)title successHandler:(void(^)())successHandler
 {
     LAContext *context = [[LAContext alloc] init];
-    
+
     // show the authentication UI with our reason string
-    
+
     [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:title reply:
      ^(BOOL success, NSError *authenticationError) {
-         
+
          dispatch_async(dispatch_get_main_queue(), ^{
-             
+
              if (success)
              {
                  if (successHandler)
@@ -82,7 +82,7 @@ iOS8，苹果开放了 Touch ID 的 SDK，苹果自身的 Connect、 Health 应�
                  }
              }
          });
-        
+
      }];
 }
 ```
@@ -109,7 +109,7 @@ iOS8，苹果开放了 Touch ID 的 SDK，苹果自身的 Connect、 Health 应�
     item.account = username;
     item.service = @"APP";
     item.secret = password;
-    
+
     [SGKeychain storeKeychainItem:item completionHandler:^(NSError *error) {
         if (!error)
         {
@@ -131,15 +131,15 @@ iOS8，苹果开放了 Touch ID 的 SDK，苹果自身的 Connect、 Health 应�
     SGKeychainItem *item = [[SGKeychainItem alloc] init];
     item.account = username;
     item.service = @"APP";
-    
+
     // Fetch the password
     [SGKeychain populatePasswordForItem:item completionHandler:^(NSError *error){
-    
+
         NSLog(@"error == %@",error.description);
     }];
-    
+
     NSLog(@"password ==%@",item.secret);
-    
+
     return item.secret;
 }
 

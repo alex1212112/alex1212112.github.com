@@ -3,7 +3,7 @@ layout: post
 title: "iOS7 中 UIViewController 的转场"
 date: 2014-05-05 18:57:40 +0800
 comments: true
-categories: 
+categories: iOS
 ---
 
 
@@ -11,7 +11,7 @@ categories:
 
 iOS7提供了一套供开发者方便自定义Viewcontroller间切换动画的API，我们可以利用这些API来自定义自己的转场效果，替代系统提供的默认push、present等动画效果。
 
-## 实现流程 
+## 实现流程
 
 ####首先介绍presentViewController转场动画的实现，主要流程如下：
 
@@ -19,25 +19,25 @@ iOS7提供了一套供开发者方便自定义Viewcontroller间切换动画的AP
 * 自定义一个转场动画效果。
 
 * 在 presentingViewConttroller 里实现 UIViewControllerTransitioningDelegate 代理	方法，主要有两个，分别是present时候的动画和disMiss时候的动画，
-	
+
 present时候要实现的方法：
 
 ``` objc		
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source;
-```	
-	
+```
+
 disMiss时候要实现的方法：
 
 ``` objc
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed;
-```	
-		
-		
+```
+
+
 这两个方法都返回刚才第一步自定义的转场动画。
-	
+
 * 在present的时候设置presentedViewController 的 transitioningDelegate如下：
 
-``` objc	
+``` objc
 UIViewController *presentedVC = [[UIViewController alloc] init];
 presentedVC.transitioningDelegate = self;
 [self presentViewController:presentedVC animated:YES completion:nil];
@@ -55,21 +55,21 @@ presentedVC.transitioningDelegate = self;
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC ;                                                 
 ```    
-                       
+
 这个方法也返回第一步里自定义的转场动画。为什么viewController有present 和disMiss两个方法，为什么这里没有push 和pop 两个方法呢，那是因为在这个代理方法里可以通过(UINavigationControllerOperation)operation 参数来确认当前操作究竟是push 还是pop， 当`operation == UINavigationControllerOperationPush`时候 就是push操作，当`operation == UINavigationControllerOperationPop` 时候就是pop操作。
-                                                                          
+
 
 *  在初始化时候设置NavigationController的delgate如下:
 
 ``` objc
 self.navigationController.delegate = self;
-```	
-		
+```
+
 ### 自定义动画和相关API介绍
 
 上面流程里第一步转场动画效果该如何实现呢？？？
 
- 
+
 我们要自定义一个继承于NSObject的类，此类要实现UIViewControllerAnimatedTransitioning协议，并实现其代理方法，代理方法主要有两个，其中一个返回整个动画花费的时间，如下：
 
 ``` objc
@@ -83,7 +83,7 @@ self.navigationController.delegate = self;
 		{
 			return 1.0f;
 		}
-``` 
+```
 
 另一个就是具体动画实现的方法，如下：
 
@@ -92,11 +92,11 @@ self.navigationController.delegate = self;
 ```
 
 其中	transitionContext可以理解为动画切换的上下文，它是一个实现了 `UIViewControllerContextTransitioning`协议的NSObject，它提供了VC切换的一切必需内容，如从哪个VC到哪个VC，动画切换的容器等，这个NSObject里的几个比较重要的方法如下：
-	
+
    * `-(UIView *)containerView; `
 
 	VC切换所发生的view容器，开发者应该将切出的view移除，将切入的view加入到该view容器中。
-	
+
    * `-(UIViewController )viewControllerForKey:(NSString )key; `
 
 	提供一个key，返回对应的VC。现在的SDK中key的选择只有UITransitionContextFromViewControllerKey和UITransitionContextToViewControllerKey两种，分别表示将要切出和切入的VC。
@@ -112,31 +112,31 @@ self.navigationController.delegate = self;
    * `-(void)completeTransition:(BOOL)didComplete; `
 
 	向这个context报告切换已经完成。
-	
-	
+
+
 下面是一个该方法的简单实现
 
-```objc 
+```objc
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
 	{
     // 1. Get controllers from transition context
     UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
- 
+
     // 2. Set init frame for toVC
-    
+
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGRect finalFrame = [transitionContext finalFrameForViewController:toVC];
-    
+
     UIView *toViewSnapshot = [toVC.view resizableSnapshotViewFromRect:toVC.view.frame afterScreenUpdates:YES withCapInsets:UIEdgeInsetsZero];
- 	
+
     toViewSnapshot.frame = CGRectOffset(finalFrame, 0, screenBounds.size.height);
-    
+
     UIView *toView = toVC.view;
-    
+
     // 3. Add toVC's view to containerView
     UIView *containerView = [transitionContext containerView];
     [containerView addSubview:toViewSnapshot];
-    
+
     // 4. Do animate now
     NSTimeInterval duration = [self transitionDuration:transitionContext];
     [UIView animateWithDuration:duration
@@ -149,12 +149,12 @@ self.navigationController.delegate = self;
                      } completion:^(BOOL finished) {
 
                          if ([transitionContext transitionWasCancelled]) {
-                            
+
                          } else {
 							//5. add the real toView and remove the snapshot
                              [containerView addSubview:toView];
                              for (UIView *view in containerView.subviews) {
-        							if (view != toView) 
+        							if (view != toView)
         								{
             								[view removeFromSuperview];
         								}
@@ -164,12 +164,12 @@ self.navigationController.delegate = self;
                          //6. transition is finished
                          [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
                      }];
-    
+
 
 	}
 ```
-	
-		
+
+
 
 解释：
 
@@ -199,4 +199,3 @@ self.navigationController.delegate = self;
 5. [UIViewControllerAnimatedTransitioning](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewControllerAnimatedTransitioning_Protocol/Reference/Reference.html);
 
 6. [UIViewControllerTransitioningDelegate](https://developer.apple.com/library/ios/documentation/uikit/reference/UIViewControllerTransitioningDelegate_protocol/Reference/Reference.html);
-

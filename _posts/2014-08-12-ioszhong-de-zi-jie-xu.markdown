@@ -3,7 +3,7 @@ layout: post
 title: "iOS 中的字节序"
 date: 2014-08-12 12:07:08 +0800
 comments: true
-categories: 
+categories: iOS 
 ---
 
 ![](/images/b8c60f715c7d7ad3736a3efde8f56eae65d9d45810251-ck6IkC_fw658.png)

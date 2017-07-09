@@ -3,7 +3,7 @@ layout: post
 title: "CGGeometry"
 date: 2014-07-01 12:35:54 +0800
 comments: true
-categories: 
+categories: iOS
 ---
 
 ![](/images/201407011244.png)
@@ -71,11 +71,11 @@ CGRectIntegral 用来对矩形取整，可以保证矩形对齐到像素边界�
 
 ```objc
 CGFloat  CGRectGetMinX (CGRect rect) //获取矩形x坐标的最小值
-CGFloat  CGRectGetMinY (CGRect rect) //获取矩形y坐标的最小值 
-CGFloat  CGRectGetMidX (CGRect rect)//获取矩形x坐标的中间值 
-CGFloat  CGRectGetMidY (CGRect rect) //获取矩形y坐标的中间值 
-CGFloat  CGRectGetMaxX (CGRect rect) // 获取矩形x坐标的最大值 
-CGFloat  CGRectGetMaxY (CGRect rect)） // 获取矩形y坐标的最大值 
+CGFloat  CGRectGetMinY (CGRect rect) //获取矩形y坐标的最小值
+CGFloat  CGRectGetMidX (CGRect rect)//获取矩形x坐标的中间值
+CGFloat  CGRectGetMidY (CGRect rect) //获取矩形y坐标的中间值
+CGFloat  CGRectGetMaxX (CGRect rect) // 获取矩形x坐标的最大值
+CGFloat  CGRectGetMaxY (CGRect rect)） // 获取矩形y坐标的最大值
 ```
 
 引用[NSHipster](http://nshipster.cn/cggeometry/)说明如下：
@@ -165,13 +165,13 @@ bool  CGPointEqualToPoint (CGPoint A,CGPoint B)
 ```  
 
  CGSizeAB是否相等
- 
+
 ```objc
 bool  CGSizeEqualToSize (CGSize A，CGSize B)
 ```
 
 矩形AB的位置大小是否相等
-     
+
 ```objc
 bool  CGRectEqualToRect (CGRect A，CGRect B)
 ```   
@@ -186,7 +186,7 @@ bool  CGRectIntersectsRect (CGRect A，CGRect B)
 检测矩形A是否包含指定的点B
 
 ```objc
-bool  CGRectContainsPoint (CGRect A, CGPoint B) 
+bool  CGRectContainsPoint (CGRect A, CGPoint B)
 ```     
 
 检测矩形A是否包含矩形B
@@ -220,4 +220,3 @@ bool  CGRectIsInfinite (CGRect A)
 [Objective-c 中CGGeometry几何类常用方法简单整理](http://www.cnblogs.com/xuling/archive/2012/02/09/2343427.html);
 
 [CGGeometry Reference](https://developer.apple.com/library/mac/documentation/GraphicsImaging/Reference/CGGeometry/Reference/reference.html);
-

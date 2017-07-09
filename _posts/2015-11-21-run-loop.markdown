@@ -3,7 +3,7 @@ layout: post
 title: "Run Loop"
 date: 2015-11-21 21:17:04 +0800
 comments: true
-categories: 
+categories: iOS 
 ---
 
 ### 目录
@@ -27,10 +27,10 @@ Run Loop 主要是用来保持线程常驻，从而接收事件的。比如常�
 
 每一个 Run Loop 包含着多个 Runloop mode，每次运行的时候，它只会运行在一个特定的 Runloop mode 下，iOS 系统常用的 Runloop Mode 有两个：
 
-* kCFRunLoopDefaultMode (NSDefaultRunLoopMode) 
+* kCFRunLoopDefaultMode (NSDefaultRunLoopMode)
 * UITrackingRunLoopMode。
 
-另外还有一种特殊的commonModes：kCFRunLoopCommonModes(NSRunLoopCommonModes)， 这种情况可以理解为别的 Mode 的集合，假如一个 Run Loop 运行在 UITrackingRunLoopMode 下，那么它不但会接收被标记为 UITrackingRunLoopMode 的事件， 也会接收被标记为 NSRunLoopCommonModes 的事件。我们可能会遇到这种情况，当一个 UIScrollView 在滑动的时候，主线程的 NSTimer 事件就不触发了，这种情况是因为当 UIScrollView 在滑动的时候，主线程的 Run Loop 就处于 UITrackingRunLoopMode 下，只接收被标记为 UITrackingRunLoopMode 和 NSRunLoopCommonModes 的事件， 而 NSTimer 默认被标记为 NSDefaultRunLoopMode 的，所以该 timer 事件就被丢弃了。解决的办法是通过 
+另外还有一种特殊的commonModes：kCFRunLoopCommonModes(NSRunLoopCommonModes)， 这种情况可以理解为别的 Mode 的集合，假如一个 Run Loop 运行在 UITrackingRunLoopMode 下，那么它不但会接收被标记为 UITrackingRunLoopMode 的事件， 也会接收被标记为 NSRunLoopCommonModes 的事件。我们可能会遇到这种情况，当一个 UIScrollView 在滑动的时候，主线程的 NSTimer 事件就不触发了，这种情况是因为当 UIScrollView 在滑动的时候，主线程的 Run Loop 就处于 UITrackingRunLoopMode 下，只接收被标记为 UITrackingRunLoopMode 和 NSRunLoopCommonModes 的事件， 而 NSTimer 默认被标记为 NSDefaultRunLoopMode 的，所以该 timer 事件就被丢弃了。解决的办法是通过
 
 `- (void)addTimer:(NSTimer *)timer forMode:(NSString *)mode`  
 
@@ -116,7 +116,7 @@ Run Loop 是用来接收事件的一个循环，其生命周期如下：
 
 ```objc
 CFRunLoopSourceContext context = {0,(__bridge void *)(self), NULL, NULL, NULL, NULL, NULL, NULL, NULL, &runLoopSourceFired};
-    
+
 self.inputSource = CFRunLoopSourceCreate(kCFAllocatorDefault, 0, &context);
 ```
 
@@ -142,13 +142,13 @@ self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(p_threadW
 - (void)p_threadWillEnter{
 
     @autoreleasepool {
-     
+
         CFRunLoopRef currentRunloop = CFRunLoopGetCurrent();
-        
+
         self.backgroundRunloop = currentRunloop;
-        
+
         CFRunLoopAddSource(currentRunloop, self.inputSource, kCFRunLoopDefaultMode);//添加 source0 到当前线程的 Run Loop 里
-        
+
         do {
             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];//开启 Run Loop
         } while (YES);
@@ -160,9 +160,9 @@ self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(p_threadW
 
 ```objc
 - (IBAction)buttonDidClicked:(id)sender {
-    
+
     CFRunLoopSourceSignal(self.inputSource); //将该 source 标记为待处理
-    
+
     CFRunLoopWakeUp(self.backgroundRunloop); //唤醒辅助线程
 }
 ```
@@ -197,7 +197,7 @@ self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(p_threadW
 - (void)handlePortMessage:(NSPortMessage *)message{
 
     UInt32 msid = [message msgid];
-    
+
     NSLog(@"msid == %d",msid);
 }
 ```
@@ -214,13 +214,13 @@ self.backgroundThreadPort.delegate = self;
 
 ```objc
 - (void)p_threadWillEnter{
-    
+
     @autoreleasepool {
-        
+
         NSRunLoop *runloop = [NSRunLoop currentRunLoop];
-        
+
         [runloop addPort:self.backgroundThreadPort forMode:NSDefaultRunLoopMode];
-        
+
         do{
             [runloop runMode:NSDefaultRunLoopMode
                   beforeDate:[NSDate distantFuture]];
@@ -233,7 +233,7 @@ self.backgroundThreadPort.delegate = self;
 
 ```objc
 - (IBAction)buttonClicked:(id)sender {
-    
+
     NSPortMessage* messageObj = [[NSPortMessage alloc] initWithSendPort:self.mainThreadPort
                                                             receivePort:self.backgroundThreadPort components:nil];
     if (messageObj){
@@ -257,4 +257,3 @@ self.backgroundThreadPort.delegate = self;
 4. [走进Run Loop的世界 (二)](http://chun.tips/blog/2014/10/20/zou-jin-run-loopde-shi-jie-er-:ru-he-pei-zhi-run-loop-sources/)
 
 5. [iOS多线程编程指南（三）Run Loop](http://www.dreamingwish.com/article/ios-multithread-program-runloop-the.html)
-

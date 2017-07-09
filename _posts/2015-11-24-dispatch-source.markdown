@@ -3,7 +3,7 @@ layout: post
 title: "Dispatch Source"
 date: 2015-11-24 00:16:49 +0800
 comments: true
-categories: 
+categories: iOS 
 ---
 
 ###目录
@@ -59,7 +59,7 @@ Dispatch Source 监控的事件主要有以下几种：
 
 使用 Dispatch Source 一般分为以下几步：
 
-1. 创建 Dispatch Source 
+1. 创建 Dispatch Source
 2. 配置 Dispatch Source
 3. 启动 Dispathc source
 4. 手动或自动发送 Dispatch Source 事件
@@ -72,17 +72,17 @@ Dispatch Source 监控的事件主要有以下几种：
     self.count = 0;
     dispatch_queue_t queue = dispatch_get_main_queue();
     self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_DATA_ADD, 0, 0, queue);//创建 Dispatch Source，种类为DISPATCH_SOURCE_TYPE_DATA_ADD，即获取到的变量会相加
-    
-    
+
+
     dispatch_source_set_event_handler(self.source, ^{
-    
+
         UInt64 value = dispatch_source_get_data(self.source);
-        
+
         self.count += value;
         NSLog(@"n = %ld",(long)self.count);
-        
+
     });//配置 Dispatch Source 的回调 block，即当收到该 Source 事件时候，就把该 block 追加到对应的queue中
-    
+
     dispatch_resume(self.source); //启动 Source， Source 默认是 suspend 的，需要手动启动
 ```
 
@@ -90,18 +90,18 @@ Dispatch Source 监控的事件主要有以下几种：
 
 ```objc
 - (IBAction)buttonDidClicked:(id)sender {
-    
+
     self.count = 0.0;
-    
+
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT , 0);
-    
+
     for (NSInteger i = 0; i < 100; i++) {
-        
+
         dispatch_async(queue, ^{
-            
+
             dispatch_source_merge_data(self.source, 1);//发送 Source 事件
             sleep(1);
-            
+
         });
     }
 }
@@ -119,10 +119,10 @@ Dispatch Source 监控的事件主要有以下几种：
     self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);//创建一个 timer；
     dispatch_source_set_timer(self.timer, DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC, 0 * NSEC_PER_SEC);//配置 timer，从现在起，每两秒在主线程触发一次，精度为0s
     dispatch_source_set_event_handler(self.timer, ^{
-        
+
         NSLog(@"%ld", self.count++);
     });//timer 触发之后的回调 block
-    
+
     dispatch_resume(self.time); //启动 timer
 ```
 
@@ -134,4 +134,3 @@ Dispatch Source 监控的事件主要有以下几种：
 2. [GCD入门（三）: Dispatch Sources](http://www.dreamingwish.com/article/grand-central-dispatch-basic-3.html);
 
 3. [Parse的底层多线程处理思路：GCD高级用法](https://github.com/ChenYilong/ParseSourceCodeStudy/blob/master/01_Parse的多线程处理思路/Parse的底层多线程处理思路.md);
-

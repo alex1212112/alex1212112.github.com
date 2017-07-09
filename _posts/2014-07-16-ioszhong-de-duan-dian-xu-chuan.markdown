@@ -3,7 +3,7 @@ layout: post
 title: "iOS 中的断点续传"
 date: 2014-07-16 17:25:31 +0800
 comments: true
-categories: 
+categories: iOS 
 ---
 ![](/images/201407161730.png)
 
@@ -59,4 +59,3 @@ NSString *rangeValue = [NSString stringWithFormat:@"bytes=%llu-", from];
 3.[iOS开发网络编程之断点续传-NSURLConnection](http://www.cnblogs.com/liufeng24/p/3555303.html);
 
 4.[AFNetworking实现程序重新启动时的断点续传](http://blog.csdn.net/zhaoxy_thu/article/details/21383515)；
-

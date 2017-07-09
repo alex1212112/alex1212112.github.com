@@ -3,13 +3,13 @@ layout: post
 title: "Objective-C 中的方法混写(Method Swizzling)"
 date: 2014-10-20 17:47:07 +0800
 comments: true
-categories: 
+categories: iOS 
 ---
 ![](/images/201410201751.png)
 ###目录
 
 1. 什么是方法混写（Method Swizzling）
-2. 如何使用方法混写 
+2. 如何使用方法混写
 3. 注意事项
 4. 参考资料
 
@@ -35,10 +35,10 @@ UIAlertView+GHSwizzling.m
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        
+
         SEL show = @selector(show);
         SEL replaceSHow = @selector(_gh_show);
-        
+
         Method existingMethod = class_getInstanceMethod(self, show);
         Method newMethod = class_getInstanceMethod(self, replaceSHow);
         method_exchangeImplementations(existingMethod, newMethod);//交换两个方法

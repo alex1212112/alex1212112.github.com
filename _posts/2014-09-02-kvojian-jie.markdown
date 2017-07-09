@@ -3,7 +3,7 @@ layout: post
 title: "KVO 简介"
 date: 2014-09-02 16:24:18 +0800
 comments: true
-categories: 
+categories: iOS 
 ---
 ![](/images/201409021638.png)
 
@@ -102,7 +102,7 @@ Person.h
 
 ```objc
 [self removeObserver:self forKeyPath:@"name" context:(__bridge void*)self];
- 
+
 [self removeObserver:self forKeyPath:@"age" context:(__bridge void*)self];
 ```
 
@@ -132,5 +132,3 @@ Person.h
 
 6. [Objective-C中的KVC和KVO](http://yulingtianxia.com/blog/2014/05/12/objective-czhong-de-kvche-kvo/)
 7. [iOS设计模式(01):观察者](http://beyondvincent.com/blog/2013/05/05/18/)；
-
-

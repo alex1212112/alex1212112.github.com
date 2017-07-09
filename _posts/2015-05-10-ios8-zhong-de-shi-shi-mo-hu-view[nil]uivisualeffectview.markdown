@@ -3,7 +3,7 @@ layout: post
 title: "iOS8 中的实时模糊 View－UIVisualEffectView"
 date: 2015-05-10 13:08:00 +0800
 comments: true
-categories: 
+categories: iOS 
 ---
 ![](/images/201505101313.png)
 
@@ -31,39 +31,39 @@ Objectivie-C
 ```objc
     //初始化一个 UIVisualEffect，UIBlurEffect 是 UIVisualEffect 的子类
     UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
-    
+
     //初始化 模糊效果的 UIVisualEffectView
     UIVisualEffectView * blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-    
+
     //设置 blurEffectView 的 frame
     blurEffectView.frame = self.view.bounds;
-    
+
     //添加 blurEffectView 到 self.View 上,如果只是做模糊效果，那么到这一步已经完了
     [self.view addSubview:blurEffectView];
-    
+
     //初始化 Vibrancy 类型的 UIVisualEffect，vibrancyEffect 也是UIVisualEffect 的子类，而且初始化这个 Effect 需要用到 blurEffect，我们就还用上面的好了，假如重新初始化一个 blurEffect，要注意这个新的 blurEffect 的 style 要和上面的保持一致，不然就实现不了 Vibrancy效果
     UIVibrancyEffect *vibrancyEffect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
-    
+
     //初始化 Vibrancy 效果的 UIVisualEffectView
     UIVisualEffectView *vibrancyEffectView = [[UIVisualEffectView alloc] initWithEffect:vibrancyEffect];
-    
+
     //设置 vibrancyEffectView 的frame
     vibrancyEffectView.frame = blurEffectView.bounds;
 
-    
+
     //注意是 blurEffectView.contentView. 苹果官方注释说了  Do not add subviews directly to UIVisualEffectView, use this view instead
     [blurEffectView.contentView addSubview:vibrancyEffectView];
-    
-    
+
+
     //初始化一个 label
     UILabel *label = [[UILabel alloc] initWithFrame:vibrancyEffectView.bounds];
-    
+
     label.textAlignment = NSTextAlignmentCenter;
-    
+
     label.text = @"Live long and Prosper";
-   
+
     label.font = [UIFont fontWithName:@"SnellRoundhand-Black" size:29.0f];
-    
+
     //添加 label
     [vibrancyEffectView.contentView addSubview:label];
 ```
