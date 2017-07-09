@@ -1,0 +1,16 @@
+<div class="highlight"><pre><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">p_threadWillEnter</span><span class="p">{</span>
+
+    <span class="k">@autoreleasepool</span> <span class="p">{</span>
+     
+        <span class="n">CFRunLoopRef</span> <span class="n">currentRunloop</span> <span class="o">=</span> <span class="n">CFRunLoopGetCurrent</span><span class="p">();</span>
+        
+        <span class="nb">self</span><span class="p">.</span><span class="n">backgroundRunloop</span> <span class="o">=</span> <span class="n">currentRunloop</span><span class="p">;</span>
+        
+        <span class="n">CFRunLoopAddSource</span><span class="p">(</span><span class="n">currentRunloop</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">inputSource</span><span class="p">,</span> <span class="n">kCFRunLoopDefaultMode</span><span class="p">);</span><span class="c1">//添加 source0 到当前线程的 Run Loop 里</span>
+        
+        <span class="k">do</span> <span class="p">{</span>
+            <span class="p">[[</span><span class="bp">NSRunLoop</span> <span class="n">currentRunLoop</span><span class="p">]</span> <span class="nl">runMode</span><span class="p">:</span><span class="n">NSDefaultRunLoopMode</span> <span class="nl">beforeDate</span><span class="p">:[</span><span class="bp">NSDate</span> <span class="n">distantFuture</span><span class="p">]];</span><span class="c1">//开启 Run Loop</span>
+        <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="nb">YES</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>

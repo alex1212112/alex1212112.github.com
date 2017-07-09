@@ -1,0 +1,10 @@
+<div class="highlight"><pre><span class="k">if</span> <span class="p">(</span><span class="n">NSHostByteOrder</span><span class="p">()</span> <span class="o">==</span> <span class="n">NS_LittleEndian</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;LittleEndian&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">NSHostByteOrder</span><span class="p">()</span> <span class="o">==</span> <span class="n">NS_BigEndian</span><span class="p">){</span>
+         <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;BigEndian&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+         <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Unknow&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+</pre></div>

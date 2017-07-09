@@ -1,0 +1,6 @@
+<div class="highlight"><pre> <span class="p">[</span><span class="nb">self</span> <span class="nl">evaluatePolicyWithTitle</span><span class="p">:</span><span class="n">NSLocalizedString</span><span class="p">(</span><span class="s">@&quot;Unlock APP&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">)</span> <span class="nl">successHandler</span><span class="p">:</span><span class="o">^</span><span class="p">{</span>
+
+                    <span class="nb">self</span><span class="p">.</span><span class="n">pwdTextField</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">passwordFromKeychainWithUsername</span><span class="p">:</span><span class="n">_userNameTextField</span><span class="p">.</span><span class="n">text</span><span class="p">];</span>
+                    <span class="p">[</span><span class="nb">self</span> <span class="n">login</span><span class="p">];</span>
+                <span class="p">}];</span>
+</pre></div>

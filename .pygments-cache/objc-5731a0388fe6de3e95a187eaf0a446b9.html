@@ -1,0 +1,19 @@
+<div class="highlight"><pre><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">saveToKeyChainWithUsername:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">username</span> <span class="nf">password:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">password</span>
+<span class="p">{</span>
+    <span class="n">SGKeychainItem</span> <span class="o">*</span><span class="n">item</span> <span class="o">=</span> <span class="p">[[</span><span class="n">SGKeychainItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+    <span class="n">item</span><span class="p">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">username</span><span class="p">;</span>
+    <span class="n">item</span><span class="p">.</span><span class="n">service</span> <span class="o">=</span> <span class="s">@&quot;APP&quot;</span><span class="p">;</span>
+    <span class="n">item</span><span class="p">.</span><span class="n">secret</span> <span class="o">=</span> <span class="n">password</span><span class="p">;</span>
+    
+    <span class="p">[</span><span class="n">SGKeychain</span> <span class="nl">storeKeychainItem</span><span class="p">:</span><span class="n">item</span> <span class="nl">completionHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">error</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Password successfully created&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Password failed to be created with error: %@&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">.</span><span class="n">description</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}];</span>
+<span class="p">}</span>
+</pre></div>

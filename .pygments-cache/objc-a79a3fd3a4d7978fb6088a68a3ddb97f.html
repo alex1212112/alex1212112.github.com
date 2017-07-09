@@ -1,0 +1,23 @@
+<div class="highlight"><pre><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">evaluatePolicyWithTitle:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">title</span> <span class="nf">successHandler:</span><span class="p">(</span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="p">)())</span><span class="nv">successHandler</span>
+<span class="p">{</span>
+    <span class="n">LAContext</span> <span class="o">*</span><span class="n">context</span> <span class="o">=</span> <span class="p">[[</span><span class="n">LAContext</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+    
+    <span class="c1">// show the authentication UI with our reason string</span>
+    
+    <span class="p">[</span><span class="n">context</span> <span class="nl">evaluatePolicy</span><span class="p">:</span><span class="n">LAPolicyDeviceOwnerAuthenticationWithBiometrics</span> <span class="nl">localizedReason</span><span class="p">:</span><span class="n">title</span> <span class="nl">reply</span><span class="p">:</span>
+     <span class="o">^</span><span class="p">(</span><span class="kt">BOOL</span> <span class="n">success</span><span class="p">,</span> <span class="bp">NSError</span> <span class="o">*</span><span class="n">authenticationError</span><span class="p">)</span> <span class="p">{</span>
+         
+         <span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span> <span class="o">^</span><span class="p">{</span>
+             
+             <span class="k">if</span> <span class="p">(</span><span class="n">success</span><span class="p">)</span>
+             <span class="p">{</span>
+                 <span class="k">if</span> <span class="p">(</span><span class="n">successHandler</span><span class="p">)</span>
+                 <span class="p">{</span>
+                     <span class="n">successHandler</span><span class="p">();</span>
+                 <span class="p">}</span>
+             <span class="p">}</span>
+         <span class="p">});</span>
+        
+     <span class="p">}];</span>
+<span class="p">}</span>
+</pre></div>

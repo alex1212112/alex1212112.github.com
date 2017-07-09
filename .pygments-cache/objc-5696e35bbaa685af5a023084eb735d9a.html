@@ -1,0 +1,38 @@
+<div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> *  带重力的碰撞行为</span>
+<span class="cm"> *</span>
+<span class="cm"> *  @param sender middleButton</span>
+<span class="cm"> */</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">middleButtonClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
+<span class="p">{</span>
+    
+    <span class="n">_subView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span>  <span class="p">(</span><span class="bp">CGRect</span><span class="p">){</span>
+        
+        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span>   <span class="mf">100.0f</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span>   <span class="mf">108.0f</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
+        
+    <span class="p">};</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">_animator</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">_animator</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIDynamicAnimator</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithReferenceView</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">view</span><span class="p">];</span>
+    <span class="p">}</span>
+    
+    <span class="p">[</span><span class="n">_animator</span> <span class="n">removeAllBehaviors</span><span class="p">];</span>
+
+    <span class="c1">//初始化一个碰撞的行为</span>
+    <span class="bp">UICollisionBehavior</span> <span class="o">*</span><span class="n">collisionBehavior</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UICollisionBehavior</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithItems</span><span class="p">:</span><span class="l">@[</span><span class="n">_subView</span><span class="l">]</span><span class="p">];</span>
+    
+    <span class="c1">//配置碰撞的边界，下述代码设置碰撞边界为参考系(self.view)的边框作为碰撞边界</span>
+    <span class="n">collisionBehavior</span><span class="p">.</span><span class="n">translatesReferenceBoundsIntoBoundary</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+    
+    <span class="p">[</span><span class="n">_animator</span> <span class="nl">addBehavior</span><span class="p">:</span><span class="n">collisionBehavior</span><span class="p">];</span>
+    
+    <span class="c1">//重力行为</span>
+    <span class="bp">UIGravityBehavior</span> <span class="o">*</span><span class="n">gravityBeahvior</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIGravityBehavior</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithItems</span><span class="p">:</span><span class="l">@[</span><span class="n">_subView</span><span class="l">]</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">_animator</span> <span class="nl">addBehavior</span><span class="p">:</span><span class="n">gravityBeahvior</span><span class="p">];</span>
+    
+<span class="p">}</span>
+</pre></div>

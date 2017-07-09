@@ -1,0 +1,20 @@
+<div class="highlight"><pre><span class="cp">#import &quot;GHPerson+GHAssociatedObject.h&quot;</span>
+<span class="cp">#import &lt;objc/runtime.h&gt;</span>
+
+<span class="k">static</span> <span class="kt">char</span> <span class="n">weightKey</span><span class="p">;</span>
+
+<span class="k">@implementation</span> <span class="nc">GHPerson</span> <span class="nl">(GHAssociatedObject)</span>
+<span class="k">@dynamic</span> <span class="n">weight</span><span class="p">;</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setWeight:</span><span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nv">weight</span>
+<span class="p">{</span>
+    <span class="n">objc_setAssociatedObject</span> <span class="p">(</span><span class="nb">self</span><span class="p">,</span><span class="o">&amp;</span><span class="n">weightKey</span><span class="p">,</span><span class="n">weight</span><span class="p">,</span><span class="n">OBJC_ASSOCIATION_RETAIN</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nf">weight</span>
+<span class="p">{</span>
+   <span class="k">return</span> <span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="n">objc_getAssociatedObject</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">weightKey</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">@end</span>
+</pre></div>

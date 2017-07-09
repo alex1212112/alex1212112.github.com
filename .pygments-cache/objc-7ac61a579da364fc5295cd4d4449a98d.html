@@ -1,0 +1,51 @@
+<div class="highlight"><pre><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">animateTransition:</span><span class="p">(</span><span class="kt">id</span> <span class="o">&lt;</span><span class="bp">UIViewControllerContextTransitioning</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">transitionContext</span>
+	<span class="p">{</span>
+    <span class="c1">// 1. Get controllers from transition context</span>
+    <span class="bp">UIViewController</span> <span class="o">*</span><span class="n">toVC</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">viewControllerForKey</span><span class="p">:</span><span class="n">UITransitionContextToViewControllerKey</span><span class="p">];</span>
+ 
+    <span class="c1">// 2. Set init frame for toVC</span>
+    
+    <span class="bp">CGRect</span> <span class="n">screenBounds</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIScreen</span> <span class="n">mainScreen</span><span class="p">]</span> <span class="n">bounds</span><span class="p">];</span>
+    <span class="bp">CGRect</span> <span class="n">finalFrame</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">finalFrameForViewController</span><span class="p">:</span><span class="n">toVC</span><span class="p">];</span>
+    
+    <span class="bp">UIView</span> <span class="o">*</span><span class="n">toViewSnapshot</span> <span class="o">=</span> <span class="p">[</span><span class="n">toVC</span><span class="p">.</span><span class="n">view</span> <span class="nl">resizableSnapshotViewFromRect</span><span class="p">:</span><span class="n">toVC</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">frame</span> <span class="nl">afterScreenUpdates</span><span class="p">:</span><span class="nb">YES</span> <span class="nl">withCapInsets</span><span class="p">:</span><span class="n">UIEdgeInsetsZero</span><span class="p">];</span>
+ 	
+    <span class="n">toViewSnapshot</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectOffset</span><span class="p">(</span><span class="n">finalFrame</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">screenBounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+    
+    <span class="bp">UIView</span> <span class="o">*</span><span class="n">toView</span> <span class="o">=</span> <span class="n">toVC</span><span class="p">.</span><span class="n">view</span><span class="p">;</span>
+    
+    <span class="c1">// 3. Add toVC&#39;s view to containerView</span>
+    <span class="bp">UIView</span> <span class="o">*</span><span class="n">containerView</span> <span class="o">=</span> <span class="p">[</span><span class="n">transitionContext</span> <span class="n">containerView</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">containerView</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">toViewSnapshot</span><span class="p">];</span>
+    
+    <span class="c1">// 4. Do animate now</span>
+    <span class="n">NSTimeInterval</span> <span class="n">duration</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">transitionDuration</span><span class="p">:</span><span class="n">transitionContext</span><span class="p">];</span>
+    <span class="p">[</span><span class="bp">UIView</span> <span class="nl">animateWithDuration</span><span class="p">:</span><span class="n">duration</span>
+                          <span class="nl">delay</span><span class="p">:</span><span class="mf">0.0</span>
+         <span class="nl">usingSpringWithDamping</span><span class="p">:</span><span class="mf">0.4</span>
+          <span class="nl">initialSpringVelocity</span><span class="p">:</span><span class="mf">10.0</span>
+                        <span class="nl">options</span><span class="p">:</span><span class="n">UIViewAnimationOptionCurveEaseInOut</span>
+                     <span class="nl">animations</span><span class="p">:</span><span class="o">^</span><span class="p">{</span>
+                         <span class="n">toViewSnapshot</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">finalFrame</span><span class="p">;</span>
+                     <span class="p">}</span> <span class="nl">completion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">BOOL</span> <span class="n">finished</span><span class="p">)</span> <span class="p">{</span>
+
+                         <span class="k">if</span> <span class="p">([</span><span class="n">transitionContext</span> <span class="n">transitionWasCancelled</span><span class="p">])</span> <span class="p">{</span>
+                            
+                         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+							<span class="c1">//5. add the real toView and remove the snapshot</span>
+                             <span class="p">[</span><span class="n">containerView</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">toView</span><span class="p">];</span>
+                             <span class="k">for</span> <span class="p">(</span><span class="bp">UIView</span> <span class="o">*</span><span class="n">view</span> <span class="k">in</span> <span class="n">containerView</span><span class="p">.</span><span class="n">subviews</span><span class="p">)</span> <span class="p">{</span>
+        							<span class="k">if</span> <span class="p">(</span><span class="n">view</span> <span class="o">!=</span> <span class="n">toView</span><span class="p">)</span> 
+        								<span class="p">{</span>
+            								<span class="p">[</span><span class="n">view</span> <span class="n">removeFromSuperview</span><span class="p">];</span>
+        								<span class="p">}</span>
+    <span class="p">}</span>
+
+                         <span class="p">}</span>
+                         <span class="c1">//6. transition is finished</span>
+                         <span class="p">[</span><span class="n">transitionContext</span> <span class="nl">completeTransition</span><span class="p">:</span><span class="o">!</span><span class="p">[</span><span class="n">transitionContext</span> <span class="n">transitionWasCancelled</span><span class="p">]];</span>
+                     <span class="p">}];</span>
+    
+
+	<span class="p">}</span>
+</pre></div>

@@ -1,0 +1,29 @@
+<div class="highlight"><pre><span class="cp">#import &quot;UIAlertView+GHSwizzling.h&quot;</span>
+<span class="cp">#import &lt;objc/runtime.h&gt;</span>
+
+<span class="k">@implementation</span> <span class="bp">UIAlertView</span> <span class="nl">(GHSwizzling)</span>
+
+
+<span class="p">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">load</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="kt">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
+    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+        
+        <span class="kt">SEL</span> <span class="n">show</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">show</span><span class="p">);</span>
+        <span class="kt">SEL</span> <span class="n">replaceSHow</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">_gh_show</span><span class="p">);</span>
+        
+        <span class="n">Method</span> <span class="n">existingMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">show</span><span class="p">);</span>
+        <span class="n">Method</span> <span class="n">newMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">replaceSHow</span><span class="p">);</span>
+        <span class="n">method_exchangeImplementations</span><span class="p">(</span><span class="n">existingMethod</span><span class="p">,</span> <span class="n">newMethod</span><span class="p">);</span><span class="c1">//交换两个方法</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+
+
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">_gh_show</span>
+<span class="p">{</span>
+    <span class="p">[</span><span class="nb">self</span> <span class="n">_gh_show</span><span class="p">];</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;alert show!&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">@end</span>
+</pre></div>

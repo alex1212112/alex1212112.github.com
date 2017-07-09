@@ -1,0 +1,6 @@
+<div class="highlight"><pre><span class="bp">NSArray</span> <span class="o">*</span><span class="n">sortedArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">sortedArrayUsingComparator</span><span class="p">:</span><span class="o">^</span><span class="n">NSComparisonResult</span><span class="p">(</span><span class="n">User</span> <span class="o">*</span><span class="n">user1</span><span class="p">,</span> <span class="n">User</span> <span class="o">*</span><span class="n">user2</span><span class="p">){</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">user1</span><span class="p">.</span><span class="n">age</span> <span class="nl">compare</span><span class="p">:</span><span class="n">user2</span><span class="p">.</span><span class="n">age</span><span class="p">];</span>
+
+<span class="p">}];</span>
+</pre></div>

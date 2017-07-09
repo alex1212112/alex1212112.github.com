@@ -1,0 +1,10 @@
+<div class="highlight"><pre><span class="bp">NSString</span> <span class="o">*</span><span class="n">kernelString</span> <span class="o">=</span>
+    <span class="s">@&quot;kernel vec4 chromaKey( __sample s, __color c, float threshold ) { </span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="s">@&quot;  vec4 diff = s.rgba - c;</span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="s">@&quot;  float distance = length( diff );</span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="s">@&quot;  float alpha = compare( distance - threshold, 0.0, 0.5 );</span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="s">@&quot;  return vec4( s.rgb, alpha ); </span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="s">@&quot;}&quot;</span><span class="p">;</span>
+    
+<span class="n">CIColorKernel</span> <span class="o">*</span><span class="n">kernel</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIColorKernel</span> <span class="nl">kernelWithString</span><span class="p">:</span><span class="n">kernelString</span><span class="p">];</span>
+</pre></div>

@@ -1,0 +1,19 @@
+<div class="highlight"><pre><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">observeValueForKeyPath:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span> <span class="nf">ofObject:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span> <span class="nf">change:</span><span class="p">(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nv">change</span> <span class="nf">context:</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">context</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">((</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">context</span> <span class="o">==</span> <span class="nb">self</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">([</span><span class="n">keyPath</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="s">@&quot;name&quot;</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="nb">self</span><span class="p">.</span><span class="n">nameLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">].</span><span class="n">name</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">([</span><span class="n">keyPath</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="s">@&quot;age&quot;</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="nb">self</span><span class="p">.</span><span class="n">ageLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Person</span> <span class="n">sharePerson</span><span class="p">].</span><span class="n">age</span> <span class="n">stringValue</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="p">[</span><span class="nb">super</span> <span class="nl">observeValueForKeyPath</span><span class="p">:</span><span class="n">keyPath</span> <span class="nl">ofObject</span><span class="p">:</span><span class="n">object</span> <span class="nl">change</span><span class="p">:</span><span class="n">change</span> <span class="nl">context</span><span class="p">:</span><span class="n">context</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>

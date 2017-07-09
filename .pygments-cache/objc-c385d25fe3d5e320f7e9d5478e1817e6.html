@@ -1,0 +1,10 @@
+<div class="highlight"><pre><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">buttonClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+    
+    <span class="n">NSPortMessage</span><span class="o">*</span> <span class="n">messageObj</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSPortMessage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithSendPort</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">mainThreadPort</span>
+                                                            <span class="nl">receivePort</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">backgroundThreadPort</span> <span class="nl">components</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">messageObj</span><span class="p">){</span>
+        <span class="p">[</span><span class="n">messageObj</span> <span class="nl">setMsgid</span><span class="p">:</span><span class="mi">150</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">messageObj</span> <span class="nl">sendBeforeDate</span><span class="p">:[</span><span class="bp">NSDate</span> <span class="n">date</span><span class="p">]];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>

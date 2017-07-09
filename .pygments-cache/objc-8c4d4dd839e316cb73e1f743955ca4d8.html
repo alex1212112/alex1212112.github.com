@@ -1,0 +1,12 @@
+<div class="highlight"><pre><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">canEvaluatePolicy</span>
+<span class="p">{</span>
+    <span class="n">LAContext</span> <span class="o">*</span><span class="n">context</span> <span class="o">=</span> <span class="p">[[</span><span class="n">LAContext</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+    <span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+    <span class="kt">BOOL</span> <span class="n">success</span><span class="p">;</span>
+    
+    <span class="c1">// test if we can evaluate the policy, this test will tell us if Touch ID is available and enrolled</span>
+    <span class="n">success</span> <span class="o">=</span> <span class="p">[</span><span class="n">context</span> <span class="nl">canEvaluatePolicy</span><span class="p">:</span> <span class="n">LAPolicyDeviceOwnerAuthenticationWithBiometrics</span> <span class="nl">error</span><span class="p">:</span><span class="o">&amp;</span><span class="n">error</span><span class="p">];</span>
+    
+    <span class="k">return</span> <span class="n">success</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>

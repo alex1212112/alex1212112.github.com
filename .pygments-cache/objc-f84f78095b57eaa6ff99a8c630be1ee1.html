@@ -1,0 +1,15 @@
+<div class="highlight"><pre><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">p_threadWillEnter</span><span class="p">{</span>
+    
+    <span class="k">@autoreleasepool</span> <span class="p">{</span>
+        
+        <span class="bp">NSRunLoop</span> <span class="o">*</span><span class="n">runloop</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSRunLoop</span> <span class="n">currentRunLoop</span><span class="p">];</span>
+        
+        <span class="p">[</span><span class="n">runloop</span> <span class="nl">addPort</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">backgroundThreadPort</span> <span class="nl">forMode</span><span class="p">:</span><span class="n">NSDefaultRunLoopMode</span><span class="p">];</span>
+        
+        <span class="k">do</span><span class="p">{</span>
+            <span class="p">[</span><span class="n">runloop</span> <span class="nl">runMode</span><span class="p">:</span><span class="n">NSDefaultRunLoopMode</span>
+                  <span class="nl">beforeDate</span><span class="p">:[</span><span class="bp">NSDate</span> <span class="n">distantFuture</span><span class="p">]];</span>
+        <span class="p">}</span><span class="k">while</span> <span class="p">(</span><span class="nb">YES</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>

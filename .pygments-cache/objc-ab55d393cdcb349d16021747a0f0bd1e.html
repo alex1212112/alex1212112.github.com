@@ -1,0 +1,9 @@
+<div class="highlight"><pre>   <span class="bp">NSString</span> <span class="o">*</span><span class="n">kernelString</span> <span class="o">=</span>
+    <span class="s">@&quot;kernel vec4 moveUpTwoPixels (sampler image) {</span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="s">@&quot;  vec2 dc = destCoord();</span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="s">@&quot;  vec2 offset = vec2(0.0, 2.0);</span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="s">@&quot;  return sample (image, samplerTransform (image, dc + offset));</span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="s">@&quot;}&quot;</span><span class="p">;</span>
+    
+    <span class="n">CIKernel</span> <span class="o">*</span><span class="n">kernel</span> <span class="o">=</span> <span class="p">[</span><span class="n">CIKernel</span> <span class="nl">kernelWithString</span><span class="p">:</span><span class="n">kernelString</span><span class="p">];</span>
+</pre></div>

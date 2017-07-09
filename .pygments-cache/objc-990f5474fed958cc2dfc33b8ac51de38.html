@@ -1,0 +1,37 @@
+<div class="highlight"><pre><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqualToPerson:</span><span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="nv">person</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span> <span class="o">==</span> <span class="n">person</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">([</span><span class="n">_name</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">]</span> <span class="o">||</span> <span class="n">_name</span> <span class="o">==</span> <span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">([</span><span class="n">_age</span> <span class="nl">isEqualToNumber</span><span class="p">:</span><span class="n">person</span><span class="p">.</span><span class="n">age</span><span class="p">]</span> <span class="o">||</span> <span class="n">_age</span> <span class="o">==</span> <span class="n">person</span><span class="p">.</span><span class="n">age</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">([</span><span class="nb">self</span> <span class="k">class</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="n">object</span> <span class="k">class</span><span class="p">])</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">isEqualToPerson</span><span class="p">:</span> <span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="n">object</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">super</span> <span class="nl">isEqual</span><span class="p">:</span><span class="n">object</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nf">hash</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">_name</span> <span class="n">hash</span><span class="p">]</span> <span class="o">^</span> <span class="p">[</span><span class="n">_age</span> <span class="n">hash</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
