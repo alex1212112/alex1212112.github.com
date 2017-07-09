@@ -1,0 +1,10 @@
+<div class="highlight"><pre><span class="kt">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_main_queue</span><span class="p">();</span>
+<span class="nb">self</span><span class="p">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">dispatch_source_create</span><span class="p">(</span><span class="n">DISPATCH_SOURCE_TYPE_TIMER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">queue</span><span class="p">);</span><span class="c1">//创建一个 timer；</span>
+<span class="n">dispatch_source_set_timer</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">timer</span><span class="p">,</span> <span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">,</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">);</span><span class="c1">//配置 timer，从现在起，每两秒在主线程触发一次，精度为0s</span>
+<span class="n">dispatch_source_set_event_handler</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">timer</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+    
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">count</span><span class="o">++</span><span class="p">);</span>
+<span class="p">});</span><span class="c1">//timer 触发之后的回调 block</span>
+
+<span class="n">dispatch_resume</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">time</span><span class="p">);</span> <span class="c1">//启动 timer</span>
+</pre></div>

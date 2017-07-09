@@ -1,0 +1,16 @@
+<div class="highlight"><pre>  <span class="kt">dispatch_group_t</span> <span class="n">group</span> <span class="o">=</span> <span class="n">dispatch_group_create</span><span class="p">();</span>
+    
+    <span class="kt">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    
+    <span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        
+        <span class="n">dispatch_group_async</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+            
+            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span><span class="p">);</span>
+        <span class="p">});</span><span class="c1">//把任务添加到组中</span>
+    <span class="p">}</span>
+    
+    <span class="n">dispatch_group_wait</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">DISPATCH_TIME_FOREVER</span><span class="p">);</span><span class="c1">//阻塞当前线程，一直到组中任务完成</span>
+    
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;done&quot;</span><span class="p">);</span> <span class="c1">//数据同步点</span>
+</pre></div>

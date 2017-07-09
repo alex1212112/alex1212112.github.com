@@ -1,0 +1,10 @@
+<div class="highlight"><pre><span class="kt">dispatch_queue_t</span> <span class="n">serialQueue</span> <span class="o">=</span> <span class="n">dispatch_queue_create</span><span class="p">(</span><span class="s">&quot;com.ghren.MultiThread.test&quot;</span><span class="p">,</span> <span class="n">DISPATCH_QUEUE_SERIAL</span><span class="p">);</span> <span class="c1">//生成一个串行队列</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+ 
+    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">serialQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+        
+        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span><span class="p">);</span>
+    <span class="p">});</span><span class="c1">//向该串行队列中添加任务</span>
+<span class="p">}</span>
+</pre></div>

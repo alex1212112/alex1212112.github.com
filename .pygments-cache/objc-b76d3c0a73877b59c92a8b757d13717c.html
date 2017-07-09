@@ -1,0 +1,4 @@
+<div class="highlight"><pre><span class="bp">NSPredicate</span> <span class="o">*</span><span class="n">predicate</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSPredicate</span> <span class="nl">predicateWithFormat</span><span class="p">:</span><span class="s">@&quot;((age &gt;= %@) AND (age &lt; %@))&quot;</span><span class="p">,</span><span class="mi">@20</span><span class="p">,</span><span class="mi">@30</span><span class="p">];</span>
+    
+<span class="bp">NSArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span> <span class="nl">filteredArrayUsingPredicate</span><span class="p">:</span><span class="n">predicate</span><span class="p">];</span>
+</pre></div>

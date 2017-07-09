@@ -1,0 +1,38 @@
+<div class="highlight"><pre><span class="c1">//初始化一个 UIVisualEffect，UIBlurEffect 是 UIVisualEffect 的子类</span>
+<span class="n">UIBlurEffect</span> <span class="o">*</span><span class="n">blurEffect</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIBlurEffect</span> <span class="nl">effectWithStyle</span><span class="p">:</span><span class="n">UIBlurEffectStyleExtraLight</span><span class="p">];</span>
+
+<span class="c1">//初始化 模糊效果的 UIVisualEffectView</span>
+<span class="n">UIVisualEffectView</span> <span class="o">*</span> <span class="n">blurEffectView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIVisualEffectView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithEffect</span><span class="p">:</span><span class="n">blurEffect</span><span class="p">];</span>
+
+<span class="c1">//设置 blurEffectView 的 frame</span>
+<span class="n">blurEffectView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">bounds</span><span class="p">;</span>
+
+<span class="c1">//添加 blurEffectView 到 self.View 上,如果只是做模糊效果，那么到这一步已经完了</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">view</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">blurEffectView</span><span class="p">];</span>
+
+<span class="c1">//初始化 Vibrancy 类型的 UIVisualEffect，vibrancyEffect 也是UIVisualEffect 的子类，而且初始化这个 Effect 需要用到 blurEffect，我们就还用上面的好了，假如重新初始化一个 blurEffect，要注意这个新的 blurEffect 的 style 要和上面的保持一致，不然就实现不了 Vibrancy效果</span>
+<span class="n">UIVibrancyEffect</span> <span class="o">*</span><span class="n">vibrancyEffect</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIVibrancyEffect</span> <span class="nl">effectForBlurEffect</span><span class="p">:</span><span class="n">blurEffect</span><span class="p">];</span>
+
+<span class="c1">//初始化 Vibrancy 效果的 UIVisualEffectView</span>
+<span class="n">UIVisualEffectView</span> <span class="o">*</span><span class="n">vibrancyEffectView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIVisualEffectView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithEffect</span><span class="p">:</span><span class="n">vibrancyEffect</span><span class="p">];</span>
+
+<span class="c1">//设置 vibrancyEffectView 的frame</span>
+<span class="n">vibrancyEffectView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">blurEffectView</span><span class="p">.</span><span class="n">bounds</span><span class="p">;</span>
+
+
+<span class="c1">//注意是 blurEffectView.contentView. 苹果官方注释说了  Do not add subviews directly to UIVisualEffectView, use this view instead</span>
+<span class="p">[</span><span class="n">blurEffectView</span><span class="p">.</span><span class="n">contentView</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">vibrancyEffectView</span><span class="p">];</span>
+
+
+<span class="c1">//初始化一个 label</span>
+<span class="bp">UILabel</span> <span class="o">*</span><span class="n">label</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UILabel</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="n">vibrancyEffectView</span><span class="p">.</span><span class="n">bounds</span><span class="p">];</span>
+
+<span class="n">label</span><span class="p">.</span><span class="n">textAlignment</span> <span class="o">=</span> <span class="n">NSTextAlignmentCenter</span><span class="p">;</span>
+
+<span class="n">label</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">@&quot;Live long and Prosper&quot;</span><span class="p">;</span>
+   
+<span class="n">label</span><span class="p">.</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIFont</span> <span class="nl">fontWithName</span><span class="p">:</span><span class="s">@&quot;SnellRoundhand-Black&quot;</span> <span class="nl">size</span><span class="p">:</span><span class="mf">29.0f</span><span class="p">];</span>
+
+<span class="c1">//添加 label</span>
+<span class="p">[</span><span class="n">vibrancyEffectView</span><span class="p">.</span><span class="n">contentView</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">label</span><span class="p">];</span>
+</pre></div>

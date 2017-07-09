@@ -1,0 +1,12 @@
+<div class="highlight"><pre><span class="bp">NSOperationQueue</span> <span class="o">*</span> <span class="n">queue</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSOperationQueue</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+
+<span class="n">queue</span><span class="p">.</span><span class="n">maxConcurrentOperationCount</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//每次只执行一个任务</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">count</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    
+    <span class="p">[</span><span class="n">queue</span> <span class="nl">addOperation</span><span class="p">:</span> <span class="p">[</span><span class="bp">NSBlockOperation</span> <span class="nl">blockOperationWithBlock</span><span class="p">:</span><span class="o">^</span><span class="p">{</span>
+        
+        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%ld&quot;</span><span class="p">,</span><span class="n">count</span><span class="p">);</span>
+    <span class="p">}</span> <span class="p">]];</span>
+<span class="p">}</span>
+</pre></div>

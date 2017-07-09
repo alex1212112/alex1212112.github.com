@@ -1,0 +1,16 @@
+<div class="highlight"><pre><span class="nb">self</span><span class="p">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_main_queue</span><span class="p">();</span>
+<span class="nb">self</span><span class="p">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">dispatch_source_create</span><span class="p">(</span><span class="n">DISPATCH_SOURCE_TYPE_DATA_ADD</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">queue</span><span class="p">);</span><span class="c1">//创建 Dispatch Source，种类为DISPATCH_SOURCE_TYPE_DATA_ADD，即获取到的变量会相加</span>
+
+
+<span class="n">dispatch_source_set_event_handler</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">source</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+
+    <span class="n">UInt64</span> <span class="n">value</span> <span class="o">=</span> <span class="n">dispatch_source_get_data</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">source</span><span class="p">);</span>
+    
+    <span class="nb">self</span><span class="p">.</span><span class="n">count</span> <span class="o">+=</span> <span class="n">value</span><span class="p">;</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;n = %ld&quot;</span><span class="p">,(</span><span class="kt">long</span><span class="p">)</span><span class="nb">self</span><span class="p">.</span><span class="n">count</span><span class="p">);</span>
+    
+<span class="p">});</span><span class="c1">//配置 Dispatch Source 的回调 block，即当收到该 Source 事件时候，就把该 block 追加到对应的queue中</span>
+
+<span class="n">dispatch_resume</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">source</span><span class="p">);</span> <span class="c1">//启动 Source， Source 默认是 suspend 的，需要手动启动</span>
+</pre></div>

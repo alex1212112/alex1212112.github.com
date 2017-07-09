@@ -1,0 +1,17 @@
+<div class="highlight"><pre><span class="p">-</span> <span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">passwordFromKeychainWithUsername:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">username</span>
+<span class="p">{</span>
+    <span class="n">SGKeychainItem</span> <span class="o">*</span><span class="n">item</span> <span class="o">=</span> <span class="p">[[</span><span class="n">SGKeychainItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+    <span class="n">item</span><span class="p">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">username</span><span class="p">;</span>
+    <span class="n">item</span><span class="p">.</span><span class="n">service</span> <span class="o">=</span> <span class="s">@&quot;APP&quot;</span><span class="p">;</span>
+    
+    <span class="c1">// Fetch the password</span>
+    <span class="p">[</span><span class="n">SGKeychain</span> <span class="nl">populatePasswordForItem</span><span class="p">:</span><span class="n">item</span> <span class="nl">completionHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">){</span>
+    
+        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;error == %@&quot;</span><span class="p">,</span><span class="n">error</span><span class="p">.</span><span class="n">description</span><span class="p">);</span>
+    <span class="p">}];</span>
+    
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;password ==%@&quot;</span><span class="p">,</span><span class="n">item</span><span class="p">.</span><span class="n">secret</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="n">item</span><span class="p">.</span><span class="n">secret</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>

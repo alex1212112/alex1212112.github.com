@@ -1,0 +1,19 @@
+<div class="highlight"><pre><span class="kt">dispatch_semaphore_t</span> <span class="n">semaphore</span> <span class="o">=</span> <span class="n">dispatch_semaphore_create</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="kt">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="kt">dispatch_time_t</span> <span class="n">time</span> <span class="o">=</span> <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span><span class="n">NSEC_PER_SEC</span><span class="p">);</span>
+
+<span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;task will begin&quot;</span><span class="p">);</span>
+
+<span class="n">dispatch_after</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+    
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;task is done&quot;</span><span class="p">);</span>
+    <span class="n">dispatch_semaphore_signal</span><span class="p">(</span><span class="n">semaphore</span><span class="p">);</span>
+    
+<span class="p">});</span><span class="c1">//3 秒之后在全局并发队列里添加一个任务，任务执行完毕之后，增加一个信号量</span>
+
+<span class="n">dispatch_semaphore_wait</span><span class="p">(</span><span class="n">semaphore</span><span class="p">,</span> <span class="n">DISPATCH_TIME_FOREVER</span><span class="p">);</span><span class="c1">//当前线程处于阻塞状态，直到信号量不为0</span>
+
+<span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;start another task&quot;</span><span class="p">);</span>
+</pre></div>

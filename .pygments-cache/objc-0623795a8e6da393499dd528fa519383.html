@@ -1,0 +1,30 @@
+<div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> *  吸附行为</span>
+<span class="cm"> *</span>
+<span class="cm"> *  @param sender rightButton</span>
+<span class="cm"> */</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">rightButtonClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
+<span class="p">{</span>
+    
+    <span class="n">_subView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span>  <span class="p">(</span><span class="bp">CGRect</span><span class="p">){</span>
+        
+        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span>   <span class="mf">100.0f</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span>   <span class="mf">108.0f</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mf">100.0f</span><span class="p">,</span>
+        
+    <span class="p">};</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">_animator</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">_animator</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIDynamicAnimator</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithReferenceView</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">view</span><span class="p">];</span>
+    <span class="p">}</span>
+    
+    <span class="p">[</span><span class="n">_animator</span> <span class="n">removeAllBehaviors</span><span class="p">];</span>
+    
+    <span class="c1">//初始化一个吸附行为</span>
+    <span class="bp">UISnapBehavior</span> <span class="o">*</span><span class="n">snap</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UISnapBehavior</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithItem</span><span class="p">:</span><span class="n">_subView</span> <span class="nl">snapToPoint</span><span class="p">:(</span><span class="bp">CGPoint</span><span class="p">){</span><span class="mf">100.0f</span><span class="p">,</span><span class="mf">300.0f</span><span class="p">}];</span>
+    <span class="c1">//添加吸附行为到animator</span>
+    <span class="p">[</span><span class="n">_animator</span> <span class="nl">addBehavior</span><span class="p">:</span><span class="n">snap</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>

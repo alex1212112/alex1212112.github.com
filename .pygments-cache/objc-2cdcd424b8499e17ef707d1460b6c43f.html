@@ -1,0 +1,7 @@
+<div class="highlight"><pre><span class="p">[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">cancelAllLocalNotifications</span><span class="p">];</span>
+    <span class="kt">long</span> <span class="n">count</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">((</span><span class="n">count</span> <span class="o">=</span> <span class="p">[[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">scheduledLocalNotifications</span><span class="p">]</span> <span class="n">count</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Remaining notificaitons to cancel: %lu&quot;</span><span class="p">,(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">count</span><span class="p">);</span>
+        <span class="p">[</span><span class="bp">NSThread</span> <span class="nl">sleepForTimeInterval</span><span class="p">:</span><span class="mf">.01f</span><span class="p">];</span>
+    <span class="p">}</span>
+</pre></div>

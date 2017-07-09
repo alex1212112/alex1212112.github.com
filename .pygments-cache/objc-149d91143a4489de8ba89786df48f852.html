@@ -1,0 +1,6 @@
+<div class="highlight"><pre><span class="n">kernel</span> <span class="n">vec4</span> <span class="nf">moveUpTwoPixels</span> <span class="p">(</span><span class="n">sampler</span> <span class="n">image</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">vec2</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">destCoord</span><span class="p">();</span>
+    <span class="n">vec2</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">vec2</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">sample</span> <span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">samplerTransform</span> <span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dc</span> <span class="o">+</span> <span class="n">offset</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>

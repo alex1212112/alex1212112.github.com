@@ -1,0 +1,7 @@
+<div class="highlight"><pre><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">buttonDidClicked:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+    
+    <span class="n">CFRunLoopSourceSignal</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">inputSource</span><span class="p">);</span> <span class="c1">//将该 source 标记为待处理</span>
+    
+    <span class="n">CFRunLoopWakeUp</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">backgroundRunloop</span><span class="p">);</span> <span class="c1">//唤醒辅助线程</span>
+<span class="p">}</span>
+</pre></div>
