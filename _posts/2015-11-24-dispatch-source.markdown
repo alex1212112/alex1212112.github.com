@@ -3,7 +3,7 @@ layout: post
 title: "Dispatch Source"
 date: 2015-11-24 00:16:49 +0800
 comments: true
-categories: iOS 
+categories: iOS
 ---
 
 ###目录
@@ -11,7 +11,7 @@ categories: iOS
 2. 事件与种类
 3. 使用 Dispatch Source
 
-###概述
+### 概述
 
 iOS 中有两种 Source，一种是 Run Loop Source ,一种是 Dispatch Source。
 
@@ -21,7 +21,7 @@ Source 可以理解为产生事件的地方，Source 产生事件，然后 Sourc
 
 Dispatch Source 也会产生一些特定的事件，当这些事件发生的时候，其回调的 block 会自动加入到 对应的 dispatch queue 中。
 
-###事件与种类
+### 事件与种类
 
 Dispatch Source 监控的事件主要有以下几种：
 
@@ -55,7 +55,7 @@ Dispatch Source 监控的事件主要有以下几种：
 
 这些事件都是来自于 XNU 内核中，kqueue 是用来处理这些事件的最好的一种方法，Dispatch Source 就是对 kqueue 的封装。
 
-###使用 Dispatch Source
+### 使用 Dispatch Source
 
 使用 Dispatch Source 一般分为以下几步：
 
@@ -64,7 +64,7 @@ Dispatch Source 监控的事件主要有以下几种：
 3. 启动 Dispathc source
 4. 手动或自动发送 Dispatch Source 事件
 
-####自定义 Dispatch Source
+#### 自定义 Dispatch Source
 
 首先创建并配置 Dispatch Sourcce
 
@@ -128,7 +128,7 @@ Dispatch Source 监控的事件主要有以下几种：
 
 
 
-###参考资料
+### 参考资料
 1. [Dispatch Sources](https://developer.apple.com/library/mac/documentation/General/Conceptual/ConcurrencyProgrammingGuide/GCDWorkQueues/GCDWorkQueues.html);
 
 2. [GCD入门（三）: Dispatch Sources](http://www.dreamingwish.com/article/grand-central-dispatch-basic-3.html);
