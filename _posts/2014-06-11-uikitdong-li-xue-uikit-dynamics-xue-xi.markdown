@@ -7,11 +7,11 @@ categories: iOS
 ---
 
 ![](/images/4908ab0eae4b946b9066eafd11f8030580c2c4f79dfd.png)
-####简介
+#### 简介
 
 UIKit dynamics(UIKit动力学)是UIKit的一套动画和交互体系。和我们用的CoreAnimation或者UIView animations一样，只不过UIKit 动力学将现实世界动力驱动的动画引入了UIKit，比如重力，铰链连接，碰撞，悬挂、吸附等效果。
 
-####基本概念和元素
+#### 基本概念和元素
 
 * UIdynamicItem: 实现了UIDynamicItem委托的对象，它是动画的执行者，相关的物理属性也是加在这个对象上，由于iOS7之后，UIView和UICollectionViewLayoutAttributes类默认实现了该协议，所以UIView就可以看作是一个UIdynamicItem；
 
@@ -33,7 +33,7 @@ UIKit dynamics(UIKit动力学)是UIKit的一套动画和交互体系。和我们
 
 * ReferenceView：力学参考系，只有当想要添加力学的UIView是ReferenceView的子view时，动力UI才发生作用，比如你可以把ViewController的view作为ReferenceView；
 
-####代码示例（一个简单的重力行为）
+#### 代码示例（一个简单的重力行为）
 
 ```objc
 /**

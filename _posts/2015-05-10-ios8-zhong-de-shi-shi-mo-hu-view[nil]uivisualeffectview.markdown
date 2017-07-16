@@ -3,11 +3,11 @@ layout: post
 title: "iOS8 中的实时模糊 View－UIVisualEffectView"
 date: 2015-05-10 13:08:00 +0800
 comments: true
-categories: iOS 
+categories: iOS
 ---
 ![](/images/201505101313.png)
 
-###介绍
+### 介绍
 
 在iOS7 以后，整个扁平化的 iOS 界面都大量采用了高斯模糊的效果来展示层次，比如在主界面上从底面上划出来 的控制面板，或者从顶部向下划出来的通知栏界面，都实时模糊了主界面背景，在 iOS7 的时候我们总共有 3.5 个办法来实现这些效果：
 
@@ -24,7 +24,7 @@ UIVisualEffectView 有两种效果，一种是 UIBlurEffect，即高斯模糊效
 
 ![](/images/10310Q192-19.png)
 
-###代码
+### 代码
 
 Objectivie-C
 
@@ -69,6 +69,6 @@ Objectivie-C
 ```
 
 
-###参考资料
+### 参考资料
 
 1. [UIVisualEffectView Tutorial](http://www.raywenderlich.com/84043/ios-8-visual-effects-tutorial)

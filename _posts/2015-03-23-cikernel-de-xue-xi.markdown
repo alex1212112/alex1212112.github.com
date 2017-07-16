@@ -3,17 +3,17 @@ layout: post
 title: "CIKernel 的学习"
 date: 2015-03-23 21:39:36 +0800
 comments: true
-categories: iOS 
+categories: iOS
 ---
 ![](/images/201503232142.png)
 
 在使用 Core Image 的时候，Apple 提供的效果有时候无法满足我们的需求，我们希望能实现自己的滤镜，这个时候我们可以用 CIKernel。CIKernel 是 iOS8 的时候出现的，它是一种类似于 OpenGL 着色器的处理程序。苹果提供了一系列的函数和数据类型供我们使用它。具体参见[Core Image Kernel Language](https://developer.apple.com/library/mac/documentation/GraphicsImaging/Reference/CIKernelLangRef/ci_gslang_ext.html)。
 
-###子类
+### 子类
 
 CIKernel 有两个子类：`CIColorKernel`和`CIWarpKernel`。
 
-###初始化
+### 初始化
 
 我们通过一个 `NSString` 来初始化一个 `CIKernel`；
 
@@ -28,7 +28,7 @@ CIKernel 有两个子类：`CIColorKernel`和`CIWarpKernel`。
     CIKernel *kernel = [CIKernel kernelWithString:kernelString];
 ```
 
-###使用
+### 使用
 
 使用的时候可以这么用：
 
@@ -61,7 +61,7 @@ kernel vec4 moveUpTwoPixels (sampler image) {
  方法里的 args 的参数。
 
 
-###CIColorKernel
+### CIColorKernel
 
 我们也可以创建一个CIColorKernel:
 
@@ -86,13 +86,13 @@ CIImage *inputImage = [CIImage imageWithCGImage:image.CGImage];
 CIImage *outImage = [kernel applyWithExtent:inputImage.extent arguments:@[inputImage,[CIColor colorWithRed:0.0f green:1.0f blue:0.0f],@0.0f]];
 ```
 
-###更多
+### 更多
 
  进一步学习中。。。
 
 
 
-###参考资料
+### 参考资料
 
  1. [iOS8 Day-by-Day :: Day 19 :: CoreImage Kernels](http://www.shinobicontrols.com/blog/posts/2014/08/19/ios8-day-by-day-day-19-coreimage-kernels)
 

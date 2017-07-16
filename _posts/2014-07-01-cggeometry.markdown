@@ -10,9 +10,9 @@ categories: iOS
 
 CGGeometry 是一个 Quartz 2D 框架中非常有用且好用的处理几何问题的基本组件，这里列出一些它的方法并简单说明如何使用。
 
-###变换
+### 变换
 
-####CGRectOffset
+#### CGRectOffset
 
 CGRectOffset: 返回一个原点在源矩形基础上进行了偏移的矩形。
 
@@ -29,7 +29,7 @@ CGRect CGRectOffset(
 > 它不仅能让你在同时改变水平和垂直位置的时候减少一行代码，更重要的是，它所表示的平移比直接分开操作原点的值更具有几何意义。
 
 
-####CGRectInset
+#### CGRectInset
 
 CGRectInset: 返回一个与源矩形共中心点的，或大些或小些的新矩形。
 
@@ -52,7 +52,7 @@ CGRect CGRectInset(
 上述代码把源矩形rect的大小缩小了10，然后又向右平移了10，向下平移了10，
 
 
-####CGRectIntegral
+#### CGRectIntegral
 
 CGRectIntegral: 返回包围源矩形的最小整数矩形。
 
@@ -65,7 +65,7 @@ CGRect CGRectIntegral (
 CGRectIntegral 用来对矩形取整，可以保证矩形对齐到像素边界，在非retina屏幕上能防止像素模糊。
 
 
-###取值辅助函数
+### 取值辅助函数
 
 ####CGRectGet[Min|Mid|Max][X|Y]
 
@@ -82,16 +82,16 @@ CGFloat  CGRectGetMaxY (CGRect rect)） // 获取矩形y坐标的最大值
 
 > 用这些函数代替诸如frame.origin.x + frame.size.width之类的代码将更加清晰、语义上更为生动的（特别是用取中间和取最大函数）
 
-####CGRectGet[Width|Height]
+#### CGRectGet[Width|Height]
 
 ```objc
 CGFloat  CGRectGetHeight (CGRect rect) //获取矩形的高
 CGFloat  CGRectGetWidth  (CGRect rect)  //获取矩形的宽
 ```
 
-###常量
+### 常量
 
-####CGRectZero
+#### CGRectZero
 
 ```objc
 const CGRect CGRectZero;
@@ -99,7 +99,7 @@ const CGRect CGRectZero;
 
 一个原点在(0, 0)，且长宽均为 0 的常数矩形。这个零矩形与 CGRectMake(0.0f, 0.0f, 0.0f, 0.0f) 是等价的。当我们初始化一个视图时，它们的边框通常设置为CGRectZero，把具体的布局放到 -layoutSubviews中。
 
-####CGRectNull
+#### CGRectNull
 
 ```objc
 const CGRect CGRectNull；
@@ -108,7 +108,7 @@ const CGRect CGRectNull；
 空矩形。这个会在，比如说，求两个不相交的矩形的相交部分时返回。注意，空矩形不是零矩形。
 
 
-####CGRectInfinite
+#### CGRectInfinite
 
 ```objc
 const CGRect CGRectInfinite；
@@ -117,9 +117,9 @@ const CGRect CGRectInfinite；
 无穷大矩形,它与所有的点或矩形相交，包含所有矩形，且它与任何矩形的并集等于它自身。可以用 CGRectIsInfinite 来检查一矩形是否为无限大。
 
 
-###分割矩形
+### 分割矩形
 
-####CGRectDivide
+#### CGRectDivide
 
 CGRectDivide: 将源矩形分为两个子矩形。
 
@@ -156,7 +156,7 @@ enum CGRectEdge {
 }
 ```
 
-###比较
+### 比较
 
 判断两个点是否相等
 
@@ -181,7 +181,7 @@ bool  CGRectEqualToRect (CGRect A，CGRect B)
 bool  CGRectIntersectsRect (CGRect A，CGRect B)
 ```
 
-###包含关系
+### 包含关系
 
 检测矩形A是否包含指定的点B
 
@@ -195,7 +195,7 @@ bool  CGRectContainsPoint (CGRect A, CGPoint B)
 bool  CGRectContainsRect (CGRect A，CGRect B)  
 ```
 
-###检测矩形是否存在或是无穷大
+### 检测矩形是否存在或是无穷大
 
 矩形A是否长和宽都是0，或者是个NULL
 
@@ -213,7 +213,7 @@ bool  CGRectIsNull (CGRect A)
 bool  CGRectIsInfinite (CGRect A)
 ```        
 
-###参考资料
+### 参考资料
 
 [NSHipster](http://nshipster.cn/cggeometry/);
 

@@ -7,7 +7,7 @@ categories: iOS
 ---
 ![](/images/201410191739.png)
 
-###目录
+### 目录
 
 1. 遍历
 2. 排序
@@ -15,9 +15,9 @@ categories: iOS
 4. 其他
 5. 参考资料
 
-###遍历
+### 遍历
 
-####普通for循环
+#### 普通for循环
 
 ```objc
  for (NSInteger n = 0 ; n < [array count]; n ++)
@@ -26,7 +26,7 @@ categories: iOS
     }
 ```
 
-####for in 方式（NSFastEnumeration方式）
+#### for in 方式（NSFastEnumeration方式）
 
 该方式无法获取到数组的下标，在不需要下标且数组元素很多的时候，可以用这种方式
 
@@ -36,7 +36,7 @@ categories: iOS
 
     }
 ```
-####enumerateObjectsUsingBlock方式
+#### enumerateObjectsUsingBlock方式
 
 数组遍历的 block 方式 ，其中的stop标志提供了一个优雅的停止遍历的方法，当 *stop = Yes 的时候，遍历就会停止
 
@@ -47,7 +47,7 @@ categories: iOS
 ```
 
 
-####enumerateObjectsWithOptions方式
+#### enumerateObjectsWithOptions方式
 
 option 设置为 NSEnumerationConcurrent 为并发遍历方式,
 
@@ -68,7 +68,7 @@ option 设置为 NSEnumerationReverse 为倒序遍历方式
 ```
 
 
-###排序
+### 排序
 
 假如数组里要排序的对象如下；
 
@@ -102,7 +102,7 @@ NSArray *sortedArray = [array sortedArrayUsingComparator:^NSComparisonResult(Use
 }];
 ```
 
-####使用selctor
+#### 使用selctor
 
 
 ```objc
@@ -120,7 +120,7 @@ NSArray *sortedArray = [array sortedArrayUsingSelector:@selector(compare:)];
 
 ```
 
-###过滤
+### 过滤
 
 有时候需要按照一定规则从数组中过滤出符合要求的元素，这时候就要用到NSPredicate了,常用的格式化的用法如下：
 
@@ -145,9 +145,9 @@ NSArray *result = [array filteredArrayUsingPredicate:predicate];
 
 
 
-###其他
+### 其他
 
-####去重
+#### 去重
 
 有一个优雅的KVC用法
 
@@ -169,7 +169,7 @@ NSArray *result = [array valueForKeyPath:@"@distinctUnionOfObjects.name"];
 假如不实现等同性判断的话，系统默认的会把两个对象的指针相同才认为是同一个对象，有时候这显然不是我们想要的. 对象等同性具体实现可参考[对象等同性判断](http://alex1212112.github.io/blog/2014/10/19/guan-yu-dui-xiang-deng-tong-xing-pan-duan/)。
 
 
-###参考资料
+### 参考资料
 
 1. [对 NSArray 中自定义的对象进行排序](http://beyondvincent.com/blog/2014/01/26/how-to-sort-nsarray-with-custom-objects/)
 

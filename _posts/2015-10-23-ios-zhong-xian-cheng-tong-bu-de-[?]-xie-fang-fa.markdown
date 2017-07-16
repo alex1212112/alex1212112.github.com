@@ -3,17 +3,17 @@ layout: post
 title: "iOS 中线程同步的一些方法"
 date: 2015-10-23 15:21:04 +0800
 comments: true
-categories: iOS 
+categories: iOS
 ---
 
-###目录
+### 目录
 1. 使用串行队列
 2. 使用 dispatch_group
 3. 使用 dispatch_barrier
 4. 使用 dispatch_semaphore
 
 
-###串行队列
+### 串行队列
 使用串行队列，对于一个资源，同一时刻只有一个任务（线程）访问，这样就避免了资源竞争，实现了资源的同步。我们可以通过 NSOperationQueue 或 dispatch queue来实现串行队列。
 
 *  NSOperationQueue
@@ -53,7 +53,7 @@ categories: iOS
 
 
 
-###使用 dispatch_group
+### 使用 dispatch_group
 
 dispatch_group 可以把很多个任务加入到一个组中，然后等组中所有的任务都执行完毕，再去执行新的任务，同步的操作就在这新的任务中实现。
 
@@ -77,7 +77,7 @@ dispatch_group 可以把很多个任务加入到一个组中，然后等组中�
 
 
 
-###使用 dispatch_barrier
+### 使用 dispatch_barrier
 
 假如有这样一个情况，先要执行一组并发的任务，然后在执行一个基于这组并发任务的任务，然后再执行另外一组基于这个任务的并发任务，这种情况虽然也可以通过 dispatch_group 来实现， 但是 GCD 提供了另外一个很优雅的方法，就是 dispatch_barrier,要注意的是对于串行队列使用 dispatch_barrier 意义并不大，因为所有的任务本来就是串行执行的，对于全局的并发队列 `dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)` , dispatch_barrier 也不会生效，所以 dispatch_barrier 一般使用在 自定义的全局并发队列里
 
@@ -109,7 +109,7 @@ dispatch_group 可以把很多个任务加入到一个组中，然后等组中�
 
 ```
 
-###使用 dispatch_semaphore
+### 使用 dispatch_semaphore
 
 dispatch_semaphore 就是传说中的信号量。其基本原理是，我们可以创建一个信号量，这个信号量有一个值，来表示目前信号量总数有多少，比如我们可以创建一个初始值为 2 的信号量，然后当我们执行一个任务的时候，就消耗一个信号量，信号量总数会减 1 ，当信号量为 0 的时候，即将执行的任务将会被阻塞，然后一直等到超时或信号量又大于0 为止，当我们在一个任务执行完毕的时候，可以为信号量的总量加 1 ，当信号量从 0 变成 1 的时候，等待信号量的任务就会执行下去，通过这个机制，我们可以实现数据的同步。
 

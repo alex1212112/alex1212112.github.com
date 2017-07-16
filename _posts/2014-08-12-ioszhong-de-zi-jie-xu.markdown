@@ -3,16 +3,16 @@ layout: post
 title: "iOS 中的字节序"
 date: 2014-08-12 12:07:08 +0800
 comments: true
-categories: iOS 
+categories: iOS
 ---
 
 ![](/images/b8c60f715c7d7ad3736a3efde8f56eae65d9d45810251-ck6IkC_fw658.png)
 
-####起因
+#### 起因
 
 最近在做 iOS 蓝牙开发的时候，将多字节数据从APP端发到蓝牙设备端的时候，发现字节顺序都是反的，比如发送一个 0x0500 的数据给蓝牙设备端，设备端收到以后就变成了0x0005,研究发现这就是字节序不对导致的问题。
 
-####什么是字节序
+#### 什么是字节序
 
 采用维基百科的解释如下：
 
@@ -26,7 +26,7 @@ categories: iOS
 
 ![](/images/280px-Little-Endian.svg.png)
 
-####相关体系
+#### 相关体系
 
 * x86，MOS Technology 6502，Z80，VAX，PDP-11等处理器为Little endian。
 
@@ -59,7 +59,7 @@ NSLog(@"Byte == %x",Byte);//打印出来发现顺序变了
 ```
 上述代码中 HTONS(x) 是对2字节进行转换，如果要对4字节进行转换，就要用 HTONL(x)进行转换了，要对更高字节，比如8字节（64位）进行转换，就要自己写转换的方法了。
 
-####参考资料
+#### 参考资料
 
 
 1. [关于字节序](http://ixhan.com/2009/10/little-about-byte-order/);

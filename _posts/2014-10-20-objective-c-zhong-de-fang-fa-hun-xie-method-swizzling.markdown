@@ -3,22 +3,22 @@ layout: post
 title: "Objective-C 中的方法混写(Method Swizzling)"
 date: 2014-10-20 17:47:07 +0800
 comments: true
-categories: iOS 
+categories: iOS
 ---
 ![](/images/201410201751.png)
-###目录
+### 目录
 
 1. 什么是方法混写（Method Swizzling）
 2. 如何使用方法混写
 3. 注意事项
 4. 参考资料
 
-###什么是方法混写(Method Swizzling)
+### 什么是方法混写(Method Swizzling)
 
 Objective-C 中对象调用方法，或者叫“消息传递”,是通过一种动态绑定机制实现的，即对象收到消息后，究竟调用哪个方法，完全于运行期决定，而且方法名和其对应的实现也是可以在运行期改变的，这样，我们不需要源代码，也不用通过继承子类的来覆写方法，就能改变这个类中的方法。这种在运行期改变类的方法实现的手段被称之为方法混写（Method Swizzling）.
 
 
-###如何使用方法混写
+### 如何使用方法混写
 
 举一个UIAlertView的例子，UIAlertView 有一个 show 的方法，我们想改变这个 show 的方法，可以按如下实现:
 
@@ -67,13 +67,13 @@ UIAlertView+GHSwizzling.m
 注意: 这只是方法混写中的一种，交换两个实现方法，还有 `method_setImplementayion()`等方法.
 
 
-###注意事项
+### 注意事项
 
 1. 方法混写最好在类的 category 中的 `+load` 方法中进行方法交换.
 
 2. 方法混写的代码最好在 dispatch_once 中实现。
 
-3. 要注意给自己实现的方法加上命名空间，以防止出现重复命名的问题，比如上述中的"_gh_"前缀.
+3. 要注意给自己实现的方法加上命名空间，以防止出现重复命名的问题，比如上述中的 "_gh_" 前缀.
 
 4. 不要滥用这个方法,该方法被称之为 Objective-C 中的黑魔法，滥用会导致难以调试的bug.
 
@@ -81,7 +81,7 @@ UIAlertView+GHSwizzling.m
 
 
 
-###参考资料
+### 参考资料
 
 1. [Method Swizzling](http://nshipster.com/method-swizzling/)
 

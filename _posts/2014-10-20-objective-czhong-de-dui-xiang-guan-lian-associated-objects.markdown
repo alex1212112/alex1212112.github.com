@@ -3,7 +3,7 @@ layout: post
 title: "Objective-C 中的对象关联(Associated Objects)"
 date: 2014-10-20 12:14:09 +0800
 comments: true
-categories: iOS 
+categories: iOS
 ---
 ![](/images/201410201218.png)
 
@@ -14,7 +14,7 @@ categories: iOS
 3. 注意事项
 4. 参考资料
 
-###什么是对象关联(Associated Objects)
+### 什么是对象关联(Associated Objects)
 
 对象关联是Objective-C 2.0运行时的一个特性，起始于OS X Snow Leopard和iOS 4。我们有时候需要在对象中存放一些相关的信息，而又无法通过别的手段实现时，就可以把这些信息通过对象关联的方法与对象关联起来，在需要的时候通过对应的 key 就可以获取到对象的这些信息，比如说我们可以在 Category 中通过对象关联添加自定义的属性。对象关联通过  <objc/runtime.h> 中定义的三个方法实现的:
 
@@ -26,7 +26,7 @@ id objc_getAssociatedObject(id object, const void *key);
 objc_removeAssociatedObjects(id object)；
 ```
 
-###如何使用对象关联
+### 如何使用对象关联
 
 我们可以使用关联对象在 Category 中添加自定义的属性，比如为一个 GHPerson 类添加一个体重的属性（weight）:
 
@@ -86,12 +86,12 @@ static char weightKey;
 
 
 
-###注意事项
+### 注意事项
 
 1. 不应该用 objc_removeAssociatedObjects() 来删除对象的属性，因为可能会导致其他客户对其添加的属性也被移除了。规范的方法是：调用 objc_setAssociatedObject 方法并传入一个 nil 值来清除一个关联。
 2. 应该小心使用对象关联，不要滥用，因为可能会引起难以调试的bug。
 
 
-###参考资料
+### 参考资料
 
 1. [Associated Objects](http://nshipster.cn/associated-objects/)

@@ -3,11 +3,11 @@ layout: post
 title: "KVO 简介"
 date: 2014-09-02 16:24:18 +0800
 comments: true
-categories: iOS 
+categories: iOS
 ---
 ![](/images/201409021638.png)
 
-###目录
+### 目录
 
 什么是KVO？
 
@@ -19,11 +19,11 @@ KVO实例
 
 参考资料
 
-###什么是KVO？
+### 什么是KVO？
 
 KVO提供了一种观察者机制，当指定的对象的属性发生变化的时候，观察者就会收到通知，我们可以根据通知来进行UI更新等操作。它能降低代码之间的藕合度，显著减少开发者编写的代码量。KVO 是 Cocoa 的一项特性，我们可以在 Foundation 的框架里找到它。
 
-###KVO使用流程
+### KVO使用流程
 
 *  添加观察者（注册KVO),一般在观察者对象初始化的时候，添加观察者
 
@@ -44,7 +44,7 @@ KVO提供了一种观察者机制，当指定的对象的属性发生变化的�
 ```
 
 
-###KVO实例
+### KVO实例
 
 这里举一个例子，比如我有一个Person的对象如下：
 
@@ -108,7 +108,7 @@ Person.h
 
 这样，一个实现KVO的简单例子就完成了.  [Demo](https://github.com/alex1212112/KVODemo).
 
-###相关技巧与说明
+### 相关技巧与说明
 
 1. 有时候需要在第一次运行代码的时候更新一次 UI。我们可以设置KVO的选项   NSKeyValueObservingOptionInitial 的选项。这将会让 KVO 通知在调用 -addObserver:forKeyPath:... 的时候也被触发。
 
@@ -118,7 +118,7 @@ Person.h
 
 
 
-###参考资料
+### 参考资料
 
 1. [KVC 和 KVO](http://objccn.io/issue-7-3/);
 
