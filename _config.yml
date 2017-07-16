@@ -14,6 +14,21 @@ subtitle: "Live long and prosper"
 email: Alex1212112@gmail.com
 name: Alex
 description: >
+post:
+  template: _post.txt
+  extension: md
+page:
+  template: _page.txt
+  extension: md
+editor: atom
+git:
+  branch: master
+transfer:
+  command: rsync
+  settings: -av
+  source: _site/
+  destination: ~/Git/alex1212112.github.com/
+
 
 # Base URL of site (i.e. /blog). It should always start with a slash,
 # and never end with a slash. Set it to a blank value if hosting at the
